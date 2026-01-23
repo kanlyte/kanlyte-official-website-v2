@@ -66,7 +66,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-3">
             <div className="relative h-12 w-12 flex items-center justify-center">
               <Image
-                src="/logos/kanlyte-transparent-01.png"
+                src="/logos/logo-transparent.png"
                 alt="Kanlyte Uganda Logo"
                 width={48}
                 height={48}
