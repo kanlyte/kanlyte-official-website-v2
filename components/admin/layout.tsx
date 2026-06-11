@@ -27,7 +27,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       <div
         className={cn(
           "flex flex-1 flex-col transition-all duration-300",
-          sidebarOpen ? "lg:ml-[calc(var(--spacing)*68)]" : "lg:ml-0",
+          sidebarOpen ? "lg:ml-[calc(var(--spacing)*68)]" : "lg:ml-20",
         )}
       >
         <header

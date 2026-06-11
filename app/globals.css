@@ -185,3 +185,64 @@
     scrollbar-width: none;
   }
 }
+
+/* Sidebar Enhancements */
+@layer components {
+  /* Active nav item highlight */
+  [data-slot="sidebar-menu-button"][data-active="true"] {
+    position: relative;
+  }
+
+  [data-slot="sidebar-menu-button"][data-active="true"]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--primary-foreground);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Enhanced hover states */
+  [data-slot="sidebar-menu-button"]:hover:not([data-active="true"]) {
+    @apply bg-primary/5 translate-x-0.5 transition-all duration-200;
+  }
+
+  [data-slot="sidebar-menu-button"]:active {
+    @apply scale-[0.98] transition-transform duration-100;
+  }
+
+  /* Sub menu active state */
+  [data-slot="sidebar-menu-sub-button"][data-active="true"] {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+
+  /* Sub menu hover */
+  [data-slot="sidebar-menu-sub-button"]:hover:not([data-active="true"]) {
+    @apply bg-primary/5;
+  }
+
+  /* Collapsed sidebar - keep icons visible and centered */
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"] {
+    @apply justify-center px-2;
+  }
+
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"] svg {
+    @apply shrink-0 size-5;
+  }
+
+  /* Collapsed sidebar active state - full green icon background */
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"][data-active="true"] {
+    @apply bg-primary text-primary-foreground rounded-lg;
+  }
+
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"][data-active="true"]::before {
+    display: none;
+  }
+
+  /* Smooth transitions for chevron */
+  [data-slot="sidebar-menu-button"] svg[class*="lucide-chevron"] {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+}
