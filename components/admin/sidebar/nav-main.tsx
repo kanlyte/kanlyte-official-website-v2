@@ -31,7 +31,11 @@ interface NavMainProps {
 }
 
 const IsComingSoon = () => (
-  <span className="ml-auto rounded-md bg-gray-200 px-2 py-1 text-xs dark:text-gray-800">Soon</span>
+  <span className="ml-auto rounded-full bg-gray-200 px-2 py-0.5 text-[10px] font-medium dark:text-gray-800 animate-pulse">Soon</span>
+);
+
+const IsNew = () => (
+  <span className="ml-auto rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground shadow-sm animate-pulse">New</span>
 );
 
 const NavItemExpanded = ({
@@ -52,11 +56,13 @@ const NavItemExpanded = ({
               disabled={item.comingSoon}
               isActive={isActive(item.url, item.subItems)}
               tooltip={item.title}
+              className="group/item transition-all duration-200 hover:scale-[1.02]"
             >
-              {item.icon && <item.icon />}
-              <span>{item.title}</span>
+              {item.icon && <item.icon className="transition-transform duration-200 group-hover/item:scale-110" />}
+              <span className="font-medium">{item.title}</span>
+              {item.isNew && <IsNew />}
               {item.comingSoon && <IsComingSoon />}
-              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              <ChevronRight className="ml-auto transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
           ) : (
             <SidebarMenuButton
@@ -64,10 +70,12 @@ const NavItemExpanded = ({
               aria-disabled={item.comingSoon}
               isActive={isActive(item.url)}
               tooltip={item.title}
+              className="group/item transition-all duration-200 hover:scale-[1.02] data-[active=true]:shadow-sm"
             >
               <Link prefetch={false} href={item.url} target={item.newTab ? "_blank" : undefined}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
+                {item.icon && <item.icon className="transition-transform duration-200 group-hover/item:scale-110" />}
+                <span className="font-medium">{item.title}</span>
+                {item.isNew && <IsNew />}
                 {item.comingSoon && <IsComingSoon />}
               </Link>
             </SidebarMenuButton>
@@ -78,9 +86,9 @@ const NavItemExpanded = ({
             <SidebarMenuSub>
               {item.subItems.map((subItem) => (
                 <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton aria-disabled={subItem.comingSoon} isActive={isActive(subItem.url)} asChild>
+                  <SidebarMenuSubButton aria-disabled={subItem.comingSoon} isActive={isActive(subItem.url)} asChild className="group/subitem transition-all duration-150 hover:translate-x-1">
                     <Link prefetch={false} href={subItem.url} target={subItem.newTab ? "_blank" : undefined}>
-                      {subItem.icon && <subItem.icon />}
+                      {subItem.icon && <subItem.icon className="transition-transform duration-200 group-hover/subitem:scale-110" />}
                       <span>{subItem.title}</span>
                       {subItem.comingSoon && <IsComingSoon />}
                     </Link>
@@ -110,8 +118,9 @@ const NavItemCollapsed = ({
             disabled={item.comingSoon}
             tooltip={item.title}
             isActive={isActive(item.url, item.subItems)}
+            className="transition-all duration-200"
           >
-            {item.icon && <item.icon />}
+            {item.icon && <item.icon className="transition-transform duration-200" />}
             <span>{item.title}</span>
             <ChevronRight />
           </SidebarMenuButton>
@@ -160,7 +169,7 @@ export function NavMain({ items }: NavMainProps) {
       {items.map((group) => (
         <SidebarGroup key={group.id}>
           {group.label && <SidebarGroupLabel>{group.label}</SidebarGroupLabel>}
-          <SidebarGroupContent className="flex flex-col gap-2">
+          <SidebarGroupContent className="flex flex-col gap-1">
             <SidebarMenu>
               {group.items.map((item) => {
                 if (state === "collapsed" && !isMobile) {
@@ -173,9 +182,10 @@ export function NavMain({ items }: NavMainProps) {
                           aria-disabled={item.comingSoon}
                           tooltip={item.title}
                           isActive={isItemActive(item.url)}
+                          className="transition-all duration-200"
                         >
                           <Link prefetch={false} href={item.url} target={item.newTab ? "_blank" : undefined}>
-                            {item.icon && <item.icon />}
+                            {item.icon && <item.icon className="transition-transform duration-200" />}
                             <span>{item.title}</span>
                           </Link>
                         </SidebarMenuButton>
