@@ -8,24 +8,201 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model ContactSubmission {
-  id              String    @id @default(cuid())
-  fullName        String
-  email           String
-  phone           String
-  company         String?
-  subject         String
-  service         String
-  message         String
-  // Removed agreeToTerms
-  subscribe       Boolean   @default(false)
-  status          String    @default("pending")
-  ipAddress       String?
-  userAgent       String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  contactedAt     DateTime?
+  id          String    @id @default(cuid())
+  fullName    String
+  email       String
+  phone       String
+  company     String?
+  subject     String
+  service     String
+  message     String
+  subscribe   Boolean   @default(false)
+  status      String    @default("pending")
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  contactedAt DateTime?
 
   @@index([email])
   @@index([status])
   @@index([createdAt])
+}
+
+// ─── Hero Slider ────────────────────────────────────────────────────────────
+model HeroSlide {
+  id          String  @id @default(cuid())
+  order       Int
+  image       String
+  title       String
+  subtitle    String
+  description String
+  buttonText  String
+  buttonLink  String
+  isActive    Boolean @default(true)
+
+  @@index([order])
+}
+
+// ─── Stats Section ──────────────────────────────────────────────────────────
+model Stat {
+  id    String @id @default(cuid())
+  label String
+  value String
+  order Int
+}
+
+// ─── Services / Features Grid ───────────────────────────────────────────────
+model Service {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  icon        String  // lucide icon name e.g. "Code"
+  order       Int
+  isActive    Boolean @default(true)
+
+  @@index([order])
+}
+
+// ─── Projects Section ───────────────────────────────────────────────────────
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String
+  tags        String[] // e.g. ["Next JS", "Typescript"]
+  order       Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([order])
+}
+
+// ─── Process Steps ──────────────────────────────────────────────────────────
+model ProcessStep {
+  id          String @id @default(cuid())
+  step        String // e.g. "Step 01"
+  title       String
+  description String
+  icon        String // lucide icon name e.g. "Search"
+  order       Int
+
+  @@index([order])
+}
+
+// ─── FAQ Section ────────────────────────────────────────────────────────────
+model FAQ {
+  id       String  @id @default(cuid())
+  question String
+  answer   String
+  order    Int
+  isActive Boolean @default(true)
+
+  @@index([order])
+}
+
+// ─── Partners Slider ────────────────────────────────────────────────────────
+model Partner {
+  id       String  @id @default(cuid())
+  name     String
+  logo     String
+  url      String?
+  order    Int
+  isActive Boolean @default(true)
+
+  @@index([order])
+}
+
+// ─── Team ───────────────────────────────────────────────────────────────────
+model TeamMember {
+  id       String           @id @default(cuid())
+  name     String
+  role     String
+  image    String
+  featured Boolean          @default(false)
+  order    Int
+  isActive Boolean          @default(true)
+  social   TeamMemberSocial?
+
+  @@index([order])
+}
+
+model TeamMemberSocial {
+  id           String     @id @default(cuid())
+  instagram    String?
+  twitter      String?
+  linkedin     String?
+  github       String?
+  tiktok       String?
+  teamMember   TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  teamMemberId String     @unique
+}
+
+// ─── Testimonials ───────────────────────────────────────────────────────────
+model Testimonial {
+  id        String  @id @default(cuid())
+  name      String
+  location  String
+  text      String
+  image     String
+  order     Int
+  isActive  Boolean @default(true)
+
+  @@index([order])
+}
+
+// ─── Company Journey / Milestones ───────────────────────────────────────────
+model Milestone {
+  id          String @id @default(cuid())
+  year        String // e.g. "2022", "2024-2025"
+  title       String
+  description String
+  image       String
+  imageAlt    String
+  order       Int
+
+  @@index([order])
+}
+
+// ─── Pricing Plans (General + Odoo) ─────────────────────────────────────────
+model PricingPlan {
+  id           String               @id @default(cuid())
+  category     String               // e.g. "web-hosting", "odoo", "email-hosting"
+  tier         String               // e.g. "core", "advanced", "premium"
+  title        String
+  description  String
+  priceUGX     String
+  priceUSD     String?
+  period       String?              // e.g. "/ month", "/ one user"
+  tagline      String?
+  isPopular    Boolean              @default(false)
+  borderColor  String?
+  buttonText   String
+  order        Int
+  isActive     Boolean              @default(true)
+  features     PricingPlanFeature[]
+
+  @@index([category])
+  @@index([order])
+}
+
+model PricingPlanFeature {
+  id            String      @id @default(cuid())
+  text          String
+  order         Int
+  plan          PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId        String
+
+  @@index([planId])
+}
+
+// ─── Odoo App Grid ──────────────────────────────────────────────────────────
+model OdooApp {
+  id       String  @id @default(cuid())
+  name     String
+  icon     String  // path to svg e.g. "/odoo/icon-acc.svg"
+  order    Int
+  isActive Boolean @default(true)
+
+  @@index([order])
 }
