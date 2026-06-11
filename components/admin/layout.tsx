@@ -8,6 +8,7 @@ import { AppSidebar } from "@/components/admin/sidebar/app-sidebar";
 import { SimpleIcon } from "@/components/simple-icon";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AccountSwitcher } from "@/components/admin/sidebar/account-switcher";
 import { LayoutControls } from "@/components/admin/sidebar/layout-controls";
 import { SearchDialog } from "@/components/admin/sidebar/search-dialog";
@@ -20,6 +21,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { sidebarOpen, toggleSidebar } = useUIStore();
 
   return (
+    <SidebarProvider open={sidebarOpen} onOpenChange={toggleSidebar}>
     <div className="flex min-h-screen w-full">
       <AppSidebar open={sidebarOpen} />
       <div
@@ -52,19 +54,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               <SearchDialog />
             </div>
             <div className="flex items-center gap-2">
-              <LayoutControls />
+              {/* <LayoutControls /> */}
               <ThemeSwitcher />
-              <Button asChild size="icon">
-                <Link
-                  prefetch={false}
-                  href="https://github.com/kanlyte"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open GitHub"
-                >
-                  <SimpleIcon icon={siGithub} className="fill-primary-foreground" />
-                </Link>
-              </Button>
               <AccountSwitcher />
             </div>
           </div>
@@ -74,5 +65,6 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
     </div>
+    </SidebarProvider>
   );
 }

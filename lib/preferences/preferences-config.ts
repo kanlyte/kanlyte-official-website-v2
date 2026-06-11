@@ -38,11 +38,11 @@ export const PREFERENCE_DEFAULTS: PreferenceValueMap = {
 };
 
 export const PREFERENCE_PERSISTENCE: PreferencePersistenceConfig = {
-  theme_mode: "client-cookie",
-  theme_preset: "client-cookie",
-  font: "client-cookie",
-  content_layout: "client-cookie",
-  navbar_style: "client-cookie",
-  sidebar_variant: "client-cookie",
-  sidebar_collapsible: "client-cookie",
+  theme_mode: "none",
+  theme_preset: "none",
+  font: "none",
+  content_layout: "none",
+  navbar_style: "none",
+  sidebar_variant: "none",
+  sidebar_collapsible: "none",
 };
