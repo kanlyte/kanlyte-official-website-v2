@@ -2,14 +2,19 @@
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { type StoreApi, useStore } from "zustand";
-import { type FontKey, fontRegistry } from "@/lib/fonts/registry";
+import type { FontKey } from "@/lib/fonts/registry";
 import { CONTENT_LAYOUT_VALUES, NAVBAR_STYLE_VALUES, SIDEBAR_COLLAPSIBLE_VALUES, SIDEBAR_VARIANT_VALUES } from "@/lib/preferences/layout";
 import { THEME_MODE_VALUES, THEME_PRESET_VALUES } from "@/lib/preferences/theme";
 import { applyThemeMode, subscribeToSystemTheme } from "@/lib/preferences/theme-utils";
 import { createPreferencesStore, type PreferencesState } from "./preferences-store";
 
 const PreferencesStoreContext = createContext<StoreApi<PreferencesState> | null>(null);
-const FONT_VALUES = Object.keys(fontRegistry) as FontKey[];
+
+const FONT_VALUES: FontKey[] = [
+  "geist","inter","notoSans","nunitoSans","figtree","roboto","raleway",
+  "dmSans","publicSans","outfit","geistMono","jetBrainsMono","notoSerif",
+  "robotoSlab","merriweather","lora","playfairDisplay",
+];
 
 function getSafeValue<T extends string>(raw: string | null, allowed: readonly T[]): T | undefined {
   if (!raw) return undefined;

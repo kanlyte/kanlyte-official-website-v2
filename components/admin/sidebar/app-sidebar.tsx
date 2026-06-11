@@ -25,7 +25,7 @@ export function AppSidebar({ open }: { open: boolean }) {
           <span>{APP_CONFIG.name}</span>
         </Link>
       </div>
-      <div className="flex-1 overflow-y-auto py-2">
+      <div className="no-scrollbar flex-1 overflow-y-auto py-2">
         <NavMain items={sidebarItems} />
       </div>
       <div className="border-t p-2">

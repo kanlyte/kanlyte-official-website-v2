@@ -6,7 +6,8 @@ import { SimpleIcon } from "@/components/simple-icon";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function SidebarSupportCard() {
-  return (
+  return null;
+  /* return (
     <Card className="shadow-none">
       <CardHeader className="px-4">
         <CardTitle className="text-sm">Looking for something more?</CardTitle>
@@ -25,5 +26,5 @@ export function SidebarSupportCard() {
         </CardDescription>
       </CardHeader>
     </Card>
-  );
+  ); */
 }
