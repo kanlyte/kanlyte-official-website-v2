@@ -1,9 +1,18 @@
 "use client";
 
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
-import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
+import {
+  ResourceTable,
+  ActiveBadge,
+  OrderBadge,
+  type ResourceColumn,
+} from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
-import { useHeroSlides, useDeleteHeroSlide } from "@/content-manager/hooks/useHeroSlides";
+import { HeroSlideModal } from "@/components/admin/hero-slides/hero-slide-modal";
+import {
+  useHeroSlides,
+  useDeleteHeroSlide,
+} from "@/content-manager/hooks/useHeroSlides";
 
 const RESOURCE = "hero-slides";
 
@@ -21,9 +30,24 @@ export default function HeroSlidesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <ResourceHeader title="Hero Slides" description="Manage the homepage hero slider content." resource={RESOURCE} />
-      <ResourceTable resource={RESOURCE} data={data} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search slides..." />
-      <DeleteModal resource={RESOURCE} onConfirm={deleteSlide} isPending={isPending} />
+      <ResourceHeader
+        title="Hero Slides"
+        description="Manage the homepage hero slider content."
+        resource={RESOURCE}
+      />
+      <ResourceTable
+        resource={RESOURCE}
+        data={data}
+        columns={COLUMNS}
+        isLoading={isLoading}
+        searchPlaceholder="Search slides..."
+      />
+      <HeroSlideModal />
+      <DeleteModal
+        resource={RESOURCE}
+        onConfirm={deleteSlide}
+        isPending={isPending}
+      />
     </div>
   );
 }
