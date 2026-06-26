@@ -1,5 +1,6 @@
 export * from "./useContactSubmissions";
 export * from "./useHeroSlides";
+export * from "./useUploadImage";
 export * from "./useStats";
 export * from "./useServices";
 export * from "./useProjects";
