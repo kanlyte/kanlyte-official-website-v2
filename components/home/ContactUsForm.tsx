@@ -22,6 +22,14 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { submitContactForm } from "@/actions/contact-submission";
+import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
+
+const FALLBACK = {
+  phone: "+256 200 929 550",
+  email: "kanlyteug@gmail.com",
+  address: "Kampala, Uganda",
+  schedule: "Mon-Fri, 8am-6pm EAT",
+};
 
 // Define the form schema with Zod (matching server schema) - REMOVED agreeToTerms
 const formSchema = z.object({
@@ -62,6 +70,8 @@ const serviceOptions = [
 export function ContactUsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
+  const { data: contactInfo } = useContactInfo();
+  const info = contactInfo ?? FALLBACK;
 
   const {
     register,
@@ -458,10 +468,10 @@ export function ContactUsPage() {
                     Speak directly with our team
                   </p>
                   <a
-                    href="tel:+256762534356"
+                    href={`tel:${info.phone}`}
                     className="text-xl font-bold text-gray-900 hover:text-[#6EBE45] transition-colors inline-flex items-center gap-2 group"
                   >
-                    +256 200 929 550
+                    {info.phone}
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </a>
                   <p className="text-sm text-gray-500 mt-2">
@@ -479,10 +489,10 @@ export function ContactUsPage() {
                   </h3>
                   <p className="text-gray-600 mb-3">Send us an email anytime</p>
                   <a
-                    href="mailto:kanlyteug@gmail.com"
+                    href={`mailto:${info.email}`}
                     className="text-lg font-medium text-gray-900 hover:text-[#6EBE45] transition-colors break-all"
                   >
-                    kanlyteug@gmail.com
+                    {info.email}
                   </a>
                   <p className="text-sm text-gray-500 mt-2">
                     Typically reply within 24h
@@ -500,8 +510,15 @@ export function ContactUsPage() {
                   <p className="text-gray-600 mb-3">Our office location</p>
                   <div className="text-gray-900">
                     <p className="font-medium">Kanlyte Uganda Limited</p>
-                    <p className="text-sm mt-1">P.O.Box 160188 Kampala</p>
-                    <p className="text-sm">Kampala, Uganda</p>
+                    <p className="text-sm mt-1">{info.address}</p>
+                    <a
+                      href="https://maps.app.goo.gl/Lv86BVqxiHjGykij8"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-[#6EBE45] hover:underline mt-1 inline-block"
+                    >
+                      View on Google Maps →
+                    </a>
                   </div>
                 </div>
 
@@ -514,24 +531,7 @@ export function ContactUsPage() {
                     Business Hours
                   </h3>
                   <div className="space-y-2">
-                    <div>
-                      <p className="text-sm text-gray-900 font-medium">
-                        Mon - Fri
-                      </p>
-                      <p className="text-sm text-gray-600">8:00 AM - 6:00 PM</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-900 font-medium">
-                        Saturday
-                      </p>
-                      <p className="text-sm text-gray-600">9:00 AM - 1:00 PM</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-900 font-medium">
-                        Sunday
-                      </p>
-                      <p className="text-sm text-gray-600">Closed</p>
-                    </div>
+                    <p className="text-sm text-gray-600">{info.schedule}</p>
                   </div>
                 </div>
               </div>
@@ -550,7 +550,7 @@ export function ContactUsPage() {
                     asChild
                   >
                     <a
-                      href="https://maps.google.com/?q=Kampala,Uganda"
+                      href="https://maps.google.com/?q=Kanlyte+Uganda+Limited&ll=0.33126759010085627,32.630785658406054"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -560,21 +560,17 @@ export function ContactUsPage() {
                   </Button>
                 </div>
 
-                {/* Map Placeholder */}
-                <div className="relative h-64 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-300">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-12 h-12 rounded-full bg-[#6EBE45]/20 flex items-center justify-center mx-auto mb-4">
-                        <MapPin className="h-6 w-6 text-[#6EBE45]" />
-                      </div>
-                      <p className="font-medium text-gray-900">
-                        Kampala Office
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Interactive map would display here
-                      </p>
-                    </div>
-                  </div>
+                {/* Google Maps Embed — Edmart Systems */}
+                <div className="relative h-64 rounded-xl overflow-hidden border border-gray-300">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.6183045147004!2d32.630785658406054!3d0.33126759010085627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177db932f92ab395%3A0x4a5c75e2da8dae77!2sKanlyte%20Uganda%20Limited!5e0!3m2!1sen!2sug!4v1782592359634!5m2!1sen!2sug"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
 
@@ -598,7 +594,7 @@ export function ContactUsPage() {
                     className="flex-1 h-12 bg-white text-[#6EBE45] hover:bg-gray-100 rounded-lg font-semibold"
                     asChild
                   >
-                    <a href="tel:+256778089708">
+                    <a href={`tel:${info.phone}`}>
                       <Phone className="h-4 w-4 mr-2" />
                       Call Now
                     </a>
@@ -608,7 +604,7 @@ export function ContactUsPage() {
                     asChild
                   >
                     <a
-                      href="https://wa.me/256778089708"
+                      href={`https://wa.me/${(info.phone ?? "").replace(/[^0-9]/g, "")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
