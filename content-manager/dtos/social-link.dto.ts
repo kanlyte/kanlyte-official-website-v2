@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const CreateSocialLinkSchema = z.object({
   platform: z.string().min(1),
+  icon: z.string().min(1),
   url: z.string().min(1).refine((v) => {
     try { new URL(v); return true; } catch { return false; }
   }, { message: "Must be a valid URL (include https://)"}),

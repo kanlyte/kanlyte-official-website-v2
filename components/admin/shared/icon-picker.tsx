@@ -70,8 +70,8 @@ export function IconPicker({ value, onChange, label = "Icon", error }: IconPicke
 }
 
 // Helper to render a lucide icon by string name
-export function DynamicIcon({ name, className }: { name: string; className?: string }) {
+export function DynamicIcon({ name, className, style }: { name: string; className?: string; style?: React.CSSProperties }) {
   const Icon = (LucideIcons as unknown as Record<string, React.ElementType>)[name];
   if (!Icon) return null;
-  return <Icon className={className} />;
+  return <Icon className={className} style={style} />;
 }

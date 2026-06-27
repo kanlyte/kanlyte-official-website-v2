@@ -211,6 +211,7 @@ model OdooApp {
 model SocialLink {
   id       String  @id @default(cuid())
   platform String  // e.g. "Facebook", "Twitter"
+  icon     String  @default("Globe") // lucide icon name e.g. "Facebook"
   url      String
   color    String  // e.g. "#1877F2"
   order    Int

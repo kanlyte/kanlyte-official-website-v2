@@ -5,6 +5,7 @@ import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/c
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { SocialLinkModal } from "@/components/admin/social-links/social-link-modal";
 import { useSocialLinks, useDeleteSocialLink } from "@/content-manager/hooks/useSocialLinks";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const RESOURCE = "social-links";
 
@@ -12,7 +13,7 @@ const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
   { key: "platform", label: "Platform", render: (v, row) => (
     <div className="flex items-center gap-2">
-      <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+      <DynamicIcon name={row.icon} className="w-4 h-4 shrink-0" style={{ color: row.color }} />
       <span className="font-medium text-sm">{v}</span>
     </div>
   )},
