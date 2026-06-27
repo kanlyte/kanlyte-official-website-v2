@@ -4,7 +4,7 @@ import { join, extname } from "path";
 import { randomUUID } from "crypto";
 
 const UPLOAD_DIR = join(process.cwd(), "public", "uploads");
-const MAX_MB = 5;
+const MAX_MB = 10;
 const ALLOWED = new Set([
   "image/jpeg",
   "image/jpg",

@@ -21,7 +21,7 @@ export default function Home() {
       <ProcessSection />
       <ProjectsSection />
       <FAQContactSection />
-      <Pricing />
+      {/* <Pricing /> */}
       <PartnersSlider />
       <BookDemoButton />
     </main>
