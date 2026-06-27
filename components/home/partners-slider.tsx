@@ -3,9 +3,6 @@
 import {
   Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Carousel, CarouselContent, CarouselItem,
-} from "@/components/ui/carousel";
 import Image from "next/image";
 import { usePartners } from "@/content-manager/hooks/usePartners";
 
@@ -36,32 +33,27 @@ export function PartnersSlider() {
         </p>
 
         <TooltipProvider delayDuration={0}>
-          <Carousel opts={{ align: "start", loop: true }} className="w-full">
-            <CarouselContent className="-ml-4 md:-ml-8 items-center">
+          <div className="relative overflow-hidden">
+            <div className="flex w-max animate-marquee gap-8 md:gap-16">
               {[...partners, ...partners].map((partner: { id: string; name: string; logo: string }, index: number) => (
-                <CarouselItem
-                  key={`${partner.id}-${index}`}
-                  className="pl-4 md:pl-8 basis-1/2 md:basis-1/3 lg:basis-1/4"
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="relative aspect-square w-full max-w-[240px] mx-auto transition-transform duration-300 hover:scale-105 cursor-pointer">
-                        <Image
-                          src={partner.logo || "/placeholder.svg"}
-                          alt={partner.name}
-                          fill
-                          className="object-contain p-4"
-                        />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-primary text-white border-none text-xs rounded-none py-1 px-3">
-                      <p>{partner.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </CarouselItem>
+                <Tooltip key={`${partner.id}-${index}`}>
+                  <TooltipTrigger asChild>
+                    <div className="relative h-24 w-40 md:h-28 md:w-48 shrink-0 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                      <Image
+                        src={partner.logo || "/placeholder.svg"}
+                        alt={partner.name}
+                        fill
+                        className="object-contain p-4"
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-primary text-white border-none text-xs rounded-none py-1 px-3">
+                    <p>{partner.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
         </TooltipProvider>
       </div>
     </section>

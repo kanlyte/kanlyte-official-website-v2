@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
+import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const footerLinks = {
   company: [
@@ -25,6 +27,10 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const { data: dbSocial } = useSocialLinks(true);
+  const { data: contactInfo } = useContactInfo();
+  const socialLinks = dbSocial?.length ? dbSocial : [];
+  const email = contactInfo?.email ?? "info@kanlyte.com";
   return (
     <footer className="bg-[#050816] border-t border-blue-900/20 py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -42,30 +48,17 @@ export function Footer() {
               and mobile solutions across Uganda and beyond.
             </p>
             <div className="flex gap-4">
-              <a
-                href="https://www.facebook.com/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Facebook className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://x.com/KanlyteUganda"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Twitter className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Linkedin className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://www.instagram.com/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Instagram className="w-5 h-5 text-white" />
-              </a>
+              {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
+                <a
+                  key={social.id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
+                >
+                  <DynamicIcon name={social.icon} className="w-5 h-5 text-white" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -122,7 +115,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-blue-900/20 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
-            © 2025 Kanlyte Uganda. All rights reserved.
+            © {new Date().getFullYear()} Kanlyte Uganda. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <Link

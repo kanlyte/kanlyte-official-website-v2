@@ -101,7 +101,7 @@ export function ImageUpload({ value, onChange, label = "Image", className }: Ima
               <><span className="font-medium text-foreground">Click to upload</span> or drag & drop</>
             )}
           </p>
-          <p className="text-[10px] text-muted-foreground">PNG, JPG, WebP, GIF, SVG · max 5 MB</p>
+          <p className="text-[10px] text-muted-foreground">PNG, JPG, WebP, GIF, SVG · max 10 MB</p>
         </div>
       )}
 
