@@ -207,6 +207,15 @@ model OdooApp {
   @@index([order])
 }
 
+// ─── Contact Info (singleton) ────────────────────────────────────────────────
+model ContactInfo {
+  id       String @id @default(cuid())
+  phone    String
+  email    String
+  address  String
+  schedule String // e.g. "Mon to Sat - 08:00am to 06:00pm"
+}
+
 // ─── Social Links ────────────────────────────────────────────────────────────
 model SocialLink {
   id       String  @id @default(cuid())
