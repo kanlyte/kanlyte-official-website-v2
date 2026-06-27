@@ -10,6 +10,8 @@ import {
 import Image from "next/image";
 import { useFAQs } from "@/content-manager/hooks/useFAQs";
 import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
+import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
+import { useTeamMembers } from "@/content-manager/hooks/useTeamMembers";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const FALLBACK_FAQS = [
@@ -29,8 +31,15 @@ const FALLBACK_SOCIAL = [
 export function FAQContactSection() {
   const { data: dbFAQs } = useFAQs(true);
   const { data: dbSocial } = useSocialLinks(true);
+  const { data: contactInfo } = useContactInfo();
+  const { data: featuredMembers } = useTeamMembers("featured");
   const faqs = dbFAQs?.length ? dbFAQs : FALLBACK_FAQS;
   const socialLinks = dbSocial?.length ? dbSocial : FALLBACK_SOCIAL;
+  const phone = contactInfo?.phone ?? "(+256) 200 929 550";
+  const email = contactInfo?.email ?? "info@kanlyte.com";
+  const supportMember = featuredMembers?.[0];
+  const supportImage = supportMember?.image ?? "/team-images/devine.jpg";
+  const supportName = supportMember?.name ?? "Support Representative";
   return (
     <section className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -48,8 +57,8 @@ export function FAQContactSection() {
               {/* Profile Image */}
               <div className="relative w-32 h-32 rounded-full border-4 border-white/20 mb-6 overflow-hidden">
                 <Image
-                  src="/team-images/devine.jpg"
-                  alt="Support Representative"
+                  src={supportImage}
+                  alt={supportName}
                   fill
                   className="object-cover"
                 />
@@ -61,18 +70,18 @@ export function FAQContactSection() {
 
               <div className="space-y-4 mb-8">
                 <a
-                  href="tel:+256200929550"
+                  href={`tel:${phone.replace(/[^+\d]/g, "")}`}
                   className="flex items-center justify-center gap-3 text-white hover:text-primary transition-colors text-lg"
                 >
                   <Phone className="w-5 h-5 fill-primary text-primary" />
-                  <span>(+256) 200 929 550</span>
+                  <span>{phone}</span>
                 </a>
                 <a
-                  href="mailto:info@kanlyte.com"
+                  href={`mailto:${email}`}
                   className="flex items-center justify-center gap-3 text-white hover:text-primary transition-colors text-lg"
                 >
                   <Mail className="w-5 h-5 fill-primary text-primary" />
-                  <span>info@kanlyte.com</span>
+                  <span>{email}</span>
                 </a>
               </div>
 
