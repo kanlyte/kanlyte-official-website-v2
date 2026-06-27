@@ -14,6 +14,7 @@ import {
   Tag,
   AppWindow,
   Mail,
+  Share2,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -59,6 +60,7 @@ export const sidebarItems: NavGroup[] = [
       { title: "Process Steps", url: "/admin/process-steps", icon: ListOrdered },
       { title: "FAQs", url: "/admin/faqs", icon: HelpCircle },
       { title: "Partners", url: "/admin/partners", icon: Handshake },
+      { title: "Social Links", url: "/admin/social-links", icon: Share2 },
     ],
   },
   {

@@ -7,6 +7,7 @@ import {
   Twitter,
   Youtube,
   Linkedin,
+  Instagram,
 } from "lucide-react";
 import {
   Accordion,
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 import Image from "next/image";
 import { useFAQs } from "@/content-manager/hooks/useFAQs";
+import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
 
 const FALLBACK_FAQS = [
   { question: "How Feasible is my Idea?", answer: "One of the most common app development questions is whether or not the app that is soon going to be designed, devised, and developed even feasible. Well, the only way to get an answer to this question is to test the idea in the field of real prospects. You will have to take your idea, create a working prototype and then make it open in the public to then see if it is something they would be interested in." },
@@ -24,37 +26,28 @@ const FALLBACK_FAQS = [
   { question: "How Would I protect my App Idea?", answer: "There are several legal ways to protect your intellectual property, including NDAs and patents." },
 ];
 
-// Social media links configuration
-const socialLinks = [
-  {
-    icon: Facebook,
-    color: "text-[#1877F2]",
-    url: "https://www.facebook.com/kanlyte/",
-    label: "Facebook",
-  },
-  {
-    icon: Twitter,
-    color: "text-[#1DA1F2]",
-    url: "https://x.com/KanlyteUganda",
-    label: "Twitter",
-  },
-  {
-    icon: Youtube,
-    color: "text-[#FF0000]",
-    url: "https://www.youtube.com/@kanlyteug",
-    label: "YouTube",
-  },
-  {
-    icon: Linkedin,
-    color: "text-[#0A66C2]",
-    url: "https://www.linkedin.com/company/kanlyte/",
-    label: "LinkedIn",
-  },
+// Social media icon map
+const ICON_MAP: Record<string, React.ElementType> = {
+  facebook: Facebook,
+  twitter: Twitter,
+  "twitter / x": Twitter,
+  youtube: Youtube,
+  linkedin: Linkedin,
+  instagram: Instagram,
+};
+
+const FALLBACK_SOCIAL = [
+  { id: "1", platform: "Facebook", url: "https://www.facebook.com/kanlyte/", color: "#1877F2" },
+  { id: "2", platform: "Twitter / X", url: "https://x.com/KanlyteUganda", color: "#1DA1F2" },
+  { id: "3", platform: "YouTube", url: "https://www.youtube.com/@kanlyteug", color: "#FF0000" },
+  { id: "4", platform: "LinkedIn", url: "https://www.linkedin.com/company/kanlyte/", color: "#0A66C2" },
 ];
 
 export function FAQContactSection() {
   const { data: dbFAQs } = useFAQs(true);
+  const { data: dbSocial } = useSocialLinks(true);
   const faqs = dbFAQs?.length ? dbFAQs : FALLBACK_FAQS;
+  const socialLinks = dbSocial?.length ? dbSocial : FALLBACK_SOCIAL;
   return (
     <section className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -100,22 +93,23 @@ export function FAQContactSection() {
                 </a>
               </div>
 
-              {/* Social Icons with individual links */}
+              {/* Social Icons */}
               <div className="flex gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Visit our ${social.label} page`}
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform hover:shadow-lg"
-                  >
-                    <social.icon
-                      className={`w-5 h-5 ${social.color} fill-current`}
-                    />
-                  </a>
-                ))}
+                {socialLinks.map((social: { id: string; platform: string; url: string; color: string }) => {
+                  const Icon = ICON_MAP[social.platform.toLowerCase()] ?? Mail;
+                  return (
+                    <a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Visit our ${social.platform} page`}
+                      className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform hover:shadow-lg"
+                    >
+                      <Icon className="w-5 h-5" style={{ color: social.color }} />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>

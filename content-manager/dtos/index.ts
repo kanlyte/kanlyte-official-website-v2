@@ -11,3 +11,4 @@ export * from "./testimonial.dto";
 export * from "./milestone.dto";
 export * from "./pricing-plan.dto";
 export * from "./odoo-app.dto";
+export * from "./social-link.dto";
