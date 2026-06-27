@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Phone,
-  Mail,
-  Facebook,
-  Twitter,
-  Youtube,
-  Linkedin,
-  Instagram,
-} from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -18,6 +10,7 @@ import {
 import Image from "next/image";
 import { useFAQs } from "@/content-manager/hooks/useFAQs";
 import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const FALLBACK_FAQS = [
   { question: "How Feasible is my Idea?", answer: "One of the most common app development questions is whether or not the app that is soon going to be designed, devised, and developed even feasible. Well, the only way to get an answer to this question is to test the idea in the field of real prospects. You will have to take your idea, create a working prototype and then make it open in the public to then see if it is something they would be interested in." },
@@ -26,21 +19,11 @@ const FALLBACK_FAQS = [
   { question: "How Would I protect my App Idea?", answer: "There are several legal ways to protect your intellectual property, including NDAs and patents." },
 ];
 
-// Social media icon map
-const ICON_MAP: Record<string, React.ElementType> = {
-  facebook: Facebook,
-  twitter: Twitter,
-  "twitter / x": Twitter,
-  youtube: Youtube,
-  linkedin: Linkedin,
-  instagram: Instagram,
-};
-
 const FALLBACK_SOCIAL = [
-  { id: "1", platform: "Facebook", url: "https://www.facebook.com/kanlyte/", color: "#1877F2" },
-  { id: "2", platform: "Twitter / X", url: "https://x.com/KanlyteUganda", color: "#1DA1F2" },
-  { id: "3", platform: "YouTube", url: "https://www.youtube.com/@kanlyteug", color: "#FF0000" },
-  { id: "4", platform: "LinkedIn", url: "https://www.linkedin.com/company/kanlyte/", color: "#0A66C2" },
+  { id: "1", platform: "Facebook", icon: "Facebook", url: "https://www.facebook.com/kanlyte/", color: "#1877F2" },
+  { id: "2", platform: "Twitter / X", icon: "X", url: "https://x.com/KanlyteUganda", color: "#000000" },
+  { id: "3", platform: "YouTube", icon: "Youtube", url: "https://www.youtube.com/@kanlyteug", color: "#FF0000" },
+  { id: "4", platform: "LinkedIn", icon: "Linkedin", url: "https://www.linkedin.com/company/kanlyte/", color: "#0A66C2" },
 ];
 
 export function FAQContactSection() {
@@ -95,9 +78,7 @@ export function FAQContactSection() {
 
               {/* Social Icons */}
               <div className="flex gap-4">
-                {socialLinks.map((social: { id: string; platform: string; url: string; color: string }) => {
-                  const Icon = ICON_MAP[social.platform.toLowerCase()] ?? Mail;
-                  return (
+                {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
                     <a
                       key={social.id}
                       href={social.url}
@@ -106,10 +87,9 @@ export function FAQContactSection() {
                       aria-label={`Visit our ${social.platform} page`}
                       className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform hover:shadow-lg"
                     >
-                      <Icon className="w-5 h-5" style={{ color: social.color }} />
+                      <DynamicIcon name={social.icon} className="w-5 h-5" style={{ color: social.color }} />
                     </a>
-                  );
-                })}
+                  ))}
               </div>
             </div>
           </div>

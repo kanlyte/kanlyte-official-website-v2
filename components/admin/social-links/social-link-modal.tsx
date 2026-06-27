@@ -18,14 +18,14 @@ import type { CreateSocialLinkInput } from "@/content-manager/dtos/social-link.d
 const RESOURCE = "social-links";
 
 const PLATFORMS = [
-  { label: "Facebook", color: "#1877F2" },
-  { label: "Twitter / X", color: "#1DA1F2" },
-  { label: "LinkedIn", color: "#0A66C2" },
-  { label: "YouTube", color: "#FF0000" },
-  { label: "Instagram", color: "#E1306C" },
-  { label: "TikTok", color: "#010101" },
-  { label: "GitHub", color: "#24292E" },
-  { label: "WhatsApp", color: "#25D366" },
+  { label: "Facebook", icon: "Facebook", color: "#1877F2" },
+  { label: "Twitter / X", icon: "X", color: "#000000" },
+  { label: "LinkedIn", icon: "Linkedin", color: "#0A66C2" },
+  { label: "YouTube", icon: "Youtube", color: "#FF0000" },
+  { label: "Instagram", icon: "Instagram", color: "#E1306C" },
+  { label: "TikTok", icon: "Music", color: "#010101" },
+  { label: "GitHub", icon: "Github", color: "#24292E" },
+  { label: "WhatsApp", icon: "MessageCircle", color: "#25D366" },
 ];
 
 export function SocialLinkModal() {
@@ -41,7 +41,7 @@ export function SocialLinkModal() {
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateSocialLinkInput>({
     resolver: zodResolver(CreateSocialLinkSchema),
-    defaultValues: { platform: "", url: "", color: "#000000", order: 0, isActive: true },
+    defaultValues: { platform: "", icon: "", url: "", color: "#000000", order: 0, isActive: true },
   });
 
   const isActive = watch("isActive");
@@ -51,13 +51,14 @@ export function SocialLinkModal() {
     if (isEdit && record) {
       reset({
         platform: record.platform as string,
+        icon: record.icon as string,
         url: record.url as string,
         color: record.color as string,
         order: record.order as number,
         isActive: record.isActive as boolean,
       });
     } else if (isCreate) {
-      reset({ platform: "", url: "", color: "#000000", order: 0, isActive: true });
+      reset({ platform: "", icon: "", url: "", color: "#000000", order: 0, isActive: true });
     }
   }, [isEdit, isCreate, record, reset]);
 
@@ -85,7 +86,7 @@ export function SocialLinkModal() {
                   <button
                     key={p.label}
                     type="button"
-                    onClick={() => { setValue("platform", p.label); setValue("color", p.color); }}
+                    onClick={() => { setValue("platform", p.label); setValue("icon", p.icon); setValue("color", p.color); }}
                     className="px-2.5 py-1 rounded text-xs font-medium text-white transition-opacity hover:opacity-80"
                     style={{ backgroundColor: p.color }}
                   >
