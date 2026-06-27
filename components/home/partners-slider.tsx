@@ -1,40 +1,25 @@
+"use client";
+
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+  Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
+  Carousel, CarouselContent, CarouselItem,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { usePartners } from "@/content-manager/hooks/usePartners";
 
-const PARTNERS = [
-  {
-    name: "Tuchi Online Shop",
-    logo: "/logos/tuchi-shop.png",
-    id: 1,
-  },
-  {
-    name: "Lira University - The Beacon",
-    logo: "/logos/lira-uni.png",
-    id: 2,
-  },
-  {
-    name: "You Screen Uganda",
-    logo: "/logos/youscreen.png",
-    id: 3,
-  },
-  {
-    name: "Thermosnoop Uganda",
-    logo: "/logos/thermosnoop.png",
-    id: 4,
-  },
+const FALLBACK_PARTNERS = [
+  { id: "1", name: "Tuchi Online Shop", logo: "/logos/tuchi-shop.png" },
+  { id: "2", name: "Lira University - The Beacon", logo: "/logos/lira-uni.png" },
+  { id: "3", name: "You Screen Uganda", logo: "/logos/youscreen.png" },
+  { id: "4", name: "Thermosnoop Uganda", logo: "/logos/thermosnoop.png" },
 ];
 
 export function PartnersSlider() {
+  const { data: dbPartners } = usePartners(true);
+  const partners = dbPartners?.length ? dbPartners : FALLBACK_PARTNERS;
+
   return (
     <section className="py-16 bg-white text-center">
       <div className="container px-4">
@@ -51,15 +36,9 @@ export function PartnersSlider() {
         </p>
 
         <TooltipProvider delayDuration={0}>
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-          >
+          <Carousel opts={{ align: "start", loop: true }} className="w-full">
             <CarouselContent className="-ml-4 md:-ml-8 items-center">
-              {[...PARTNERS, ...PARTNERS].map((partner, index) => (
+              {[...partners, ...partners].map((partner: { id: string; name: string; logo: string }, index: number) => (
                 <CarouselItem
                   key={`${partner.id}-${index}`}
                   className="pl-4 md:pl-8 basis-1/2 md:basis-1/3 lg:basis-1/4"
