@@ -1,21 +1,16 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 interface FeatureCardProps {
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   title: string;
   description?: string;
   step?: string;
   className?: string;
 }
 
-export function FeatureCard({
-  icon: Icon,
-  title,
-  description,
-  step,
-  className,
-}: FeatureCardProps) {
+export function FeatureCard({ icon, title, description, step, className }: FeatureCardProps) {
   return (
     <div
       className={cn(
@@ -32,14 +27,16 @@ export function FeatureCard({
           </span>
         )}
         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/5 text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
-          <Icon className="h-6 w-6" />
+          {typeof icon === "string" ? (
+            <DynamicIcon name={icon} className="h-6 w-6" />
+          ) : (
+            (() => { const Icon = icon; return <Icon className="h-6 w-6" />; })()
+          )}
         </div>
         <div>
           <h3 className="text-lg font-bold text-slate-900">{title}</h3>
           {description && (
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              {description}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
           )}
         </div>
       </div>
