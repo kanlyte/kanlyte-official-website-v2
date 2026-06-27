@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Phone,
   Mail,
@@ -13,32 +15,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
+import { useFAQs } from "@/content-manager/hooks/useFAQs";
 
-const faqs = [
-  {
-    id: "01",
-    question: "How Feasible is my Idea?",
-    answer:
-      "One of the most common app development questions is whether or not the app that is soon going to be designed, devised, and developed even feasible. Well, the only way to get an answer to this question is to test the idea in the field of real prospects. You will have to take your idea, create a working prototype and then make it open in the public to then see if it is something they would be interested in. Until you take your idea to the prospects or at least see how app similar as yours have performed in the market, there is no way to know if yours would succeed.",
-  },
-  {
-    id: "02",
-    question: "Who are my Target Customers?",
-    answer:
-      "Identifying your target audience is crucial for the success of your application.",
-  },
-  {
-    id: "03",
-    question: "What is the Mobile App category?",
-    answer:
-      "Choosing the right category helps in better visibility and user reach.",
-  },
-  {
-    id: "04",
-    question: "How Would I protect my App Idea?",
-    answer:
-      "There are several legal ways to protect your intellectual property, including NDAs and patents.",
-  },
+const FALLBACK_FAQS = [
+  { question: "How Feasible is my Idea?", answer: "One of the most common app development questions is whether or not the app that is soon going to be designed, devised, and developed even feasible. Well, the only way to get an answer to this question is to test the idea in the field of real prospects. You will have to take your idea, create a working prototype and then make it open in the public to then see if it is something they would be interested in." },
+  { question: "Who are my Target Customers?", answer: "Identifying your target audience is crucial for the success of your application." },
+  { question: "What is the Mobile App category?", answer: "Choosing the right category helps in better visibility and user reach." },
+  { question: "How Would I protect my App Idea?", answer: "There are several legal ways to protect your intellectual property, including NDAs and patents." },
 ];
 
 // Social media links configuration
@@ -70,6 +53,8 @@ const socialLinks = [
 ];
 
 export function FAQContactSection() {
+  const { data: dbFAQs } = useFAQs(true);
+  const faqs = dbFAQs?.length ? dbFAQs : FALLBACK_FAQS;
   return (
     <section className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -145,17 +130,17 @@ export function FAQContactSection() {
             type="single"
             collapsible
             className="space-y-4"
-            defaultValue="01"
+            defaultValue="item-0"
           >
-            {faqs.map((faq) => (
+            {faqs.map((faq: { question: string; answer: string }, index: number) => (
               <AccordionItem
-                key={faq.id}
-                value={faq.id}
+                key={index}
+                value={`item-${index}`}
                 className="border rounded-lg overflow-hidden data-[state=open]:border-primary"
               >
                 <AccordionTrigger className="px-6 py-4 hover:no-underline data-[state=open]:bg-primary data-[state=open]:text-primary-foreground [&[data-state=open]>div>svg]:rotate-180 transition-all">
                   <div className="flex items-center gap-4 text-left font-semibold text-lg">
-                    <span className="opacity-80">{faq.id}.</span>
+                    <span className="opacity-80">{String(index + 1).padStart(2, "0")}.</span>
                     <span>{faq.question}</span>
                   </div>
                 </AccordionTrigger>
