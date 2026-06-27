@@ -12,3 +12,4 @@ export * from "./useTestimonials";
 export * from "./useMilestones";
 export * from "./usePricingPlans";
 export * from "./useOdooApps";
+export * from "./useSocialLinks";

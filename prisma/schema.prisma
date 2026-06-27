@@ -206,3 +206,15 @@ model OdooApp {
 
   @@index([order])
 }
+
+// ─── Social Links ────────────────────────────────────────────────────────────
+model SocialLink {
+  id       String  @id @default(cuid())
+  platform String  // e.g. "Facebook", "Twitter"
+  url      String
+  color    String  // e.g. "#1877F2"
+  order    Int
+  isActive Boolean @default(true)
+
+  @@index([order])
+}

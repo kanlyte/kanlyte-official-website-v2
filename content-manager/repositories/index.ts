@@ -11,3 +11,4 @@ export * from "./testimonial.repository";
 export * from "./milestone.repository";
 export * from "./pricing-plan.repository";
 export * from "./odoo-app.repository";
+export * from "./social-link.repository";

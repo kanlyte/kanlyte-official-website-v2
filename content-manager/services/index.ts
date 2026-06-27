@@ -11,3 +11,4 @@ export * from "./testimonial.service";
 export * from "./milestone.service";
 export * from "./pricing-plan.service";
 export * from "./odoo-app.service";
+export * from "./social-link.service";
