@@ -3,6 +3,7 @@
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
+import { FAQModal } from "@/components/admin/faqs/faq-modal";
 import { useFAQs, useDeleteFAQ } from "@/content-manager/hooks/useFAQs";
 
 const RESOURCE = "faqs";
@@ -22,6 +23,7 @@ export default function FAQsPage() {
     <div className="flex flex-col gap-6">
       <ResourceHeader title="FAQs" description="Manage frequently asked questions shown on the website." resource={RESOURCE} />
       <ResourceTable resource={RESOURCE} data={data} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search FAQs..." />
+      <FAQModal />
       <DeleteModal resource={RESOURCE} onConfirm={deleteFAQ} isPending={isPending} />
     </div>
   );
