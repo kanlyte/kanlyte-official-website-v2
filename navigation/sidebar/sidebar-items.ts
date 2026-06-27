@@ -15,6 +15,7 @@ import {
   AppWindow,
   Mail,
   Share2,
+  Phone,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -82,6 +83,13 @@ export const sidebarItems: NavGroup[] = [
   },
   {
     id: 5,
+    label: "Settings",
+    items: [
+      { title: "Contact Info", url: "/admin/contact-info", icon: Phone },
+    ],
+  },
+  {
+    id: 6,
     label: "Inquiries",
     items: [
       { title: "Contact Submissions", url: "/admin/contact-submissions", icon: Mail },
