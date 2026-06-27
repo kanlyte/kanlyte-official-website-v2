@@ -156,13 +156,6 @@ export function Navbar() {
 
           {/* Right Section - Buttons */}
           <div className="hidden items-center gap-4 lg:flex">
-            <button
-              onClick={handleLoginClick}
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-4 py-2.5 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#6EBE45]/20"
-            >
-              Login
-            </button>
-
             <Button
               asChild
               className="rounded-full bg-gradient-to-r from-[#6EBE45] to-[#5EA83A] px-6 hover:opacity-90"
@@ -278,13 +271,6 @@ export function Navbar() {
 
               {/* Mobile CTA Buttons */}
               <div className="mt-8 space-y-3">
-                <button
-                  onClick={handleLoginClick}
-                  className="block w-full rounded-lg border border-slate-300 py-3 text-center font-medium text-slate-900 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#6EBE45]/20 mb-3"
-                >
-                  Login
-                </button>
-
                 <Button
                   asChild
                   className="w-full rounded-full bg-gradient-to-r from-[#6EBE45] to-[#5EA83A] py-3"
