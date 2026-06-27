@@ -59,11 +59,11 @@ export function StatsSection() {
               <div className="flex flex-wrap gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
                 {brands.map((brand: { id: string; name: string; logo: string }) => (
                   brand.logo ? (
-                    <div key={brand.id} className="border border-gray-200 rounded-lg p-2 hover:border-gray-300 transition-colors">
+                    <div key={brand.id} title={brand.name} className="border border-gray-200 rounded-lg p-2 hover:border-gray-300 transition-colors">
                       <img src={brand.logo} alt={brand.name} className="h-8 w-auto object-contain" />
                     </div>
                   ) : (
-                    <div key={brand.id} className="border border-gray-200 rounded-lg px-4 py-2 text-xs font-bold text-gray-400 hover:text-gray-600 hover:border-gray-300 transition-colors">
+                    <div key={brand.id} title={brand.name} className="border border-gray-200 rounded-lg px-4 py-2 text-xs font-bold text-gray-400 hover:text-white hover:bg-primary hover:border-primary transition-colors cursor-default">
                       {brand.name}
                     </div>
                   )
