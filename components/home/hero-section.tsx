@@ -109,7 +109,7 @@ export default function HeroSlider() {
     if (!isAutoPlaying || !isLoaded || total <= 1) return;
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, isLoaded, nextSlide, total]);
+  }, [isAutoPlaying, isLoaded, nextSlide]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -333,14 +333,7 @@ export default function HeroSlider() {
         </div>
       )}
 
-      {/* Mobile swipe hint — hidden when only 1 slide */}
-      {total > 1 && (
-        <div className="md:hidden absolute bottom-20 left-1/2 -translate-x-1/2 z-10">
-          <div className="text-white/70 text-xs bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full">
-            👆 Swipe to navigate
-          </div>
-        </div>
-      )}
+
     </section>
   );
 }
