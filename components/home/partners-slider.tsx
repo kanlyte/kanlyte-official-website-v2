@@ -54,7 +54,7 @@ export function PartnersSlider() {
                         />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-[#666] text-white border-none text-xs rounded-none py-1 px-3">
+                    <TooltipContent className="bg-primary text-white border-none text-xs rounded-none py-1 px-3">
                       <p>{partner.name}</p>
                     </TooltipContent>
                   </Tooltip>
