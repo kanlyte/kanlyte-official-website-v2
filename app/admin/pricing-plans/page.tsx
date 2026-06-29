@@ -1,13 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { PricingPlanModal } from "@/components/admin/pricing-plans/pricing-plan-modal";
 import { usePricingPlans, useDeletePricingPlan } from "@/content-manager/hooks/usePricingPlans";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RESOURCE = "pricing-plans";
+
+const CATEGORIES = [
+  { value: "web-hosting", label: "Web Hosting" },
+  { value: "email-hosting", label: "Email Hosting" },
+  { value: "odoo", label: "Odoo ERP" },
+  { value: "school-sync", label: "School Sync" },
+  { value: "lyte", label: "Lyte App" },
+  { value: "ict-training", label: "ICT Training" },
+  { value: "web-cloud", label: "Web & Cloud Services" },
+  { value: "software-development", label: "Software Development" },
+  { value: "app-development", label: "App Development" },
+  { value: "research-innovation", label: "Research & Innovation" },
+];
 
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
@@ -23,11 +38,32 @@ const COLUMNS: ResourceColumn[] = [
 export default function PricingPlansPage() {
   const { data = [], isLoading } = usePricingPlans();
   const { mutate: deletePlan, isPending } = useDeletePricingPlan();
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  const filtered = categoryFilter === "all" ? data : data.filter((r: { category: string }) => r.category === categoryFilter);
 
   return (
     <div className="flex flex-col gap-6">
       <ResourceHeader title="Pricing Plans" description="Manage all pricing plans across service and product categories." resource={RESOURCE} />
-      <ResourceTable resource={RESOURCE} data={data} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search plans..." />
+
+      <div className="flex items-center gap-3">
+        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <SelectTrigger className="w-[220px] bg-slate-50 border-slate-200 h-8 text-sm">
+            <SelectValue placeholder="Filter by category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            {CATEGORIES.map((c) => (
+              <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {categoryFilter !== "all" && (
+          <span className="text-xs text-muted-foreground">{filtered.length} record{filtered.length !== 1 ? "s" : ""}</span>
+        )}
+      </div>
+
+      <ResourceTable resource={RESOURCE} data={filtered} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search plans..." />
       <PricingPlanModal />
       <DeleteModal resource={RESOURCE} onConfirm={deletePlan} isPending={isPending} />
     </div>
