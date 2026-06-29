@@ -108,11 +108,11 @@ export function PricingPlanModal() {
   function onSubmit(data: CreatePricingPlanInput) {
     const payload = {
       ...data,
-      priceUSD: data.priceUSD || undefined,
-      priceUGXMonthly: data.priceUGXMonthly || undefined,
-      priceUSDMonthly: data.priceUSDMonthly || undefined,
-      period: data.period || undefined,
-      tagline: data.tagline || undefined,
+      priceUSD: data.priceUSD || null,
+      priceUGXMonthly: data.priceUGXMonthly || null,
+      priceUSDMonthly: data.priceUSDMonthly || null,
+      period: data.period || null,
+      tagline: data.tagline || null,
       features: features.filter(Boolean).map((text, i) => ({ text, order: i })),
     };
     if (isEdit) {
