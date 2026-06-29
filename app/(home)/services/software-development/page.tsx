@@ -61,12 +61,12 @@ export default function SoftwareDevelopmentPage() {
         ctaHref="/contact-us"
       />
       <SoftwareDevelopmentPricing />
-      <ServiceWhyUs
+      {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Have a Project in Mind?"
         ctaDescription="Tell us what you need and we'll build it. Let's create something great together."
         ctaLabel="Start Your Project"
-      />
+      /> */}
     </>
   );
 }

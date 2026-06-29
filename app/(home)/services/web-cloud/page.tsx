@@ -61,12 +61,12 @@ export default function WebCloudPage() {
         ctaHref="/contact-us"
       />
       <WebCloudPricing />
-      <ServiceWhyUs
+      {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Build Your Online Presence?"
         ctaDescription="Get a professional website, reliable hosting, and business email — all from one trusted provider."
         ctaLabel="Get in Touch"
-      />
+      /> */}
     </>
   );
 }

@@ -4,26 +4,34 @@ import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const PRICING_DATA = {
-  monthly: { core: "30,000", advanced: "80,000", premium: "200,000", period: "/ month" },
-  yearly: { core: "300,000", advanced: "800,000", premium: "2,000,000", period: "/ year" },
+const PRICES = {
+  monthly: {
+    UGX: { basic: "30,000 UGX", business: "80,000 UGX", enterprise: "200,000 UGX" },
+    USD: { basic: "$8", business: "$22", enterprise: "$54" },
+  },
+  yearly: {
+    UGX: { basic: "300,000 UGX", business: "800,000 UGX", enterprise: "2,000,000 UGX" },
+    USD: { basic: "$81", business: "$216", enterprise: "$540" },
+  },
 };
 
 const features = {
-  core: ["5 email accounts", "5 GB storage per account", "Webmail access", "Spam & virus protection", "SSL security", "Email support"],
-  advanced: ["25 email accounts", "25 GB storage per account", "Mobile sync (iOS/Android)", "Shared calendar & contacts", "Daily backups", "Priority support"],
-  premium: ["Unlimited email accounts", "100 GB storage per account", "Advanced admin controls", "Compliance & archiving", "Dedicated IP", "24/7 support"],
+  basic: ["5 email accounts", "5 GB storage per account", "Webmail access", "Spam & virus protection", "SSL security", "Email support"],
+  business: ["25 email accounts", "25 GB storage per account", "Mobile sync (iOS/Android)", "Shared calendar & contacts", "Daily backups", "Priority support"],
+  enterprise: ["Unlimited email accounts", "100 GB storage per account", "Advanced admin controls", "Compliance & archiving", "Dedicated IP", "24/7 support"],
 };
 
 const primaryColor = "#6EBE45";
 
 export function EmailHostingPricing() {
   const [billing, setBilling] = useState("yearly");
-  const current = PRICING_DATA[billing as keyof typeof PRICING_DATA];
+  const [currency, setCurrency] = useState("UGX");
+
+  const prices = PRICES[billing as "monthly" | "yearly"][currency as "UGX" | "USD"];
 
   return (
     <section className="py-20 bg-white">
@@ -34,14 +42,24 @@ export function EmailHostingPricing() {
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">Professional email with your own domain. Secure, reliable, and affordable.</p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 flex-wrap">
           <Select value={billing} onValueChange={setBilling}>
-            <SelectTrigger className="w-[220px] bg-slate-50 border-slate-200">
+            <SelectTrigger className="w-[200px] bg-slate-50 border-slate-200">
               <SelectValue placeholder="Billing Period" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="monthly">Monthly</SelectItem>
               <SelectItem value="yearly">Yearly (Save 17%)</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={currency} onValueChange={setCurrency}>
+            <SelectTrigger className="w-[120px] bg-slate-50 border-slate-200">
+              <SelectValue placeholder="Currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UGX">UGX</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -54,9 +72,9 @@ export function EmailHostingPricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">{current.core} UGX</span>
+                <span className="text-4xl font-bold text-slate-900">{prices.basic}</span>
               </div>
-              <CardDescription className="mt-2 text-slate-500">For solo professionals {current.period}.</CardDescription>
+              <CardDescription className="mt-2 text-slate-500">For solo professionals.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
@@ -65,7 +83,7 @@ export function EmailHostingPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.core.map((f, i) => (
+                  {features.basic.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -88,9 +106,9 @@ export function EmailHostingPricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">{current.advanced} UGX</span>
+                <span className="text-4xl font-bold text-slate-900">{prices.business}</span>
               </div>
-              <CardDescription className="mt-2 text-slate-500">For teams & small businesses {current.period}.</CardDescription>
+              <CardDescription className="mt-2 text-slate-500">For teams & small businesses.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
@@ -99,7 +117,7 @@ export function EmailHostingPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.advanced.map((f, i) => (
+                  {features.business.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -117,9 +135,9 @@ export function EmailHostingPricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">{current.premium} UGX</span>
+                <span className="text-4xl font-bold text-slate-900">{prices.enterprise}</span>
               </div>
-              <CardDescription className="mt-2 text-slate-500">For large organisations {current.period}.</CardDescription>
+              <CardDescription className="mt-2 text-slate-500">For large organisations.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
@@ -128,7 +146,7 @@ export function EmailHostingPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.premium.map((f, i) => (
+                  {features.enterprise.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}

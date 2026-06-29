@@ -30,13 +30,13 @@ export default function LytePage() {
       <LyteHero />
       <LyteFeatures />
       <LytePricing />
-      <ServiceWhyUs
+      {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Find Your Next Home?"
         ctaDescription="Join the Lyte community and discover affordable, verified accommodation across Uganda."
         ctaLabel="Get Early Access"
         ctaHref="/contact-us"
-      />
+      /> */}
     </>
   );
 }

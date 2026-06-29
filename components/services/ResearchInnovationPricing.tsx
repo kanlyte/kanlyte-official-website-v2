@@ -1,20 +1,30 @@
 "use client";
 
+import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const primaryColor = "#6EBE45";
-
-const features = {
-  core: ["Market & tech research", "Requirements analysis", "Risk assessment", "Executive report", "Presentation to stakeholders"],
-  advanced: ["AI/ML or IoT prototype", "Data pipeline setup", "Sprint-based delivery", "Workshop sessions", "Full documentation", "3 months support"],
-  premium: ["Full tech audit", "Strategy roadmap", "Process automation", "Change management", "Staff enablement", "Ongoing partnership"],
+const PRICES = {
+  UGX: { feasibility: "From 3,000,000 UGX", sprint: "From 8,000,000 UGX" },
+  USD: { feasibility: "From $810", sprint: "From $2,160" },
 };
 
+const features = {
+  feasibility: ["Market & tech research", "Requirements analysis", "Risk assessment", "Executive report", "Presentation to stakeholders"],
+  sprint: ["AI/ML or IoT prototype", "Data pipeline setup", "Sprint-based delivery", "Workshop sessions", "Full documentation", "3 months support"],
+  transformation: ["Full tech audit", "Strategy roadmap", "Process automation", "Change management", "Staff enablement", "Ongoing partnership"],
+};
+
+const primaryColor = "#6EBE45";
+
 export function ResearchInnovationPricing() {
+  const [currency, setCurrency] = useState("UGX");
+  const prices = PRICES[currency as "UGX" | "USD"];
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -22,6 +32,18 @@ export function ResearchInnovationPricing() {
           <span className="inline-block px-6 py-2 bg-[#6EBE45]/10 text-[#6EBE45] font-semibold rounded-full mb-4">Transparent Pricing</span>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Research & Innovation Packages</h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">From proof-of-concept to full digital transformation — we price by outcome, not hours.</p>
+        </div>
+
+        <div className="flex justify-center gap-4 mb-12">
+          <Select value={currency} onValueChange={setCurrency}>
+            <SelectTrigger className="w-[120px] bg-slate-50 border-slate-200">
+              <SelectValue placeholder="Currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UGX">UGX</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-7xl mx-auto">
@@ -32,7 +54,7 @@ export function ResearchInnovationPricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">From 3M UGX</span>
+                <span className="text-3xl font-bold text-slate-900">{prices.feasibility}</span>
               </div>
               <CardDescription className="mt-2 text-slate-500">Assess viability before you build — per engagement.</CardDescription>
             </CardHeader>
@@ -43,7 +65,7 @@ export function ResearchInnovationPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.core.map((f, i) => (
+                  {features.feasibility.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -66,7 +88,7 @@ export function ResearchInnovationPricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">From 8M UGX</span>
+                <span className="text-3xl font-bold text-slate-900">{prices.sprint}</span>
               </div>
               <CardDescription className="mt-2 text-slate-500">Rapid prototyping & proof of concept — per project.</CardDescription>
             </CardHeader>
@@ -77,7 +99,7 @@ export function ResearchInnovationPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.advanced.map((f, i) => (
+                  {features.sprint.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -106,7 +128,7 @@ export function ResearchInnovationPricing() {
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.premium.map((f, i) => (
+                  {features.transformation.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}

@@ -61,12 +61,12 @@ export default function ICTTrainingPage() {
         ctaHref="/contact-us"
       />
       <ICTTrainingPricing />
-      <ServiceWhyUs
+      {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Upskill Your Team?"
         ctaDescription="Enquire about upcoming training programmes or request a custom corporate package."
         ctaLabel="Get in Touch"
-      />
+      /> */}
     </>
   );
 }
