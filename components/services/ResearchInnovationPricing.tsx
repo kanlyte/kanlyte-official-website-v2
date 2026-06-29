@@ -30,7 +30,7 @@ export function ResearchInnovationPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="research-innovation" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a long-term innovation partner? Let's co-create a tailored research and development engagement." enterpriseFeatures={["Long-term R&D partnership", "AI, IoT & data strategy", "Dedicated innovation team", "Integration with existing systems"]} />
+        <PricingCards category="research-innovation" billing="yearly" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a long-term innovation partner? Let's co-create a tailored research and development engagement." enterpriseFeatures={["Long-term R&D partnership", "AI, IoT & data strategy", "Dedicated innovation team", "Integration with existing systems"]} />
       </div>
     </section>
   );

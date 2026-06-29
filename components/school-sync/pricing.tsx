@@ -38,7 +38,7 @@ export function SchoolSyncPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="school-sync" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored School Sync deployment for your institution network? Let's build it together." enterpriseFeatures={["Multi-institution management", "Custom integrations & API", "Dedicated support and maintenance", "White-label branding options"]} />
+        <PricingCards category="school-sync" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored School Sync deployment for your institution network? Let's build it together." enterpriseFeatures={["Multi-institution management", "Custom integrations & API", "Dedicated support and maintenance", "White-label branding options"]} />
       </div>
     </section>
   );

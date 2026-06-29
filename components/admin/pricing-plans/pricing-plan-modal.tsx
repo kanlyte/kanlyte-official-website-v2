@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useModalStore } from "@/store/modal.store";
 import { useCreatePricingPlan, useUpdatePricingPlan } from "@/content-manager/hooks/usePricingPlans";
 import { CreatePricingPlanSchema } from "@/content-manager/dtos/pricing-plan.dto";
@@ -17,10 +18,17 @@ import { Trash2, Plus } from "lucide-react";
 
 const RESOURCE = "pricing-plans";
 
-const CATEGORY_SUGGESTIONS = [
-  "web-hosting", "email-hosting", "odoo", "school-sync", "lyte",
-  "ict-training", "web-cloud", "software-development", "app-development",
-  "research-innovation",
+const CATEGORIES = [
+  { value: "web-hosting", label: "Web Hosting" },
+  { value: "email-hosting", label: "Email Hosting" },
+  { value: "odoo", label: "Odoo ERP" },
+  { value: "school-sync", label: "School Sync" },
+  { value: "lyte", label: "Lyte App" },
+  { value: "ict-training", label: "ICT Training" },
+  { value: "web-cloud", label: "Web & Cloud Services" },
+  { value: "software-development", label: "Software Development" },
+  { value: "app-development", label: "App Development" },
+  { value: "research-innovation", label: "Research & Innovation" },
 ];
 
 export function PricingPlanModal() {
@@ -48,6 +56,7 @@ export function PricingPlanModal() {
 
   const isPopular = watch("isPopular");
   const isActive = watch("isActive");
+  const category = watch("category");
 
   useEffect(() => {
     if (isEdit && record) {
@@ -61,6 +70,8 @@ export function PricingPlanModal() {
         description: record.description as string,
         priceUGX: record.priceUGX as string,
         priceUSD: (record.priceUSD as string) ?? "",
+        priceUGXMonthly: (record.priceUGXMonthly as string) ?? "",
+        priceUSDMonthly: (record.priceUSDMonthly as string) ?? "",
         period: (record.period as string) ?? "",
         tagline: (record.tagline as string) ?? "",
         isPopular: record.isPopular as boolean,
@@ -95,7 +106,15 @@ export function PricingPlanModal() {
   }
 
   function onSubmit(data: CreatePricingPlanInput) {
-    const payload = { ...data, features: features.filter(Boolean).map((text, i) => ({ text, order: i })) };
+    const payload = {
+      ...data,
+      priceUSD: data.priceUSD || undefined,
+      priceUGXMonthly: data.priceUGXMonthly || undefined,
+      priceUSDMonthly: data.priceUSDMonthly || undefined,
+      period: data.period || undefined,
+      tagline: data.tagline || undefined,
+      features: features.filter(Boolean).map((text, i) => ({ text, order: i })),
+    };
     if (isEdit) {
       update({ id: record?.id as string, data: payload }, { onSuccess: close });
     } else {
@@ -116,10 +135,17 @@ export function PricingPlanModal() {
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-1">
                 <Label className="text-xs">Category</Label>
-                <Input list="category-suggestions" placeholder="e.g. odoo" className="h-8 text-sm" {...register("category")} />
-                <datalist id="category-suggestions">
-                  {CATEGORY_SUGGESTIONS.map((c) => <option key={c} value={c} />)}
-                </datalist>
+                <Select
+                  value={category}
+                  onValueChange={(v) => setValue("category", v, { shouldValidate: true })}
+                >
+                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select category..." /></SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIES.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {errors.category && <p className="text-destructive text-xs">{errors.category.message}</p>}
               </div>
               <div className="space-y-1">
@@ -153,13 +179,25 @@ export function PricingPlanModal() {
             {/* Prices */}
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-1">
-                <Label className="text-xs">Price UGX</Label>
+                <Label className="text-xs">Price UGX (Yearly)</Label>
                 <Input placeholder="e.g. 800,000 UGX" className="h-8 text-sm" {...register("priceUGX")} />
                 {errors.priceUGX && <p className="text-destructive text-xs">{errors.priceUGX.message}</p>}
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Price USD</Label>
+                <Label className="text-xs">Price USD (Yearly)</Label>
                 <Input placeholder="e.g. $225" className="h-8 text-sm" {...register("priceUSD")} />
+              </div>
+            </div>
+
+            {/* Monthly Prices */}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              <div className="space-y-1">
+                <Label className="text-xs">Price UGX (Monthly)</Label>
+                <Input placeholder="e.g. 80,000 UGX" className="h-8 text-sm" {...register("priceUGXMonthly")} />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">Price USD (Monthly)</Label>
+                <Input placeholder="e.g. $23" className="h-8 text-sm" {...register("priceUSDMonthly")} />
               </div>
             </div>
 

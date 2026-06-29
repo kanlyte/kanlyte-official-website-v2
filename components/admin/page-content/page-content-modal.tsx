@@ -17,6 +17,18 @@ import type { CreatePageContentInput } from "@/content-manager/dtos/page-content
 
 const RESOURCE = "page-content";
 
+const PAGE_SLUGS = [
+  { value: "odoo", label: "Odoo ERP", type: "product" },
+  { value: "school-sync", label: "School Sync", type: "product" },
+  { value: "lyte", label: "Lyte App", type: "product" },
+  { value: "web-cloud", label: "Web & Cloud Services", type: "service" },
+  { value: "ict-training", label: "ICT Training & Consultancy", type: "service" },
+  { value: "software-development", label: "Software Development", type: "service" },
+  { value: "research-innovation", label: "Research & Innovation", type: "service" },
+  { value: "email-hosting", label: "Email Hosting", type: "service" },
+  { value: "app-development", label: "App Development", type: "service" },
+];
+
 export function PageContentModal() {
   const { type, resource, record, close } = useModalStore();
   const isCreate = type === "create" && resource === RESOURCE;
@@ -38,6 +50,7 @@ export function PageContentModal() {
 
   const isActive = watch("isActive");
   const pageType = watch("pageType");
+  const slug = watch("slug");
 
   useEffect(() => {
     if (isEdit && record) {
@@ -78,7 +91,24 @@ export function PageContentModal() {
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-1">
                 <Label className="text-xs">Slug</Label>
-                <Input placeholder="e.g. web-cloud" className="h-8 text-sm" {...register("slug")} />
+                <Select
+                  value={slug}
+                  onValueChange={(v) => {
+                    setValue("slug", v, { shouldValidate: true });
+                    const found = PAGE_SLUGS.find((p) => p.value === v);
+                    if (found) setValue("pageType", found.type as "product" | "service");
+                  }}
+                >
+                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select page..." /></SelectTrigger>
+                  <SelectContent>
+                    {PAGE_SLUGS.map((p) => (
+                      <SelectItem key={p.value} value={p.value}>
+                        <span>{p.label}</span>
+                        <span className="ml-2 text-xs text-muted-foreground capitalize">({p.type})</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
               <div className="space-y-1">

@@ -38,7 +38,7 @@ export function LytePricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="lyte" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a branded property portal for a large agency or developer? Let's build it together." enterpriseFeatures={["Branded property portal", "Custom integrations", "Bulk listing management", "Dedicated account manager"]} />
+        <PricingCards category="lyte" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a branded property portal for a large agency or developer? Let's build it together." enterpriseFeatures={["Branded property portal", "Custom integrations", "Bulk listing management", "Dedicated account manager"]} />
       </div>
     </section>
   );

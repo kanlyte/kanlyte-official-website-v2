@@ -38,7 +38,7 @@ export function EmailHostingPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="email-hosting" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored email solution for your business? Let's create a custom plan together." enterpriseFeatures={["Custom domain & branding", "Scalable mailbox management", "Dedicated support and maintenance", "Integration with existing systems"]} />
+        <PricingCards category="email-hosting" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored email solution for your business? Let's create a custom plan together." enterpriseFeatures={["Custom domain & branding", "Scalable mailbox management", "Dedicated support and maintenance", "Integration with existing systems"]} />
       </div>
     </section>
   );
