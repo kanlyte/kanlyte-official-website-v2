@@ -30,34 +30,42 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
+      { url: "/logos/logo-transparent.png", type: "image/png" },
+      { url: "/logos/logo-transparent.png", sizes: "32x32", type: "image/png" },
+      { url: "/logos/logo-transparent.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: "/apple-icon.png",
+    apple: "/logos/logo-transparent.png",
+    shortcut: "/logos/logo-transparent.png",
   },
   openGraph: {
     title: "Kanlyte Uganda Limited - Tech Solutions",
     description:
       "Leading tech services provider offering web hosting, app development, systems development, and innovative business solutions.",
     url: "https://kanlyte.ug",
+    siteName: "Kanlyte Uganda Limited",
+    images: [
+      {
+        url: "/logos/logo-transparent.png",
+        width: 512,
+        height: 512,
+        alt: "Kanlyte Uganda Limited",
+      },
+    ],
     type: "website",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
+  twitter: {
+    card: "summary",
+    title: "Kanlyte Uganda Limited",
+    description: "Leading tech services provider in Uganda.",
+    images: ["/logos/logo-transparent.png"],
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({

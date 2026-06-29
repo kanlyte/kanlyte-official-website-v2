@@ -9,30 +9,23 @@ import { toast } from "sonner";
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+
+  const products = [
+    { title: "Odoo ERP", href: "/products/odoo", desc: "All-in-one business management" },
+    { title: "School Sync", href: "/products/school-sync", desc: "School management system" },
+    { title: "Lyte App", href: "/products/lyte", desc: "Hostel & house booking" },
+  ];
 
   const services = [
-    {
-      title: "Software Development",
-      href: "/software-development",
-    },
-    {
-      title: "Email Hosting",
-      href: "/email-hosting",
-    },
-    {
-      title: "App Development",
-      href: "/app-development",
-    },
-    {
-      title: "School Systems",
-      href: "/school-systems",
-    },
-    {
-      title: "Website Development",
-      href: "/website-development",
-    },
+    { title: "Research & Innovation", href: "/services/research-innovation", desc: "AI, IoT & digital transformation" },
+    { title: "Web & Cloud Services", href: "/services/web-cloud", desc: "Hosting, websites & email" },
+    { title: "Software Development", href: "/services/software-development", desc: "Custom software & mobile apps" },
+    { title: "ICT Training & Consultancy", href: "/services/ict-training", desc: "Training & technology advisory" },
   ];
 
   const handleLoginClick = () => {
@@ -43,17 +36,15 @@ export function Navbar() {
     });
   };
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        servicesRef.current &&
-        !servicesRef.current.contains(event.target as Node)
-      ) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
         setIsServicesOpen(false);
       }
+      if (productsRef.current && !productsRef.current.contains(event.target as Node)) {
+        setIsProductsOpen(false);
+      }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -88,70 +79,53 @@ export function Navbar() {
 
           {/* Desktop Navigation - Center */}
           <div className="hidden items-center gap-8 lg:flex">
-            {/* <Link
-              href="/projects"
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
-            >
-              Our Projects
-            </Link> */}
 
-            {/* Services Dropdown */}
-            <div className="relative" ref={servicesRef}>
+            {/* Products Dropdown */}
+            <div className="relative" ref={productsRef}>
               <button
-                onClick={() => setIsServicesOpen(!isServicesOpen)}
+                onClick={() => { setIsProductsOpen(!isProductsOpen); setIsServicesOpen(false); }}
                 className="flex items-center gap-1 text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
               >
-                Our Services
-                <ChevronDown
-                  className={`h-4 w-4 transition-transform duration-200 ${
-                    isServicesOpen ? "rotate-180" : ""
-                  }`}
-                />
+                Products
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProductsOpen ? "rotate-180" : ""}`} />
               </button>
-
-              {isServicesOpen && (
-                <div className="absolute left-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
-                  <div className="space-y-1">
-                    {services.map((service) => (
-                      <Link
-                        key={service.title}
-                        href={service.href}
-                        className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-slate-50 group transition-colors"
-                        onClick={() => setIsServicesOpen(false)}
-                      >
-                        <div>
-                          <div className="font-medium text-slate-900 group-hover:text-[#6EBE45]">
-                            {service.title}
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+              {isProductsOpen && (
+                <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                  {products.map((p) => (
+                    <Link key={p.title} href={p.href}
+                      className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
+                      onClick={() => setIsProductsOpen(false)}>
+                      <span className="font-medium text-slate-900 hover:text-[#6EBE45] text-sm">{p.title}</span>
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
 
-            <Link
-              href="/pricing"
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
-            >
-              Pricing
-            </Link>
+            {/* Services Dropdown */}
+            <div className="relative" ref={servicesRef}>
+              <button
+                onClick={() => { setIsServicesOpen(!isServicesOpen); setIsProductsOpen(false); }}
+                className="flex items-center gap-1 text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
+              >
+                Services
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`} />
+              </button>
+              {isServicesOpen && (
+                <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                  {services.map((s) => (
+                    <Link key={s.title} href={s.href}
+                      className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
+                      onClick={() => setIsServicesOpen(false)}>
+                      <span className="font-medium text-slate-900 hover:text-[#6EBE45] text-sm">{s.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
-            {/* Odoo ERP - Now just a simple link */}
-            <Link
-              href="/odoo"
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
-            >
-              Odoo ERP
-            </Link>
-
-            <Link
-              href="/about-us"
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
-            >
-              About Us
-            </Link>
+            <Link href="/pricing" className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50">Pricing</Link>
+            <Link href="/about-us" className="text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50">About Us</Link>
           </div>
 
           {/* Right Section - Buttons */}
@@ -199,72 +173,59 @@ export function Navbar() {
 
               {/* Navigation Links */}
               <div className="space-y-1">
-                {/* <Link
-                  href="/projects"
-                  className="flex items-center justify-between rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <span>Our Projects</span>
-                </Link> */}
-
-                {/* Services Mobile Dropdown */}
+                {/* Products Mobile */}
                 <div className="space-y-1">
                   <button
-                    onClick={() =>
-                      setIsMobileServicesOpen(!isMobileServicesOpen)
-                    }
+                    onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
                     className="flex w-full items-center justify-between rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors"
                   >
-                    <span>Our Services</span>
-                    <ChevronDown
-                      className={`h-5 w-5 transition-transform duration-200 ${
-                        isMobileServicesOpen ? "rotate-180" : ""
-                      }`}
-                    />
+                    <span>Products</span>
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isMobileProductsOpen ? "rotate-180" : ""}`} />
                   </button>
-
-                  {isMobileServicesOpen && (
+                  {isMobileProductsOpen && (
                     <div className="ml-4 space-y-1 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 p-3 animate-in fade-in">
-                      {services.map((service) => (
-                        <Link
-                          key={service.title}
-                          href={service.href}
-                          className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          <div>
-                            <div className="font-medium text-slate-900">
-                              {service.title}
-                            </div>
-                          </div>
+                      {products.map((p) => (
+                        <Link key={p.title} href={p.href}
+                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}>
+                          <span className="font-medium text-slate-900 text-sm">{p.title}</span>
                         </Link>
                       ))}
                     </div>
                   )}
                 </div>
 
-                <Link
-                  href="/pricing"
+                {/* Services Mobile */}
+                <div className="space-y-1">
+                  <button
+                    onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                    className="flex w-full items-center justify-between rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors"
+                  >
+                    <span>Services</span>
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {isMobileServicesOpen && (
+                    <div className="ml-4 space-y-1 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 p-3 animate-in fade-in">
+                      {services.map((s) => (
+                        <Link key={s.title} href={s.href}
+                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}>
+                          <span className="font-medium text-slate-900 text-sm">{s.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Link href="/pricing"
                   className="flex items-center justify-between rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                  onClick={() => setIsMobileMenuOpen(false)}>
                   <span>Pricing</span>
                 </Link>
 
-                {/* Odoo ERP - Simple link in mobile */}
-                <Link
-                  href="/odoo"
+                <Link href="/about-us"
                   className="rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors block"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Odoo ERP
-                </Link>
-
-                <Link
-                  href="/about-us"
-                  className="rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors block"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                  onClick={() => setIsMobileMenuOpen(false)}>
                   About Us
                 </Link>
               </div>
