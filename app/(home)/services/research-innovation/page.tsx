@@ -59,12 +59,12 @@ export default function ResearchInnovationPage() {
         ctaHref="/contact-us"
       />
       <ResearchInnovationPricing />
-      <ServiceWhyUs
+      {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Have a Research Challenge?"
         ctaDescription="Let's explore how technology and innovation can solve it. Talk to our team today."
         ctaLabel="Start a Conversation"
-      />
+      /> */}
     </>
   );
 }

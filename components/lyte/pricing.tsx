@@ -4,35 +4,33 @@ import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const PRICING_DATA = {
+const PRICES = {
   monthly: {
-    label: "Monthly",
-    core: "50,000",
-    advanced: "120,000",
-    period: "/ month",
+    UGX: { basic: "50,000 UGX", pro: "120,000 UGX" },
+    USD: { basic: "$14", pro: "$32" },
   },
   yearly: {
-    label: "Yearly (Save 17%)",
-    core: "500,000",
-    advanced: "1,200,000",
-    period: "/ year",
+    UGX: { basic: "500,000 UGX", pro: "1,200,000 UGX" },
+    USD: { basic: "$135", pro: "$324" },
   },
 };
 
 const features = {
-  core: ["Up to 5 listings", "Photo galleries", "Booking management", "Tenant messaging", "Basic analytics"],
-  advanced: ["Unlimited listings", "Priority placement", "Advanced analytics", "Verified badge", "Dedicated support"],
+  basic: ["Up to 5 listings", "Photo galleries", "Booking management", "Tenant messaging", "Basic analytics"],
+  pro: ["Unlimited listings", "Priority placement", "Advanced analytics", "Verified badge", "Dedicated support"],
 };
 
 const primaryColor = "#6EBE45";
 
 export function LytePricing() {
   const [billing, setBilling] = useState("yearly");
-  const current = PRICING_DATA[billing as keyof typeof PRICING_DATA];
+  const [currency, setCurrency] = useState("UGX");
+
+  const prices = PRICES[billing as "monthly" | "yearly"][currency as "UGX" | "USD"];
 
   return (
     <section className="py-20 bg-white">
@@ -43,14 +41,24 @@ export function LytePricing() {
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">Tenants browse free. Landlords choose a plan that fits.</p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 flex-wrap">
           <Select value={billing} onValueChange={setBilling}>
-            <SelectTrigger className="w-[220px] bg-slate-50 border-slate-200">
+            <SelectTrigger className="w-[200px] bg-slate-50 border-slate-200">
               <SelectValue placeholder="Billing Period" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="monthly">Monthly</SelectItem>
               <SelectItem value="yearly">Yearly (Save 17%)</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={currency} onValueChange={setCurrency}>
+            <SelectTrigger className="w-[120px] bg-slate-50 border-slate-200">
+              <SelectValue placeholder="Currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UGX">UGX</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -64,15 +72,13 @@ export function LytePricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">0 UGX</span>
+                <span className="text-4xl font-bold text-slate-900">Free</span>
               </div>
               <CardDescription className="mt-2 text-slate-500">Find your space at no cost — forever.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>
-                  Download App
-                </Button>
+                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Download App</Button>
               </Link>
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
@@ -101,20 +107,18 @@ export function LytePricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">{current.core} UGX</span>
+                <span className="text-4xl font-bold text-slate-900">{prices.basic}</span>
               </div>
-              <CardDescription className="mt-2 text-slate-500">List and manage your properties {current.period}.</CardDescription>
+              <CardDescription className="mt-2 text-slate-500">List and manage your properties.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>
-                  Get Started
-                </Button>
+                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Get Started</Button>
               </Link>
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.core.map((f, i) => (
+                  {features.basic.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -133,20 +137,18 @@ export function LytePricing() {
                 <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">{current.advanced} UGX</span>
+                <span className="text-4xl font-bold text-slate-900">{prices.pro}</span>
               </div>
-              <CardDescription className="mt-2 text-slate-500">For agents & property managers {current.period}.</CardDescription>
+              <CardDescription className="mt-2 text-slate-500">For agents & property managers.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>
-                  Contact Sales
-                </Button>
+                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Contact Sales</Button>
               </Link>
               <div className="space-y-4">
                 <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
                 <ul className="space-y-3">
-                  {features.advanced.map((f, i) => (
+                  {features.pro.map((f, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
                       {f}
@@ -158,13 +160,12 @@ export function LytePricing() {
           </Card>
         </div>
 
-        {/* Enterprise Card */}
         <Card className="max-w-7xl mx-auto border-slate-200 bg-slate-50">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-2xl font-bold text-slate-900">Custom Enterprise Solution</CardTitle>
-                <CardDescription className="mt-2 text-slate-600">Need a tailored listing solution for a large estate agency or developer? Let&apos;s build it together.</CardDescription>
+                <CardDescription className="mt-2 text-slate-600">Need a branded property portal for a large agency or developer? Let&apos;s build it together.</CardDescription>
               </div>
               <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
             </div>
