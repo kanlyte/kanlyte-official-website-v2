@@ -47,11 +47,11 @@ export function TeamMemberModal() {
         order: record.order as number,
         isActive: record.isActive as boolean,
         social: record.social ? {
-          instagram: record.social.instagram ?? undefined,
-          twitter: record.social.twitter ?? undefined,
-          linkedin: record.social.linkedin ?? undefined,
-          github: record.social.github ?? undefined,
-          tiktok: record.social.tiktok ?? undefined,
+          instagram: (record.social as Record<string, string | null>).instagram ?? undefined,
+          twitter: (record.social as Record<string, string | null>).twitter ?? undefined,
+          linkedin: (record.social as Record<string, string | null>).linkedin ?? undefined,
+          github: (record.social as Record<string, string | null>).github ?? undefined,
+          tiktok: (record.social as Record<string, string | null>).tiktok ?? undefined,
         } : {},
       });
     } else if (isCreate) {
