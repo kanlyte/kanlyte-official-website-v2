@@ -19,16 +19,16 @@ import { Trash2, Plus } from "lucide-react";
 const RESOURCE = "pricing-plans";
 
 const CATEGORIES = [
-  { value: "web-hosting", label: "Web Hosting" },
-  { value: "email-hosting", label: "Email Hosting" },
   { value: "odoo", label: "Odoo ERP" },
   { value: "school-sync", label: "School Sync" },
   { value: "lyte", label: "Lyte App" },
-  { value: "ict-training", label: "ICT Training" },
+  { value: "research-innovation", label: "Research & Innovation" },
   { value: "web-cloud", label: "Web & Cloud Services" },
   { value: "software-development", label: "Software Development" },
-  { value: "app-development", label: "App Development" },
-  { value: "research-innovation", label: "Research & Innovation" },
+  { value: "ict-training", label: "ICT Training & Consultancy" },
+  { value: "email-hosting", label: "Email Hosting (standalone)" },
+  { value: "app-development", label: "App Development (standalone)" },
+  { value: "web-hosting", label: "Web Hosting (/pricing page)" },
 ];
 
 export function PricingPlanModal() {
