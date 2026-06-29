@@ -38,7 +38,7 @@ export function WebCloudPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="web-cloud" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored hosting environment? Let's design a solution that perfectly fits your infrastructure needs." enterpriseFeatures={["Dedicated server environments", "Custom storage & bandwidth", "Managed security & compliance", "Integration with existing systems"]} />
+        <PricingCards category="web-cloud" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored hosting environment? Let's design a solution that perfectly fits your infrastructure needs." enterpriseFeatures={["Dedicated server environments", "Custom storage & bandwidth", "Managed security & compliance", "Integration with existing systems"]} />
       </div>
     </section>
   );

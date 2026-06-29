@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useModalStore } from "@/store/modal.store";
 import { useCreatePageCapability, useUpdatePageCapability } from "@/content-manager/hooks/usePageCapabilities";
 import { CreatePageCapabilitySchema } from "@/content-manager/dtos/page-capability.dto";
@@ -15,6 +16,18 @@ import type { CreatePageCapabilityInput } from "@/content-manager/dtos/page-capa
 import { IconPicker } from "@/components/admin/shared/icon-picker";
 
 const RESOURCE = "page-capabilities";
+
+const PAGE_SLUGS = [
+  { value: "odoo", label: "Odoo ERP" },
+  { value: "school-sync", label: "School Sync" },
+  { value: "lyte", label: "Lyte App" },
+  { value: "web-cloud", label: "Web & Cloud Services" },
+  { value: "ict-training", label: "ICT Training & Consultancy" },
+  { value: "software-development", label: "Software Development" },
+  { value: "research-innovation", label: "Research & Innovation" },
+  { value: "email-hosting", label: "Email Hosting" },
+  { value: "app-development", label: "App Development" },
+];
 
 export function PageCapabilityModal() {
   const { type, resource, record, close } = useModalStore();
@@ -33,6 +46,7 @@ export function PageCapabilityModal() {
 
   const isActive = watch("isActive");
   const icon = watch("icon");
+  const slug = watch("slug");
 
   useEffect(() => {
     if (isEdit && record) {
@@ -67,7 +81,17 @@ export function PageCapabilityModal() {
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-1">
                 <Label className="text-xs">Page Slug</Label>
-                <Input placeholder="e.g. web-cloud" className="h-8 text-sm" {...register("slug")} />
+                <Select
+                  value={slug}
+                  onValueChange={(v) => setValue("slug", v, { shouldValidate: true })}
+                >
+                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select page..." /></SelectTrigger>
+                  <SelectContent>
+                    {PAGE_SLUGS.map((p) => (
+                      <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
               <div className="space-y-1">

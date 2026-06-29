@@ -15,6 +15,8 @@ interface FallbackPlan {
   description: string;
   priceUGX: string;
   priceUSD?: string;
+  priceUGXMonthly?: string;
+  priceUSDMonthly?: string;
   isPopular?: boolean;
   buttonText: string;
   features: string[];
@@ -22,6 +24,7 @@ interface FallbackPlan {
 
 interface PricingCardsProps {
   category: string;
+  billing: string;
   currency: string;
   fallbackPlans: FallbackPlan[];
   enterpriseTitle?: string;
@@ -31,6 +34,7 @@ interface PricingCardsProps {
 
 export function PricingCards({
   category,
+  billing,
   currency,
   fallbackPlans,
   enterpriseTitle = "Custom Enterprise Solution",
@@ -47,69 +51,80 @@ export function PricingCards({
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {
         tier: string; title: string; description: string;
-        priceUGX: string; priceUSD?: string; isPopular: boolean;
-        buttonText: string; features: { text: string; order: number }[];
+        priceUGX: string; priceUSD?: string;
+        priceUGXMonthly?: string; priceUSDMonthly?: string;
+        isPopular: boolean; buttonText: string;
+        features: { text: string; order: number }[];
       }) => ({
         tier: p.tier,
         title: p.title,
         description: p.description,
         priceUGX: p.priceUGX,
         priceUSD: p.priceUSD,
+        priceUGXMonthly: p.priceUGXMonthly,
+        priceUSDMonthly: p.priceUSDMonthly,
         isPopular: p.isPopular,
         buttonText: p.buttonText,
         features: p.features.map((f) => f.text),
       }))
     : fallbackPlans;
 
+  function getPrice(plan: FallbackPlan): string {
+    const isMonthly = billing === "monthly";
+    if (currency === "USD") {
+      if (isMonthly) return plan.priceUSDMonthly ?? plan.priceUSD ?? plan.priceUGX;
+      return plan.priceUSD ?? plan.priceUGX;
+    }
+    if (isMonthly) return plan.priceUGXMonthly ?? plan.priceUGX;
+    return plan.priceUGX;
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-7xl mx-auto">
-        {plans.map((plan) => {
-          const price = currency === "USD" ? (plan.priceUSD ?? plan.priceUGX) : plan.priceUGX;
-          return (
-            <Card
-              key={plan.tier}
-              className={`relative overflow-hidden flex flex-col ${plan.isPopular ? "shadow-lg" : "border-slate-200 bg-white shadow-sm"}`}
-              style={plan.isPopular ? { borderColor: primaryColor, borderWidth: "2px" } : {}}
-            >
-              {plan.isPopular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2">
-                  <Badge className="rounded-t-none rounded-b-lg px-6 py-1 text-white font-medium border-none" style={{ backgroundColor: primaryColor }}>
-                    Most Popular
-                  </Badge>
-                </div>
-              )}
-              <CardHeader className={`pb-4 ${plan.isPopular ? "pt-10" : ""}`}>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl font-bold text-slate-900">{plan.title}</CardTitle>
-                  <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
-                </div>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold text-slate-900">{price}</span>
-                </div>
-                <CardDescription className="mt-2 text-slate-500">{plan.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <Link href="/contact-us">
-                  <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>
-                    {plan.buttonText}
-                  </Button>
-                </Link>
-                <div className="space-y-4">
-                  <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
-                  <ul className="space-y-3">
-                    {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
-                        <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+        {plans.map((plan) => (
+          <Card
+            key={plan.tier}
+            className={`relative overflow-hidden flex flex-col ${plan.isPopular ? "shadow-lg" : "border-slate-200 bg-white shadow-sm"}`}
+            style={plan.isPopular ? { borderColor: primaryColor, borderWidth: "2px" } : {}}
+          >
+            {plan.isPopular && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2">
+                <Badge className="rounded-t-none rounded-b-lg px-6 py-1 text-white font-medium border-none" style={{ backgroundColor: primaryColor }}>
+                  Most Popular
+                </Badge>
+              </div>
+            )}
+            <CardHeader className={`pb-4 ${plan.isPopular ? "pt-10" : ""}`}>
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-xl font-bold text-slate-900">{plan.title}</CardTitle>
+                <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
+              </div>
+              <div className="mt-4">
+                <span className="text-4xl font-bold text-slate-900">{getPrice(plan)}</span>
+              </div>
+              <CardDescription className="mt-2 text-slate-500">{plan.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <Link href="/contact-us">
+                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>
+                  {plan.buttonText}
+                </Button>
+              </Link>
+              <div className="space-y-4">
+                <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
+                <ul className="space-y-3">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
+                      <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Enterprise card */}

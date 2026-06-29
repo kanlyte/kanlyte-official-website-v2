@@ -38,7 +38,7 @@ export function Pricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="odoo" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a fully tailored Odoo implementation? Let's design the perfect ERP solution for your business." enterpriseFeatures={["Custom module development", "Multi-company & multi-currency", "Dedicated Odoo consultant", "Integration with existing systems"]} />
+        <PricingCards category="odoo" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a fully tailored Odoo implementation? Let's design the perfect ERP solution for your business." enterpriseFeatures={["Custom module development", "Multi-company & multi-currency", "Dedicated Odoo consultant", "Integration with existing systems"]} />
       </div>
     </section>
   );

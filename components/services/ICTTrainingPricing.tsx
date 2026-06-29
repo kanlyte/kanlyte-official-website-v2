@@ -38,7 +38,7 @@ export function ICTTrainingPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="ict-training" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Training" enterpriseDescription="Need a fully tailored training programme for your organisation? Let's design it together." enterpriseFeatures={["Custom curriculum design", "On-site or hybrid delivery", "Certification pathways", "Ongoing mentorship & support"]} />
+        <PricingCards category="ict-training" billing={billing} currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Training" enterpriseDescription="Need a fully tailored training programme for your organisation? Let's design it together." enterpriseFeatures={["Custom curriculum design", "On-site or hybrid delivery", "Certification pathways", "Ongoing mentorship & support"]} />
       </div>
     </section>
   );

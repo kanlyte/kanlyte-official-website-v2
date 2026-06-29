@@ -30,7 +30,7 @@ export function SoftwareDevelopmentPricing() {
             </SelectContent>
           </Select>
         </div>
-        <PricingCards category="software-development" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored solution for your business? Let's create a custom plan together." enterpriseFeatures={["Customised features and functionality", "Scalable architecture for future growth", "Dedicated support and maintenance", "Integration with existing systems"]} />
+        <PricingCards category="software-development" billing="yearly" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a tailored solution for your business? Let's create a custom plan together." enterpriseFeatures={["Customised features and functionality", "Scalable architecture for future growth", "Dedicated support and maintenance", "Integration with existing systems"]} />
       </div>
     </section>
   );

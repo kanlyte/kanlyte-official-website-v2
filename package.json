@@ -9,7 +9,12 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "find:unused": "next-unused",
-    "knip": "knip"
+    "knip": "knip",
+    "seed:content": "npx tsx prisma/seeds/seed-page-content.ts",
+    "seed:capabilities": "npx tsx prisma/seeds/seed-page-capabilities.ts",
+    "seed:pricing": "npx tsx prisma/seeds/seed-pricing-plans.ts",
+    "seed:monthly": "npx tsx prisma/seeds/seed-monthly-prices.ts",
+    "seed:all": "pnpm seed:content && pnpm seed:capabilities && pnpm seed:pricing && pnpm seed:monthly"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

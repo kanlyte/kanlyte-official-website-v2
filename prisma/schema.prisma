@@ -173,6 +173,8 @@ model PricingPlan {
   description  String
   priceUGX     String
   priceUSD     String?
+  priceUGXMonthly String?
+  priceUSDMonthly String?
   period       String?              // e.g. "/ month", "/ one user"
   tagline      String?
   isPopular    Boolean              @default(false)

@@ -91,6 +91,7 @@ export function PricingSection() {
 
         <PricingCards
           category={service}
+          billing={billing}
           currency={currency}
           fallbackPlans={current.plans}
           enterpriseFeatures={current.enterpriseFeatures}
