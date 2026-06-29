@@ -1,6 +1,7 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceSidebar } from "@/components/home/service-sidebar";
 import { AppDevelopmentContent } from "@/components/services/AppDevelopment";
+import { AppDevelopmentPricing } from "@/components/services/AppDevelopmentPricing";
 import React from "react";
 
 export default function page() {
@@ -31,6 +32,7 @@ export default function page() {
           </div>
         </div>
       </div>
+      <AppDevelopmentPricing />
     </>
   );
 }
