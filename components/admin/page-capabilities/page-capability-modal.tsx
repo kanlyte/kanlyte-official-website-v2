@@ -21,12 +21,12 @@ const PAGE_SLUGS = [
   { value: "odoo", label: "Odoo ERP" },
   { value: "school-sync", label: "School Sync" },
   { value: "lyte", label: "Lyte App" },
-  { value: "web-cloud", label: "Web & Cloud Services" },
-  { value: "ict-training", label: "ICT Training & Consultancy" },
-  { value: "software-development", label: "Software Development" },
   { value: "research-innovation", label: "Research & Innovation" },
-  { value: "email-hosting", label: "Email Hosting" },
-  { value: "app-development", label: "App Development" },
+  { value: "web-cloud", label: "Web & Cloud Services" },
+  { value: "software-development", label: "Software Development" },
+  { value: "ict-training", label: "ICT Training & Consultancy" },
+  { value: "email-hosting", label: "Email Hosting (standalone)" },
+  { value: "app-development", label: "App Development (standalone)" },
 ];
 
 export function PageCapabilityModal() {
