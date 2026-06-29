@@ -102,12 +102,6 @@ const modules = [
   },
 ];
 
-const highlights = [
-  { title: "Easy Integration", description: "All modules work together seamlessly. Data flows automatically between enrollment, fees, marks, and communication." },
-  { title: "Mobile Ready", description: "Access key functions from any device. Staff can receive SMS reminders, view updates, and submit marks on mobile." },
-  { title: "Secure & Reliable", description: "Enterprise-grade security with encrypted data, secure backups, and compliance with data protection standards." },
-];
-
 export function SchoolSyncModules() {
   return (
     <section className="bg-[#F8F9FA] py-20 px-4">
@@ -148,17 +142,8 @@ export function SchoolSyncModules() {
           ))}
         </div>
 
-        {/* Highlights */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {highlights.map((h) => (
-            <div key={h.title} className="bg-[#212529] text-white rounded-xl p-6">
-              <h4 className="font-bold text-lg mb-2">{h.title}</h4>
-              <p className="text-gray-400 text-sm leading-relaxed">{h.description}</p>
-            </div>
-          ))}
-        </div>
+        {/* Highlights — removed */}
 
-        {/* CTA */}
         <div className="text-center bg-white rounded-2xl p-10 border border-[#6EBE45]/20 shadow-sm">
           <h3 className="text-2xl font-bold text-[#212529] mb-3">See Every Feature in Action</h3>
           <p className="text-gray-600 mb-6 max-w-xl mx-auto">Walk through each module with our team and see exactly how School Sync fits your school's workflows.</p>

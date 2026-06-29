@@ -43,6 +43,7 @@ export default function SoftwareDevelopmentPage() {
         ]}
       />
       <ServiceHero
+        slug="software-development"
         badge="Software Development — Kanlyte Uganda"
         title="We build software"
         highlight="that works."
@@ -53,6 +54,7 @@ export default function SoftwareDevelopmentPage() {
         annotation={{ line1: "Built to", line2: "scale with you" }}
       />
       <ServiceCapabilities
+        slug="software-development"
         title="Our Software Development Capabilities"
         subtitle="Full-stack development across mobile, web, and enterprise systems."
         capabilities={capabilities}

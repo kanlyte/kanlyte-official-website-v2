@@ -43,6 +43,7 @@ export default function ICTTrainingPage() {
         ]}
       />
       <ServiceHero
+        slug="ict-training"
         badge="ICT Training & Consultancy — Kanlyte Uganda"
         title="Skills that build"
         highlight="careers."
@@ -53,6 +54,7 @@ export default function ICTTrainingPage() {
         annotation={{ line1: "500+", line2: "learners trained" }}
       />
       <ServiceCapabilities
+        slug="ict-training"
         title="Our Training & Consultancy Areas"
         subtitle="Practical programmes covering the full spectrum of modern ICT skills."
         capabilities={capabilities}
