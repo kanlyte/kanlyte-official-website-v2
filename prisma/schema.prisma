@@ -216,6 +216,41 @@ model ContactInfo {
   schedule String // e.g. "Mon to Sat - 08:00am to 06:00pm"
 }
 
+// ─── Page Content (Products & Services hero/copy) ──────────────────────────
+model PageContent {
+  id                String  @id @default(cuid())
+  slug              String  @unique
+  pageType          String           // "product" | "service"
+  badge             String
+  title             String
+  highlight         String
+  subtitle          String
+  description       String
+  primaryBtnLabel   String
+  primaryBtnHref    String
+  secondaryBtnLabel String
+  secondaryBtnHref  String
+  annotationLine1   String
+  annotationLine2   String
+  isActive          Boolean @default(true)
+
+  @@index([slug])
+  @@index([pageType])
+}
+
+// ─── Page Capabilities (icon grid per product/service page) ──────────────────
+model PageCapability {
+  id       String  @id @default(cuid())
+  slug     String
+  name     String
+  icon     String
+  order    Int
+  isActive Boolean @default(true)
+
+  @@index([slug])
+  @@index([order])
+}
+
 // ─── Social Links ────────────────────────────────────────────────────────────
 model SocialLink {
   id       String  @id @default(cuid())

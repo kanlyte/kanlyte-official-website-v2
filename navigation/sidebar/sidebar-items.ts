@@ -16,6 +16,8 @@ import {
   Mail,
   Share2,
   Phone,
+  FileText,
+  Grid3X3,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -79,6 +81,14 @@ export const sidebarItems: NavGroup[] = [
     items: [
       { title: "Pricing Plans", url: "/admin/pricing-plans", icon: Tag },
       { title: "Odoo Apps", url: "/admin/odoo-apps", icon: AppWindow },
+    ],
+  },
+  {
+    id: 7,
+    label: "Products & Services",
+    items: [
+      { title: "Page Content", url: "/admin/page-content", icon: FileText },
+      { title: "Page Capabilities", url: "/admin/page-capabilities", icon: Grid3X3 },
     ],
   },
   {

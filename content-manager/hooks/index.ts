@@ -13,3 +13,5 @@ export * from "./useMilestones";
 export * from "./usePricingPlans";
 export * from "./useOdooApps";
 export * from "./useSocialLinks";
+export * from "./usePageContent";
+export * from "./usePageCapabilities";

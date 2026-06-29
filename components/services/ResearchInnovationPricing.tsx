@@ -1,29 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+import { PricingCards } from "@/components/pricing/pricing-cards";
 
-const PRICES = {
-  UGX: { feasibility: "From 3,000,000 UGX", sprint: "From 8,000,000 UGX" },
-  USD: { feasibility: "From $810", sprint: "From $2,160" },
-};
-
-const features = {
-  feasibility: ["Market & tech research", "Requirements analysis", "Risk assessment", "Executive report", "Presentation to stakeholders"],
-  sprint: ["AI/ML or IoT prototype", "Data pipeline setup", "Sprint-based delivery", "Workshop sessions", "Full documentation", "3 months support"],
-  transformation: ["Full tech audit", "Strategy roadmap", "Process automation", "Change management", "Staff enablement", "Ongoing partnership"],
-};
-
-const primaryColor = "#6EBE45";
+const FALLBACK_PLANS = [
+  { tier: "feasibility", title: "Feasibility Study", description: "Assess viability before you build — per engagement.", priceUGX: "From 3,000,000 UGX", priceUSD: "From $810", buttonText: "Get Started", features: ["Market & tech research", "Requirements analysis", "Risk assessment", "Executive report", "Presentation to stakeholders"] },
+  { tier: "sprint", title: "Innovation Sprint", description: "Rapid prototyping & proof of concept — per project.", priceUGX: "From 8,000,000 UGX", priceUSD: "From $2,160", isPopular: true, buttonText: "Start a Project", features: ["AI/ML or IoT prototype", "Data pipeline setup", "Sprint-based delivery", "Workshop sessions", "Full documentation", "3 months support"] },
+  { tier: "transformation", title: "Digital Transformation", description: "Organisation-wide transformation — scoped to your needs.", priceUGX: "Custom", priceUSD: "Custom", buttonText: "Talk to Our Team", features: ["Full tech audit", "Strategy roadmap", "Process automation", "Change management", "Staff enablement", "Ongoing partnership"] },
+];
 
 export function ResearchInnovationPricing() {
   const [currency, setCurrency] = useState("UGX");
-  const prices = PRICES[currency as "UGX" | "USD"];
 
   return (
     <section className="py-20 bg-white">
@@ -33,137 +21,16 @@ export function ResearchInnovationPricing() {
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Research & Innovation Packages</h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">From proof-of-concept to full digital transformation — we price by outcome, not hours.</p>
         </div>
-
         <div className="flex justify-center gap-4 mb-12">
           <Select value={currency} onValueChange={setCurrency}>
-            <SelectTrigger className="w-[120px] bg-slate-50 border-slate-200">
-              <SelectValue placeholder="Currency" />
-            </SelectTrigger>
+            <SelectTrigger className="w-[120px] bg-slate-50 border-slate-200"><SelectValue placeholder="Currency" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="UGX">UGX</SelectItem>
               <SelectItem value="USD">USD</SelectItem>
             </SelectContent>
           </Select>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-7xl mx-auto">
-          <Card className="border-slate-200 bg-white shadow-sm relative overflow-hidden flex flex-col">
-            <CardHeader className="pb-4">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-xl font-bold text-slate-900">Feasibility Study</CardTitle>
-                <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
-              </div>
-              <div className="mt-4">
-                <span className="text-3xl font-bold text-slate-900">{prices.feasibility}</span>
-              </div>
-              <CardDescription className="mt-2 text-slate-500">Assess viability before you build — per engagement.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Get Started</Button>
-              </Link>
-              <div className="space-y-4">
-                <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
-                <ul className="space-y-3">
-                  {features.feasibility.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
-                      <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-lg relative overflow-hidden flex flex-col" style={{ borderColor: primaryColor, borderWidth: "2px" }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2">
-              <Badge className="rounded-t-none rounded-b-lg px-6 py-1 text-white font-medium border-none" style={{ backgroundColor: primaryColor }}>
-                Most Popular
-              </Badge>
-            </div>
-            <CardHeader className="pb-4 pt-10">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-xl font-bold text-slate-900">Innovation Sprint</CardTitle>
-                <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
-              </div>
-              <div className="mt-4">
-                <span className="text-3xl font-bold text-slate-900">{prices.sprint}</span>
-              </div>
-              <CardDescription className="mt-2 text-slate-500">Rapid prototyping & proof of concept — per project.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Start a Project</Button>
-              </Link>
-              <div className="space-y-4">
-                <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
-                <ul className="space-y-3">
-                  {features.sprint.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
-                      <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-slate-200 bg-white shadow-sm relative overflow-hidden flex flex-col">
-            <CardHeader className="pb-4">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-xl font-bold text-slate-900">Digital Transformation</CardTitle>
-                <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
-              </div>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-slate-900">Custom</span>
-              </div>
-              <CardDescription className="mt-2 text-slate-500">Organisation-wide transformation — scoped to your needs.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <Link href="/contact-us">
-                <Button className="w-full mb-6 text-white hover:opacity-90" style={{ backgroundColor: primaryColor }}>Talk to Our Team</Button>
-              </Link>
-              <div className="space-y-4">
-                <p className="font-semibold text-sm text-slate-900">What&apos;s included:</p>
-                <ul className="space-y-3">
-                  {features.transformation.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
-                      <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: primaryColor }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="max-w-7xl mx-auto border-slate-200 bg-slate-50">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">Custom Enterprise Solution</CardTitle>
-                <CardDescription className="mt-2 text-slate-600">Need a long-term innovation partner? Let&apos;s co-create a tailored research and development engagement.</CardDescription>
-              </div>
-              <Star className="w-4 h-4 text-slate-400 fill-slate-400" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              {["Long-term R&D partnership", "AI, IoT & data strategy", "Dedicated innovation team", "Integration with existing systems"].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm text-slate-700">
-                  <Check className="w-4 h-4 shrink-0" style={{ color: primaryColor }} />
-                  {item}
-                </div>
-              ))}
-            </div>
-            <Link href="/contact-us">
-              <Button className="text-white hover:opacity-90 px-8" style={{ backgroundColor: primaryColor }}>Contact Sales</Button>
-            </Link>
-          </CardContent>
-        </Card>
+        <PricingCards category="research-innovation" currency={currency} fallbackPlans={FALLBACK_PLANS} enterpriseTitle="Custom Enterprise Solution" enterpriseDescription="Need a long-term innovation partner? Let's co-create a tailored research and development engagement." enterpriseFeatures={["Long-term R&D partnership", "AI, IoT & data strategy", "Dedicated innovation team", "Integration with existing systems"]} />
       </div>
     </section>
   );

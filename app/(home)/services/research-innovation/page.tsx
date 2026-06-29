@@ -41,6 +41,7 @@ export default function ResearchInnovationPage() {
         ]}
       />
       <ServiceHero
+        slug="research-innovation"
         badge="Research & Innovation — Kanlyte Uganda"
         title="Technology that"
         highlight="solves problems."
@@ -51,6 +52,7 @@ export default function ResearchInnovationPage() {
         annotation={{ line1: "Real-world", line2: "impact" }}
       />
       <ServiceCapabilities
+        slug="research-innovation"
         title="Our Research & Innovation Capabilities"
         subtitle="A full spectrum of innovation services — from lab to launch."
         capabilities={capabilities}

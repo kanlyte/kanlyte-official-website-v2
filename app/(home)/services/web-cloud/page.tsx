@@ -43,6 +43,7 @@ export default function WebCloudPage() {
         ]}
       />
       <ServiceHero
+        slug="web-cloud"
         badge="Web & Cloud Services — Kanlyte Uganda"
         title="Your business,"
         highlight="always online."
@@ -53,6 +54,7 @@ export default function WebCloudPage() {
         annotation={{ line1: "99.9%", line2: "uptime guaranteed" }}
       />
       <ServiceCapabilities
+        slug="web-cloud"
         title="Our Web & Cloud Capabilities"
         subtitle="End-to-end web and cloud services for businesses of all sizes."
         capabilities={capabilities}

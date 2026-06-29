@@ -81,16 +81,18 @@ export function Navbar() {
           <div className="hidden items-center gap-8 lg:flex">
 
             {/* Products Dropdown */}
-            <div className="relative" ref={productsRef}>
+            <div className="relative" ref={productsRef}
+              onMouseEnter={() => { setIsProductsOpen(true); setIsServicesOpen(false); }}
+              onMouseLeave={() => setIsProductsOpen(false)}
+            >
               <button
-                onClick={() => { setIsProductsOpen(!isProductsOpen); setIsServicesOpen(false); }}
                 className="flex items-center gap-1 text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
               >
                 Products
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProductsOpen ? "rotate-180" : ""}`} />
               </button>
               {isProductsOpen && (
-                <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                <div className="absolute left-0 top-full w-52 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
                   {products.map((p) => (
                     <Link key={p.title} href={p.href}
                       className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
@@ -103,16 +105,18 @@ export function Navbar() {
             </div>
 
             {/* Services Dropdown */}
-            <div className="relative" ref={servicesRef}>
+            <div className="relative" ref={servicesRef}
+              onMouseEnter={() => { setIsServicesOpen(true); setIsProductsOpen(false); }}
+              onMouseLeave={() => setIsServicesOpen(false)}
+            >
               <button
-                onClick={() => { setIsServicesOpen(!isServicesOpen); setIsProductsOpen(false); }}
                 className="flex items-center gap-1 text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
               >
                 Services
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`} />
               </button>
               {isServicesOpen && (
-                <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                <div className="absolute left-0 top-full w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
                   {services.map((s) => (
                     <Link key={s.title} href={s.href}
                       className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
