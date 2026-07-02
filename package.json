@@ -14,7 +14,8 @@
     "seed:capabilities": "npx tsx prisma/seeds/seed-page-capabilities.ts",
     "seed:pricing": "npx tsx prisma/seeds/seed-pricing-plans.ts",
     "seed:monthly": "npx tsx prisma/seeds/seed-monthly-prices.ts",
-    "seed:all": "pnpm seed:content && pnpm seed:capabilities && pnpm seed:pricing && pnpm seed:monthly"
+    "seed:all": "pnpm seed:content && pnpm seed:capabilities && pnpm seed:pricing && pnpm seed:monthly",
+    "seed:admin": "npx tsx prisma/seeds/seed-admin.ts"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"
