@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
-import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const footerLinks = {
@@ -28,9 +27,7 @@ const footerLinks = {
 
 export function Footer() {
   const { data: dbSocial } = useSocialLinks(true);
-  const { data: contactInfo } = useContactInfo();
   const socialLinks = dbSocial?.length ? dbSocial : [];
-  const email = contactInfo?.email ?? "info@kanlyte.com";
   return (
     <footer className="bg-[#050816] border-t border-blue-900/20 py-16 px-4">
       <div className="max-w-7xl mx-auto">

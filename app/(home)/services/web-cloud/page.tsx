@@ -2,7 +2,6 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ServiceWhyUs } from "@/components/services-pages/service-why-us";
 import { WebCloudPricing } from "@/components/services/WebCloudPricing";
 import { Globe, Cloud, Mail, Server, Shield, Zap, Database, Lock, RefreshCw, BarChart2, HeadphonesIcon, TrendingUp } from "lucide-react";
 
@@ -19,12 +18,6 @@ const capabilities = [
   { name: "Analytics", icon: BarChart2 },
   { name: "Firewalls", icon: Lock },
   { name: "24/7 Monitoring", icon: HeadphonesIcon },
-];
-
-const benefits = [
-  { icon: Zap, title: "99.9% Uptime Guarantee", description: "Your website stays online — always." },
-  { icon: Shield, title: "Enterprise Security", description: "SSL, firewalls, and daily backups included." },
-  { icon: HeadphonesIcon, title: "Local Support Team", description: "Responsive support team based in Uganda." },
 ];
 
 export default function WebCloudPage() {

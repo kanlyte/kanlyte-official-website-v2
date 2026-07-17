@@ -1,16 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { siGithub } from "simple-icons";
-import Link from "next/link";
 
 import { AppSidebar } from "@/components/admin/sidebar/app-sidebar";
-import { SimpleIcon } from "@/components/simple-icon";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AccountSwitcher } from "@/components/admin/sidebar/account-switcher";
-import { LayoutControls } from "@/components/admin/sidebar/layout-controls";
 import { SearchDialog } from "@/components/admin/sidebar/search-dialog";
 import { ThemeSwitcher } from "@/components/admin/sidebar/theme-switcher";
 import { useUIStore } from "@/store/ui.store";

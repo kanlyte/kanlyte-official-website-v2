@@ -4,10 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ResourceTable, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
-import { useContactSubmissions, useDeleteContactSubmission, useUpdateContactSubmission } from "@/content-manager/hooks/useContactSubmissions";
+import { useContactSubmissions, useDeleteContactSubmission } from "@/content-manager/hooks/useContactSubmissions";
 import { format } from "date-fns";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const RESOURCE = "contact-submissions";
 
@@ -32,15 +31,8 @@ export default function ContactSubmissionsPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const { data: all = [], isLoading } = useContactSubmissions();
   const { mutate: deleteSubmission, isPending: isDeleting } = useDeleteContactSubmission();
-  const { mutate: updateStatus } = useUpdateContactSubmission();
 
-  const filtered = statusFilter === "all" ? all : all.filter((s: any) => s.status === statusFilter);
-
-  const handleMarkContacted = (id: string) => {
-    updateStatus({ id, data: { status: "contacted" } }, {
-      onSuccess: () => toast.success("Marked as contacted"),
-    });
-  };
+  const filtered = statusFilter === "all" ? all : all.filter((s: { status: string }) => s.status === statusFilter);
 
   return (
     <div className="flex flex-col gap-6">

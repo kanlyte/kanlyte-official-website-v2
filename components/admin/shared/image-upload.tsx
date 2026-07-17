@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { UploadCloud, X, Expand, Loader2, ImageIcon } from "lucide-react";
+import { UploadCloud, X, Expand, Loader2 } from "lucide-react";
 import { useUploadImage } from "@/content-manager/hooks/useUploadImage";
 import { cn } from "@/lib/utils";
 

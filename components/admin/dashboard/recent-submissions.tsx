@@ -44,7 +44,7 @@ export function RecentSubmissions() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recent.map((s: any) => (
+              {recent.map((s: { id: string; fullName: string; service: string; subject: string; status: string; createdAt: string | Date }) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium">{s.fullName}</TableCell>
                   <TableCell className="text-muted-foreground">{s.service}</TableCell>

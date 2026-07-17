@@ -55,11 +55,11 @@ export default function AdminLoginPage() {
             </div>
             <div>
               <p className="font-semibold text-sm">Admin Portal</p>
-              <p className="text-white/70 text-xs">You're one step away from managing your content.</p>
+              <p className="text-white/70 text-xs">You&apos;re one step away from managing your content.</p>
             </div>
           </div>
           <blockquote className="border-l-2 border-white/40 pl-4 text-white/80 text-sm italic">
-            "Everything you need to keep Kanlyte running — right at your fingertips."
+            &quot;Everything you need to keep Kanlyte running — right at your fingertips.&quot;
           </blockquote>
         </div>
 

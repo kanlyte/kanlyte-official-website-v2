@@ -1,10 +1,10 @@
 "use server";
 
 import { z } from "zod";
-import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import nodemailer from "nodemailer";
+import { prisma } from "@/lib/prisma";
 
 const contactSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
@@ -18,9 +18,6 @@ const contactSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
-
-// Initialize Prisma Client
-const prisma = new PrismaClient();
 
 // Email transporter configuration
 const createTransporter = () => {

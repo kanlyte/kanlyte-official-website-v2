@@ -13,11 +13,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 export interface ResourceColumn {
   key: string;
   label: string;
+  // Column values come from heterogeneous resource shapes (string, number,
+  // boolean, Date) across ~15 admin pages — a precise union isn't practical here.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (value: any, row: any) => React.ReactNode;
 }
 
 interface ResourceTableProps {
   resource: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   columns: ResourceColumn[];
   isLoading?: boolean;

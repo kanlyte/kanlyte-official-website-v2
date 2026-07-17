@@ -43,8 +43,6 @@ const FALLBACK: Record<string, { label: string; plans: Parameters<typeof Pricing
   },
 };
 
-const primaryColor = "#6EBE45";
-
 export function PricingSection() {
   const [service, setService] = useState("web-hosting");
   const [billing, setBilling] = useState("yearly");
