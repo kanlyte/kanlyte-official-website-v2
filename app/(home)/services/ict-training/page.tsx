@@ -2,7 +2,6 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ServiceWhyUs } from "@/components/services-pages/service-why-us";
 import { ICTTrainingPricing } from "@/components/services/ICTTrainingPricing";
 import { GraduationCap, Users, BookOpen, Briefcase, Award, TrendingUp, Code, Database, Shield, Cloud, Smartphone, HeadphonesIcon } from "lucide-react";
 
@@ -19,12 +18,6 @@ const capabilities = [
   { name: "Curriculum Dev", icon: BookOpen },
   { name: "Certification Prep", icon: TrendingUp },
   { name: "Mentorship", icon: HeadphonesIcon },
-];
-
-const benefits = [
-  { icon: GraduationCap, title: "Industry-Expert Trainers", description: "Learn from practitioners with real-world experience." },
-  { icon: Users, title: "Small Class Sizes", description: "Personalised attention for every learner." },
-  { icon: Award, title: "Recognised Certificates", description: "Certificates valued by employers across East Africa." },
 ];
 
 export default function ICTTrainingPage() {

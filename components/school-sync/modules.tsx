@@ -146,7 +146,7 @@ export function SchoolSyncModules() {
 
         <div className="text-center bg-white rounded-2xl p-10 border border-[#6EBE45]/20 shadow-sm">
           <h3 className="text-2xl font-bold text-[#212529] mb-3">See Every Feature in Action</h3>
-          <p className="text-gray-600 mb-6 max-w-xl mx-auto">Walk through each module with our team and see exactly how School Sync fits your school's workflows.</p>
+          <p className="text-gray-600 mb-6 max-w-xl mx-auto">Walk through each module with our team and see exactly how School Sync fits your school&apos;s workflows.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="https://schoolsync.ac" target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#6EBE45] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#5a9e3a] transition-colors">

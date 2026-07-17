@@ -2,7 +2,6 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ServiceWhyUs } from "@/components/services-pages/service-why-us";
 import { SoftwareDevelopmentPricing } from "@/components/services/SoftwareDevelopmentPricing";
 import { Code, Smartphone, Database, Settings, RefreshCw, CheckCircle, Layers, Globe, Cpu, Shield, Zap, HeadphonesIcon } from "lucide-react";
 
@@ -19,12 +18,6 @@ const capabilities = [
   { name: "DevOps", icon: Zap },
   { name: "Security Audits", icon: Shield },
   { name: "Maintenance", icon: HeadphonesIcon },
-];
-
-const benefits = [
-  { icon: Code, title: "Experienced Developers", description: "Skilled engineers with proven delivery track records." },
-  { icon: RefreshCw, title: "Agile Development", description: "Iterative process with regular demos and your feedback." },
-  { icon: HeadphonesIcon, title: "Post-Launch Support", description: "We don't disappear after go-live — we stay with you." },
 ];
 
 export default function SoftwareDevelopmentPage() {

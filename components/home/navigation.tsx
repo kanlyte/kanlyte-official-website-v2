@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight, Menu, X, Search } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { toast } from "sonner";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -27,14 +26,6 @@ export function Navbar() {
     { title: "Software Development", href: "/services/software-development", desc: "Custom software & mobile apps" },
     { title: "ICT Training & Consultancy", href: "/services/ict-training", desc: "Training & technology advisory" },
   ];
-
-  const handleLoginClick = () => {
-    toast.error("Login Portal Coming Soon", {
-      description:
-        "We're working on the login functionality. Please check back later!",
-      duration: 4000,
-    });
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

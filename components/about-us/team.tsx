@@ -30,7 +30,7 @@ export function Team() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {team.map((member, i) => (
+          {team.map((member) => (
             <div key={member.id} className="group relative bg-white rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#6EBE45] hover:-translate-y-1">
               <div className="relative aspect-square rounded-xl overflow-hidden mb-4 bg-gray-100">
                 <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />

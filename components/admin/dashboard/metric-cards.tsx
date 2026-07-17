@@ -14,14 +14,14 @@ export function DashboardMetricCards() {
   const { data: submissions = [] } = useContactSubmissions();
   const { data: services = [] } = useServices();
 
-  const pending = submissions.filter((s: any) => s.status === "pending").length;
+  const pending = submissions.filter((s: { status: string }) => s.status === "pending").length;
 
   const cards = [
     {
       icon: Layers,
       label: "Total Projects",
       value: projects.length,
-      badge: `${projects.filter((p: any) => p.isActive).length} active`,
+      badge: `${projects.filter((p: { isActive: boolean }) => p.isActive).length} active`,
       trend: "up",
       note: "Published on website",
     },
@@ -29,7 +29,7 @@ export function DashboardMetricCards() {
       icon: FileText,
       label: "Services",
       value: services.length,
-      badge: `${services.filter((s: any) => s.isActive).length} active`,
+      badge: `${services.filter((s: { isActive: boolean }) => s.isActive).length} active`,
       trend: "up",
       note: "Visible to visitors",
     },
@@ -37,7 +37,7 @@ export function DashboardMetricCards() {
       icon: Users,
       label: "Team Members",
       value: team.length,
-      badge: `${team.filter((m: any) => m.featured).length} featured`,
+      badge: `${team.filter((m: { featured: boolean }) => m.featured).length} featured`,
       trend: "up",
       note: "On about page",
     },

@@ -2,15 +2,7 @@
 import { Hero } from "@/components/about-us/hero";
 import { LyteHero } from "@/components/lyte/hero";
 import { LyteFeatures } from "@/components/lyte/features";
-import { ServiceWhyUs } from "@/components/services-pages/service-why-us";
 import { LytePricing } from "@/components/lyte/pricing";
-import { Zap, Shield, HeadphonesIcon } from "lucide-react";
-
-const benefits = [
-  { icon: Zap, title: "Instant Booking", description: "Book your space in minutes — no calls, no waiting." },
-  { icon: Shield, title: "Verified Properties", description: "Every listing is vetted by our team for accuracy and safety." },
-  { icon: HeadphonesIcon, title: "Dedicated Support", description: "Our team is available to help tenants and landlords at any time." },
-];
 
 export default function LytePage() {
   return (

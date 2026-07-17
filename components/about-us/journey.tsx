@@ -95,7 +95,7 @@ export function Journey() {
             <p className="text-gray-600">Key moments in Kanlyte&apos;s journey captured through our work</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {milestones.slice(0, 3).map((item: { id: string; title: string; image: string; imageAlt: string; year: string }, index: number) => (
+            {milestones.slice(0, 3).map((item: { id: string; title: string; image: string; imageAlt: string; year: string }) => (
               <div key={item.id} className="group cursor-pointer">
                 <div className="relative h-48 rounded-xl overflow-hidden mb-4 border-2 border-[#6EBE45]/10">
                   <Image src={item.image || "/placeholder.svg"} alt={item.imageAlt} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />

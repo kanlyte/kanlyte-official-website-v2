@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { APP_CONFIG } from "@/config/app-config";
 import { sidebarItems } from "@/navigation/sidebar/sidebar-items";
 import { cn } from "@/lib/utils";
 

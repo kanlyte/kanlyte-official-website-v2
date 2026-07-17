@@ -2,9 +2,8 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ServiceWhyUs } from "@/components/services-pages/service-why-us";
 import { ResearchInnovationPricing } from "@/components/services/ResearchInnovationPricing";
-import { FlaskConical, Lightbulb, TrendingUp, Cpu, Globe, Users, BarChart2, Layers, RefreshCw, Zap, Shield, HeadphonesIcon } from "lucide-react";
+import { FlaskConical, Lightbulb, TrendingUp, Cpu, Globe, Users, BarChart2, Layers, RefreshCw, Zap } from "lucide-react";
 
 const capabilities = [
   { name: "Applied Research", icon: FlaskConical },
@@ -17,12 +16,6 @@ const capabilities = [
   { name: "Process Automation", icon: RefreshCw },
   { name: "Cloud Intelligence", icon: Layers },
   { name: "Rapid Prototyping", icon: Zap },
-];
-
-const benefits = [
-  { icon: Lightbulb, title: "Innovation-Led Approach", description: "We combine research depth with practical business application." },
-  { icon: Shield, title: "Proven Methodologies", description: "Industry-standard frameworks adapted for the East African market." },
-  { icon: HeadphonesIcon, title: "End-to-End Support", description: "From ideation through deployment and continuous improvement." },
 ];
 
 export default function ResearchInnovationPage() {
