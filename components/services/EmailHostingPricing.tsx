@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "basic", title: "Basic", description: "For solo professionals.", priceUGX: "300,000 UGX", priceUSD: "$81", buttonText: "Get Started", features: ["5 email accounts", "5 GB storage per account", "Webmail access", "Spam & virus protection", "SSL security", "Email support"] },
-  { tier: "business", title: "Business", description: "For teams & small businesses.", priceUGX: "800,000 UGX", priceUSD: "$216", isPopular: true, buttonText: "Buy Now", features: ["25 email accounts", "25 GB storage per account", "Mobile sync (iOS/Android)", "Shared calendar & contacts", "Daily backups", "Priority support"] },
-  { tier: "enterprise", title: "Enterprise", description: "For large organisations.", priceUGX: "2,000,000 UGX", priceUSD: "$540", buttonText: "Contact Sales", features: ["Unlimited email accounts", "100 GB storage per account", "Advanced admin controls", "Compliance & archiving", "Dedicated IP", "24/7 support"] },
+  { tier: "basic", title: "Basic", description: "For solo professionals.", priceUGX: "300,000 UGX", priceUSD: "$81", priceUGXMonthly: "30,000 UGX", priceUSDMonthly: "$8", buttonText: "Get Started", features: ["5 email accounts", "5 GB storage per account", "Webmail access", "Spam & virus protection", "SSL security", "Email support"] },
+  { tier: "business", title: "Business", description: "For teams & small businesses.", priceUGX: "800,000 UGX", priceUSD: "$216", priceUGXMonthly: "80,000 UGX", priceUSDMonthly: "$22", isPopular: true, buttonText: "Buy Now", features: ["25 email accounts", "25 GB storage per account", "Mobile sync (iOS/Android)", "Shared calendar & contacts", "Daily backups", "Priority support"] },
+  { tier: "enterprise", title: "Enterprise", description: "For large organisations.", priceUGX: "2,000,000 UGX", priceUSD: "$540", priceUGXMonthly: "200,000 UGX", priceUSDMonthly: "$54", buttonText: "Contact Sales", features: ["Unlimited email accounts", "100 GB storage per account", "Advanced admin controls", "Compliance & archiving", "Dedicated IP", "24/7 support"] },
 ];
 
 export function EmailHostingPricing() {

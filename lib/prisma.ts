@@ -1,11 +1,31 @@
 import "dotenv/config";
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
+const dbUrl = new URL(process.env.DATABASE_URL!);
+
+// Each Node process (Passenger can run more than one for this app) opens its
+// own pool. The mariadb driver defaults to 10 connections/process, which
+// easily blows past a shared-hosting account's max_user_connections cap and
+// leaves later queries queued (slow requests, no thrown error) instead of
+// rejected. Keep the per-process ceiling low and release idle connections
+// quickly so the pool doesn't sit on connections it isn't using.
+const adapter = new PrismaMariaDb({
+  host: dbUrl.hostname,
+  port: dbUrl.port ? Number(dbUrl.port) : 3306,
+  user: decodeURIComponent(dbUrl.username),
+  password: decodeURIComponent(dbUrl.password),
+  database: dbUrl.pathname.slice(1),
+  connectionLimit: 3,
+  acquireTimeout: 10_000,
+  idleTimeout: 60,
+});
+
+const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 

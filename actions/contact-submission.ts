@@ -32,7 +32,7 @@ const createTransporter = () => {
   });
 };
 
-// Email to client - Text-focused with header/footer cards
+// Email to client - clean, table-based layout for reliable rendering across email clients
 const clientEmailTemplate = (
   formData: ContactFormData,
   submissionId: string,
@@ -41,318 +41,268 @@ const clientEmailTemplate = (
   formattedTime: string
 ) => `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inquiry Confirmation - Kanlyte</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
     body {
-      background-color: #f9fafb;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f4f5f7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
       line-height: 1.6;
       color: #374151;
     }
-    
+
     .container {
       max-width: 600px;
       margin: 0 auto;
       background-color: #ffffff;
     }
-    
-    /* Header Card */
-    .header-card {
-      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-      color: white;
-      padding: 40px 30px;
+
+    .header {
+      background-color: #111827;
+      background-image: linear-gradient(135deg, #111827 0%, #1a2e14 100%);
+      color: #ffffff;
+      padding: 36px 30px;
       text-align: center;
-      border-radius: 0 0 12px 12px;
+      border-top: 4px solid #6ebe45;
     }
-    
+
     .header-logo {
-      font-size: 32px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 8px;
       letter-spacing: 0.5px;
+      color: #6ebe45;
     }
-    
+
     .header-subtitle {
-      font-size: 14px;
-      opacity: 0.9;
-      font-weight: 400;
-      margin-top: -4px;
+      font-size: 13px;
+      color: #d1d5db;
+      margin-top: 4px;
     }
-    
-    /* Main Content */
+
     .content {
       padding: 40px 30px;
     }
-    
+
     .greeting {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 600;
       color: #111827;
-      margin-bottom: 20px;
+      margin: 0 0 16px;
     }
-    
+
     .paragraph {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.7;
       color: #6b7280;
-      margin-bottom: 20px;
+      margin: 0 0 18px;
     }
-    
-    .highlight {
-      color: #111827;
-      font-weight: 500;
-    }
-    
-    .details-box {
-      background-color: #f8fafc;
-      padding: 25px;
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #f0fae8;
       border-radius: 8px;
-      border-left: 4px solid #6EBE45;
-      margin: 30px 0;
+      border-left: 4px solid #6ebe45;
+      margin: 24px 0;
     }
-    
-    .detail-row {
-      margin-bottom: 12px;
-      display: flex;
-    }
-    
-    .detail-label {
-      width: 150px;
-      font-weight: 600;
-      color: #4b5563;
+
+    .details-table td {
+      padding: 10px 20px;
       font-size: 14px;
+      border-bottom: 1px solid #d4edbc;
     }
-    
-    .detail-value {
-      flex: 1;
+
+    .details-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .details-table .label {
+      color: #4b7a2e;
+      width: 40%;
+    }
+
+    .details-table .value {
       color: #111827;
       font-weight: 500;
     }
-    
+
     .reference-id {
-      color: #6EBE45;
+      color: #4f9c2e;
       font-weight: 700;
     }
-    
-    .message-section {
-      margin: 30px 0;
-      padding: 25px;
+
+    .message-box {
+      margin: 24px 0;
+      padding: 20px;
       background-color: #f8fafc;
       border-radius: 8px;
       border: 1px solid #e5e7eb;
     }
-    
+
     .message-label {
       font-weight: 600;
       color: #4b5563;
-      margin-bottom: 10px;
-      font-size: 14px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
-    
+
     .message-content {
       color: #374151;
-      line-height: 1.7;
       white-space: pre-line;
-      background-color: white;
-      padding: 15px;
-      border-radius: 6px;
-      border-left: 3px solid #6EBE45;
+      font-size: 14px;
     }
-    
+
     .button-container {
       text-align: center;
-      margin: 30px 0;
+      margin: 28px 0 8px;
     }
-    
+
     .button {
       display: inline-block;
-      background: linear-gradient(135deg, #6EBE45 0%, #5EA83A 100%);
-      color: white;
-      padding: 14px 32px;
-      border-radius: 8px;
+      background-color: #6ebe45;
+      color: #ffffff;
+      padding: 13px 30px;
+      border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 15px;
-      transition: all 0.3s ease;
+      font-size: 14px;
     }
-    
-    .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(110, 190, 69, 0.3);
-    }
-    
+
     .divider {
       border: none;
       height: 1px;
       background-color: #e5e7eb;
-      margin: 40px 0;
+      margin: 32px 0;
     }
-    
+
     .contact-info {
       text-align: center;
-      margin-top: 30px;
     }
-    
+
     .contact-info p {
-      margin: 8px 0;
+      margin: 6px 0;
       color: #6b7280;
-      font-size: 14px;
+      font-size: 13px;
     }
-    
-    /* Footer Card */
-    .footer-card {
-      background-color: #f8fafc;
-      padding: 30px;
+
+    .footer {
+      background-color: #111827;
+      padding: 24px 30px;
       text-align: center;
-      border-radius: 12px 12px 0 0;
-      border-top: 1px solid #e5e7eb;
+      border-top: 3px solid #6ebe45;
     }
-    
-    .footer-logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 10px;
-    }
-    
+
     .footer-text {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 15px;
-    }
-    
-    .footer-small {
       color: #9ca3af;
-      font-size: 12px;
-      margin-top: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 10px;
     }
-    
+
+    .footer-small {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 14px;
+    }
+
     @media (max-width: 640px) {
-      .content {
-        padding: 30px 20px;
-      }
-      
-      .header-card {
-        padding: 30px 20px;
-      }
-      
-      .detail-row {
-        flex-direction: column;
-        margin-bottom: 15px;
-      }
-      
-      .detail-label {
-        width: 100%;
-        margin-bottom: 4px;
+      .content,
+      .header,
+      .footer {
+        padding-left: 20px;
+        padding-right: 20px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header Card -->
-    <div class="header-card">
-      <div class="header-logo">Kanlyte Uganda</div>
+    <div class="header">
+      <div class="header-logo">KANLYTE UGANDA</div>
       <div class="header-subtitle">Perfectly Digital Solutions</div>
     </div>
-    
-    <!-- Main Content -->
+
     <div class="content">
       <h1 class="greeting">Hi ${formData.fullName},</h1>
-      
+
       <p class="paragraph">
-        Congratulations, your inquiry has been received!
+        Thank you for reaching out to Kanlyte. We've received your inquiry and our team is already reviewing it.
       </p>
-      
-      <p class="paragraph">
-        We're happy to inform you that your message has been processed and your inquiry is confirmed. 
-        You've made a smart decision by choosing our products and services.
-      </p>
-      
-      <!-- Details Box -->
-      <div class="details-box">
-        <div class="detail-row">
-          <div class="detail-label">Reference Number</div>
-          <div class="detail-value reference-id">#${referenceNumber}</div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Submission Date</div>
-          <div class="detail-value">${formattedDate}</div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Service Type</div>
-          <div class="detail-value">${formData.service}</div>
-        </div>
-        
+
+      <table class="details-table" role="presentation" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="label">Reference Number</td>
+          <td class="value reference-id">#${referenceNumber}</td>
+        </tr>
+        <tr>
+          <td class="label">Submission Date</td>
+          <td class="value">${formattedDate}</td>
+        </tr>
+        <tr>
+          <td class="label">Service Type</td>
+          <td class="value">${formData.service}</td>
+        </tr>
         ${
           formData.company
             ? `
-        <div class="detail-row">
-          <div class="detail-label">Company</div>
-          <div class="detail-value">${formData.company}</div>
-        </div>
+        <tr>
+          <td class="label">Company</td>
+          <td class="value">${formData.company}</td>
+        </tr>
         `
             : ""
         }
-      </div>
-      
+      </table>
+
       <p class="paragraph">
-        Our team will review your inquiry and contact you within 24 hours. 
-        We'll discuss your requirements in detail and provide you with a tailored solution.
+        Our team will review your inquiry and get in touch within 24 hours to discuss your requirements and propose a tailored solution.
       </p>
-      
-      <!-- Message Section -->
-      <div class="message-section">
-        <div class="message-label">Your Message:</div>
+
+      <div class="message-box">
+        <div class="message-label">Your Message</div>
         <div class="message-content">${formData.message}</div>
       </div>
-      
+
       <p class="paragraph">
-        If you need immediate assistance, feel free to contact us directly:
+        Need to reach us sooner? We're available directly:
       </p>
-      
+
       <div class="button-container">
-        <a href="tel:+256762534356" class="button">📞 Call Us: +256 762 534 356</a>
+        <a href="tel:+256762534356" class="button">Call +256 762 534 356</a>
       </div>
-      
+
       <hr class="divider" />
-      
+
       <div class="contact-info">
-        <p><strong>Next Steps:</strong> Initial review → Direct contact → Tailored proposal → Project kickoff</p>
+        <p><strong>Next steps:</strong> Initial review &rarr; Direct contact &rarr; Tailored proposal &rarr; Project kickoff</p>
         <p><strong>Email:</strong> info@kanlyte.com</p>
-        <p><strong>Hours:</strong> Mon-Fri, 8:00 AM - 6:00 PM EAT</p>
+        <p><strong>Hours:</strong> Mon&ndash;Fri, 8:00 AM &ndash; 6:00 PM EAT</p>
       </div>
     </div>
-    
-    <!-- Footer Card -->
-    <div class="footer-card">
-      <div class="footer-logo">Kanlyte</div>
+
+    <div class="footer">
       <p class="footer-text">
-        Unleashing the power of software through digital transformation
+        Unleashing the power of software through digital transformation.
       </p>
       <p class="footer-text">
-        You can view your inquiry details by clicking 
+        View your inquiry details
         <a href="${
           process.env.NEXTAUTH_URL || "https://kanlyte.com"
-        }/inquiries/${submissionId}" 
-           style="color: #6EBE45; text-decoration: none; font-weight: 500;">
+        }/inquiries/${submissionId}"
+           style="color: #6ebe45; text-decoration: none; font-weight: 500;">
           here
         </a>.
       </p>
       <p class="footer-small">
-        © ${new Date().getFullYear()} Kanlyte Uganda Limited. All rights reserved.<br>
-        P.O.Box 160188 Kampala, Uganda | www.kanlyte.com
+        &copy; ${new Date().getFullYear()} Kanlyte Uganda Limited. All rights reserved.<br>
+        P.O. Box 160188 Kampala, Uganda &middot; www.kanlyte.com
       </p>
     </div>
   </div>
@@ -360,7 +310,7 @@ const clientEmailTemplate = (
 </html>
 `;
 
-// Email to admin - Text-focused with header/footer cards
+// Email to admin - clean, table-based layout for reliable rendering across email clients
 const adminEmailTemplate = (
   formData: ContactFormData,
   submissionId: string,
@@ -369,390 +319,322 @@ const adminEmailTemplate = (
   formattedTime: string
 ) => `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Inquiry Alert - Kanlyte</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
     body {
-      background-color: #f9fafb;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f4f5f7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
       line-height: 1.6;
       color: #374151;
     }
-    
+
     .container {
       max-width: 600px;
       margin: 0 auto;
       background-color: #ffffff;
     }
-    
-    /* Header Card */
-    .header-card {
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-      color: white;
-      padding: 30px;
+
+    .header {
+      background-color: #111827;
+      background-image: linear-gradient(135deg, #111827 0%, #1a2e14 100%);
+      color: #ffffff;
+      padding: 28px 30px;
       text-align: center;
-      border-radius: 0 0 12px 12px;
+      border-top: 4px solid #6ebe45;
     }
-    
+
     .header-title {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      margin-bottom: 8px;
+      color: #6ebe45;
     }
-    
+
     .header-subtitle {
-      font-size: 14px;
-      opacity: 0.8;
-      font-weight: 400;
-    }
-    
-    .alert-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #6EBE45 0%, #5EA83A 100%);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
       font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #6ebe45;
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
       font-weight: 600;
-      margin-top: 15px;
+      margin-top: 16px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    
-    /* Main Content */
+
     .content {
-      padding: 40px 30px;
+      padding: 36px 30px;
     }
-    
+
     .greeting {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 600;
       color: #111827;
-      margin-bottom: 20px;
+      margin: 0 0 14px;
     }
-    
+
     .paragraph {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.7;
       color: #6b7280;
-      margin-bottom: 20px;
+      margin: 0 0 18px;
     }
-    
-    .highlight {
-      color: #111827;
-      font-weight: 500;
-    }
-    
-    .inquiry-details {
-      margin: 30px 0;
-      padding: 25px;
-      background-color: #f8fafc;
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #f0fae8;
       border-radius: 8px;
-      border-left: 4px solid #ef4444;
+      border-left: 4px solid #6ebe45;
+      margin: 24px 0;
     }
-    
-    .detail-row {
-      margin-bottom: 12px;
-      display: flex;
-    }
-    
-    .detail-label {
-      width: 150px;
-      font-weight: 600;
-      color: #4b5563;
+
+    .details-table td {
+      padding: 10px 20px;
       font-size: 14px;
+      border-bottom: 1px solid #d4edbc;
     }
-    
-    .detail-value {
-      flex: 1;
+
+    .details-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .details-table .label {
+      color: #4b7a2e;
+      width: 38%;
+    }
+
+    .details-table .value {
       color: #111827;
       font-weight: 500;
     }
-    
-    .important-value {
-      color: #ef4444;
-      font-weight: 700;
+
+    .details-table .value a {
+      color: #6ebe45;
+      text-decoration: none;
     }
-    
+
     .reference-id {
-      color: #6EBE45;
+      color: #4f9c2e;
       font-weight: 700;
     }
-    
-    .message-section {
-      margin: 30px 0;
-      padding: 25px;
+
+    .message-box {
+      margin: 24px 0;
+      padding: 20px;
       background-color: #f8fafc;
       border-radius: 8px;
       border: 1px solid #e5e7eb;
     }
-    
+
     .message-label {
       font-weight: 600;
       color: #4b5563;
-      margin-bottom: 10px;
-      font-size: 14px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
-    
+
     .message-content {
       color: #374151;
-      line-height: 1.7;
       white-space: pre-line;
-      background-color: white;
-      padding: 15px;
-      border-radius: 6px;
-      border-left: 3px solid #6EBE45;
+      font-size: 14px;
     }
-    
-    .actions-section {
-      margin: 40px 0;
-      text-align: center;
+
+    .actions {
+      margin: 32px 0 8px;
     }
-    
+
     .actions-title {
       font-weight: 600;
       color: #4b5563;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .action-button {
-      display: inline-block;
-      background: linear-gradient(135deg, #6EBE45 0%, #5EA83A 100%);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
+      margin-bottom: 16px;
       font-size: 14px;
-      transition: all 0.3s ease;
-      min-width: 180px;
       text-align: center;
     }
-    
-    .action-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(110, 190, 69, 0.3);
+
+    .action-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 8px 0;
     }
-    
+
+    .action-button {
+      display: block;
+      background-color: #6ebe45;
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      text-align: center;
+    }
+
     .action-button.secondary {
-      background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+      background-color: #374151;
     }
-    
+
     .divider {
       border: none;
       height: 1px;
       background-color: #e5e7eb;
-      margin: 40px 0;
+      margin: 32px 0;
     }
-    
-    /* Footer Card */
-    .footer-card {
-      background-color: #1f2937;
+
+    .footer {
+      background-color: #111827;
       color: #d1d5db;
-      padding: 30px;
+      padding: 26px 30px;
       text-align: center;
-      border-radius: 12px 12px 0 0;
+      border-top: 3px solid #6ebe45;
     }
-    
-    .footer-logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 15px;
-    }
-    
+
     .footer-text {
       color: #9ca3af;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.6;
-      margin-bottom: 15px;
+      margin: 0 0 8px;
     }
-    
+
     .footer-small {
       color: #6b7280;
       font-size: 12px;
-      margin-top: 20px;
+      margin-top: 14px;
     }
-    
+
     @media (max-width: 640px) {
-      .content {
-        padding: 30px 20px;
+      .content,
+      .header,
+      .footer {
+        padding-left: 20px;
+        padding-right: 20px;
       }
-      
-      .header-card {
-        padding: 25px 20px;
-      }
-      
-      .detail-row {
-        flex-direction: column;
-        margin-bottom: 15px;
-      }
-      
-      .detail-label {
+
+      .action-table,
+      .action-table tbody,
+      .action-table tr,
+      .action-table td {
+        display: block;
         width: 100%;
-        margin-bottom: 4px;
       }
-      
-      .action-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .action-button {
-        width: 100%;
+
+      .action-table td {
+        padding-bottom: 8px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header Card -->
-    <div class="header-card">
+    <div class="header">
       <div class="header-title">New Contact Inquiry</div>
-      <div class="header-subtitle">Kanlyte Uganda - Contact System</div>
-      <div class="alert-badge">⚡ High Priority - Requires Attention</div>
+      <div class="header-subtitle">Kanlyte Uganda &middot; Contact System</div>
+      <div class="badge">Action Required</div>
     </div>
-    
-    <!-- Main Content -->
+
     <div class="content">
-      <h1 class="greeting">New Inquiry Alert</h1>
-      
+      <h1 class="greeting">New inquiry received</h1>
+
       <p class="paragraph">
-        A new inquiry has been submitted through the contact form and requires your attention.
+        A new inquiry has been submitted through the contact form. Please review the details below and respond within 24 hours.
       </p>
-      
-      <p class="paragraph">
-        Please review the details below and respond within 24 hours for optimal customer experience.
-      </p>
-      
-      <!-- Inquiry Details -->
-      <div class="inquiry-details">
-        <div class="detail-row">
-          <div class="detail-label">Reference ID</div>
-          <div class="detail-value reference-id">#${referenceNumber}</div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Submission Time</div>
-          <div class="detail-value">${formattedDate} at ${formattedTime}</div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Contact Name</div>
-          <div class="detail-value important-value">${formData.fullName}</div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Email</div>
-          <div class="detail-value">
-            <a href="mailto:${
-              formData.email
-            }" style="color: #6EBE45; text-decoration: none;">
-              ${formData.email}
-            </a>
-          </div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Phone</div>
-          <div class="detail-value">
-            <a href="tel:${
-              formData.phone
-            }" style="color: #6EBE45; text-decoration: none;">
-              ${formData.phone}
-            </a>
-          </div>
-        </div>
-        
-        <div class="detail-row">
-          <div class="detail-label">Service</div>
-          <div class="detail-value important-value">${formData.service}</div>
-        </div>
-        
+
+      <table class="details-table" role="presentation" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="label">Reference ID</td>
+          <td class="value reference-id">#${referenceNumber}</td>
+        </tr>
+        <tr>
+          <td class="label">Submitted</td>
+          <td class="value">${formattedDate} at ${formattedTime}</td>
+        </tr>
+        <tr>
+          <td class="label">Contact Name</td>
+          <td class="value">${formData.fullName}</td>
+        </tr>
+        <tr>
+          <td class="label">Email</td>
+          <td class="value"><a href="mailto:${formData.email}">${
+            formData.email
+          }</a></td>
+        </tr>
+        <tr>
+          <td class="label">Phone</td>
+          <td class="value"><a href="tel:${formData.phone}">${
+            formData.phone
+          }</a></td>
+        </tr>
+        <tr>
+          <td class="label">Service</td>
+          <td class="value">${formData.service}</td>
+        </tr>
         ${
           formData.company
             ? `
-        <div class="detail-row">
-          <div class="detail-label">Company</div>
-          <div class="detail-value">${formData.company}</div>
-        </div>
+        <tr>
+          <td class="label">Company</td>
+          <td class="value">${formData.company}</td>
+        </tr>
         `
             : ""
         }
-        
-        <div class="detail-row">
-          <div class="detail-label">Newsletter</div>
-          <div class="detail-value">
-            ${formData.subscribe ? "✅ Subscribed" : "❌ Not Subscribed"}
-          </div>
-        </div>
-      </div>
-      
-      <!-- Message Section -->
-      <div class="message-section">
-        <div class="message-label">Client's Message:</div>
+        <tr>
+          <td class="label">Newsletter</td>
+          <td class="value">${
+            formData.subscribe ? "Subscribed" : "Not subscribed"
+          }</td>
+        </tr>
+      </table>
+
+      <div class="message-box">
+        <div class="message-label">Client's Message</div>
         <div class="message-content">${formData.message}</div>
       </div>
-      
-      <p class="paragraph">
-        This inquiry has been marked as high priority. The client expects a response within 24 hours.
-      </p>
-      
-      <!-- Actions -->
-      <div class="actions-section">
+
+      <div class="actions">
         <div class="actions-title">Quick Actions</div>
-        <div class="action-buttons">
-          <a href="mailto:${formData.email}" class="action-button">
-            ✉️ Reply via Email
-          </a>
-          <a href="tel:${formData.phone}" class="action-button secondary">
-            📞 Call Client
-          </a>
-          ${
-            process.env.NEXTAUTH_URL
-              ? `
-          <a href="${process.env.NEXTAUTH_URL}/admin/contacts/${submissionId}" class="action-button">
-            🔍 View Details
-          </a>
-          `
-              : ""
-          }
-        </div>
+        <table class="action-table" role="presentation" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="33%"><a href="mailto:${
+              formData.email
+            }" class="action-button">Reply by Email</a></td>
+            <td width="33%"><a href="tel:${
+              formData.phone
+            }" class="action-button secondary">Call Client</a></td>
+            ${
+              process.env.NEXTAUTH_URL
+                ? `<td width="33%"><a href="${process.env.NEXTAUTH_URL}/admin/contacts/${submissionId}" class="action-button secondary">View in Dashboard</a></td>`
+                : ""
+            }
+          </tr>
+        </table>
       </div>
-      
+
       <hr class="divider" />
-      
-      <p class="paragraph">
-        <strong>Note:</strong> This is an automated notification from Kanlyte Contact System.
+
+      <p class="paragraph" style="margin-bottom: 0;">
+        This is an automated notification from the Kanlyte contact system.
       </p>
     </div>
-    
-    <!-- Footer Card -->
-    <div class="footer-card">
-      <div class="footer-logo">Kanlyte Admin</div>
-      <p class="footer-text">
-        Automated notification system for contact inquiries
-      </p>
-      <p class="footer-text">
-        System ID: ${submissionId} | Priority: High
-      </p>
+
+    <div class="footer">
+      <p class="footer-text">System ID: ${submissionId}</p>
       <p class="footer-small">
-        © ${new Date().getFullYear()} Kanlyte Uganda Limited<br>
+        &copy; ${new Date().getFullYear()} Kanlyte Uganda Limited<br>
         Please respond within 24 hours
       </p>
     </div>
@@ -802,7 +684,7 @@ async function sendEmailNotifications(
   const adminMailOptions = {
     from: `"Kanlyte Contact System" <${process.env.EMAIL_FROM}>`,
     to: process.env.ADMIN_EMAIL,
-    subject: `📋 New Inquiry: ${formData.subject} - ${referenceNumber}`,
+    subject: `New Inquiry: ${formData.subject} - ${referenceNumber}`,
     html: adminEmailTemplate(
       formData,
       submissionId,

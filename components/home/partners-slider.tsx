@@ -7,10 +7,11 @@ import Image from "next/image";
 import { usePartners } from "@/content-manager/hooks/usePartners";
 
 const FALLBACK_PARTNERS = [
-  { id: "1", name: "Tuchi Online Shop", logo: "/logos/tuchi-shop.png" },
-  { id: "2", name: "Lira University - The Beacon", logo: "/logos/lira-uni.png" },
-  { id: "3", name: "You Screen Uganda", logo: "/logos/youscreen.png" },
-  { id: "4", name: "Thermosnoop Uganda", logo: "/logos/thermosnoop.png" },
+  { id: "1", name: "Lira University", logo: "/logos/lira-uni.png" },
+  { id: "2", name: "Thermosnoop", logo: "/logos/thermosnoop.png" },
+  { id: "3", name: "Oyster Productions", logo: "" },
+  { id: "4", name: "Base Volt and Wak Innovations", logo: "" },
+  { id: "5", name: "Buggade Sacco", logo: "" },
 ];
 
 export function PartnersSlider() {

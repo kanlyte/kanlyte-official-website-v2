@@ -113,7 +113,7 @@
 /* Theme Configuration */
 @theme inline {
   /* Typography */
-  --font-sans: "Geist", "Geist Fallback";
+  --font-sans: "Manrope Variable", "Manrope", sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
 
   /* Color Mapping */

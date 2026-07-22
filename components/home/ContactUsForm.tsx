@@ -25,10 +25,10 @@ import { submitContactForm } from "@/actions/contact-submission";
 import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
 
 const FALLBACK = {
-  phone: "+256 200 929 550",
-  email: "kanlyteug@gmail.com",
-  address: "Kampala, Uganda",
-  schedule: "Mon-Fri, 8am-6pm EAT",
+  phone: "(+256) 200 929 550",
+  email: "info@kanlyte.com",
+  address: "Robert Mugabe Rd, Kampala",
+  schedule: "Mon to Sat - 08:00am to 06:00pm",
 };
 
 // Define the form schema with Zod (matching server schema) - REMOVED agreeToTerms

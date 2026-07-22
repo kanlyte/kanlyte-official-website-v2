@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import "dotenv/config";
+import { fileURLToPath } from "node:url";
+import { prisma } from "../../lib/prisma";
 
 const pricingPlans = [
   // ── odoo ──────────────────────────────────────────────────────────────────
@@ -326,7 +326,7 @@ const pricingPlans = [
   },
 ];
 
-async function main() {
+export async function seedPricingPlans() {
   console.log("Seeding pricing plans...");
   let created = 0;
   let skipped = 0;
@@ -354,6 +354,9 @@ async function main() {
   console.log(`\nPricing plans done — ${created} created, ${skipped} skipped.`);
 }
 
-main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(() => prisma.$disconnect());
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isDirectRun) {
+  seedPricingPlans()
+    .catch((e) => { console.error(e); process.exit(1); })
+    .finally(() => prisma.$disconnect());
+}
