@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "free", title: "Tenant Free", description: "Find your space at no cost — forever.", priceUGX: "Free", priceUSD: "Free", buttonText: "Download App", features: ["Browse all listings", "Save favourites", "Direct messaging", "Map view", "Push notifications"] },
-  { tier: "basic", title: "Landlord Basic", description: "List and manage your properties.", priceUGX: "500,000 UGX", priceUSD: "$135", isPopular: true, buttonText: "Get Started", features: ["Up to 5 listings", "Photo galleries", "Booking management", "Tenant messaging", "Basic analytics"] },
-  { tier: "pro", title: "Landlord Pro", description: "For agents & property managers.", priceUGX: "1,200,000 UGX", priceUSD: "$324", buttonText: "Contact Sales", features: ["Unlimited listings", "Priority placement", "Advanced analytics", "Verified badge", "Dedicated support"] },
+  { tier: "free", title: "Tenant Free", description: "Find your space at no cost — forever.", priceUGX: "Free", priceUSD: "Free", priceUGXMonthly: "Free", priceUSDMonthly: "Free", buttonText: "Download App", features: ["Browse all listings", "Save favourites", "Direct messaging", "Map view", "Push notifications"] },
+  { tier: "basic", title: "Landlord Basic", description: "List and manage your properties.", priceUGX: "500,000 UGX", priceUSD: "$135", priceUGXMonthly: "50,000 UGX", priceUSDMonthly: "$14", isPopular: true, buttonText: "Get Started", features: ["Up to 5 listings", "Photo galleries", "Booking management", "Tenant messaging", "Basic analytics"] },
+  { tier: "pro", title: "Landlord Pro", description: "For agents & property managers.", priceUGX: "1,200,000 UGX", priceUSD: "$324", priceUGXMonthly: "120,000 UGX", priceUSDMonthly: "$32", buttonText: "Contact Sales", features: ["Unlimited listings", "Priority placement", "Advanced analytics", "Verified badge", "Dedicated support"] },
 ];
 
 export function LytePricing() {

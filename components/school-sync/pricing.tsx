@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "starter", title: "Starter", description: "Perfect for small schools getting started.", priceUGX: "1,500,000 UGX", priceUSD: "$417", buttonText: "Get Started", features: ["Up to 200 students", "Student & fee management", "Basic attendance tracking", "Parent SMS notifications", "Email support", "1 campus"] },
-  { tier: "standard", title: "Standard", description: "For growing schools with more needs.", priceUGX: "3,000,000 UGX", priceUSD: "$833", isPopular: true, buttonText: "Buy Now", features: ["Up to 1,000 students", "Full academic management", "Timetabling & exams", "Parent portal", "Priority support", "2 campuses"] },
-  { tier: "pro", title: "Pro", description: "Enterprise-grade for large institutions.", priceUGX: "5,000,000 UGX", priceUSD: "$1,389", buttonText: "Contact Sales", features: ["Unlimited students", "Multi-campus support", "Advanced analytics", "Custom report cards", "API access & integrations", "Dedicated support"] },
+  { tier: "starter", title: "Starter", description: "Perfect for small schools getting started.", priceUGX: "1,500,000 UGX", priceUSD: "$417", priceUGXMonthly: "150,000 UGX", priceUSDMonthly: "$42", buttonText: "Get Started", features: ["Up to 200 students", "Student & fee management", "Basic attendance tracking", "Parent SMS notifications", "Email support", "1 campus"] },
+  { tier: "standard", title: "Standard", description: "For growing schools with more needs.", priceUGX: "3,000,000 UGX", priceUSD: "$833", priceUGXMonthly: "300,000 UGX", priceUSDMonthly: "$83", isPopular: true, buttonText: "Buy Now", features: ["Up to 1,000 students", "Full academic management", "Timetabling & exams", "Parent portal", "Priority support", "2 campuses"] },
+  { tier: "pro", title: "Pro", description: "Enterprise-grade for large institutions.", priceUGX: "5,000,000 UGX", priceUSD: "$1,389", priceUGXMonthly: "500,000 UGX", priceUSDMonthly: "$139", buttonText: "Contact Sales", features: ["Unlimited students", "Multi-campus support", "Advanced analytics", "Custom report cards", "API access & integrations", "Dedicated support"] },
 ];
 
 export function SchoolSyncPricing() {

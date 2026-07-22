@@ -1,15 +1,10 @@
 import { QueryProvider } from "@/providers/ReactQueryClient";
 import type React from "react";
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import "@fontsource-variable/manrope";
 import { Toaster } from "sonner";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title:
@@ -30,12 +25,13 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
-      { url: "/logos/logo-transparent.png", type: "image/png" },
-      { url: "/logos/logo-transparent.png", sizes: "32x32", type: "image/png" },
-      { url: "/logos/logo-transparent.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
-    apple: "/logos/logo-transparent.png",
-    shortcut: "/logos/logo-transparent.png",
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+    other: { rel: "manifest", url: "/site.webmanifest" },
   },
   openGraph: {
     title: "Kanlyte Uganda Limited - Tech Solutions",
@@ -75,7 +71,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={manrope.className}>
+      <body className="font-sans">
         {/* <Header /> */}
         <Toaster richColors />
         <QueryProvider>

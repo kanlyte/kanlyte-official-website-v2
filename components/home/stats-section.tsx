@@ -12,10 +12,10 @@ const FALLBACK_STATS = [
 
 const FALLBACK_BRANDS = [
   { id: "1", name: "Lira University", logo: "" },
-  // { id: "2", name: "Tuchi Shop", logo: "" },
-  { id: "3", name: "Thermosnoop", logo: "" },
-  { id: "4", name: "Oyster", logo: "" },
-  // { id: "5", name: "You Screen", logo: "" },
+  { id: "2", name: "Thermosnoop", logo: "" },
+  { id: "3", name: "Oyster Productions", logo: "" },
+  { id: "4", name: "Base Volt and Wak Innovations", logo: "" },
+  { id: "5", name: "Buggade Sacco", logo: "" },
 ];
 
 export function StatsSection() {

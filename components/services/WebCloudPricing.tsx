@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "starter", title: "Starter", description: "For small businesses & blogs.", priceUGX: "800,000 UGX", priceUSD: "$216", buttonText: "Get Started", features: ["1 website", "5 GB storage", "Free SSL certificate", "Business email (2 accounts)", "99.9% uptime", "Email support"] },
-  { tier: "business", title: "Business", description: "For growing businesses.", priceUGX: "2,000,000 UGX", priceUSD: "$540", isPopular: true, buttonText: "Buy Now", features: ["Up to 5 websites", "50 GB SSD storage", "Free SSL + CDN", "Business email (20 accounts)", "Daily backups", "Priority support"] },
-  { tier: "enterprise", title: "Enterprise", description: "High-traffic & mission-critical.", priceUGX: "5,000,000 UGX", priceUSD: "$1,350", buttonText: "Contact Sales", features: ["Unlimited websites", "500 GB SSD storage", "Dedicated IP & CDN", "Unlimited email accounts", "24/7 monitoring", "Dedicated support"] },
+  { tier: "starter", title: "Starter", description: "For small businesses & blogs.", priceUGX: "800,000 UGX", priceUSD: "$216", priceUGXMonthly: "80,000 UGX", priceUSDMonthly: "$22", buttonText: "Get Started", features: ["1 website", "5 GB storage", "Free SSL certificate", "Business email (2 accounts)", "99.9% uptime", "Email support"] },
+  { tier: "business", title: "Business", description: "For growing businesses.", priceUGX: "2,000,000 UGX", priceUSD: "$540", priceUGXMonthly: "200,000 UGX", priceUSDMonthly: "$54", isPopular: true, buttonText: "Buy Now", features: ["Up to 5 websites", "50 GB SSD storage", "Free SSL + CDN", "Business email (20 accounts)", "Daily backups", "Priority support"] },
+  { tier: "enterprise", title: "Enterprise", description: "High-traffic & mission-critical.", priceUGX: "5,000,000 UGX", priceUSD: "$1,350", priceUGXMonthly: "500,000 UGX", priceUSDMonthly: "$135", buttonText: "Contact Sales", features: ["Unlimited websites", "500 GB SSD storage", "Dedicated IP & CDN", "Unlimited email accounts", "24/7 monitoring", "Dedicated support"] },
 ];
 
 export function WebCloudPricing() {

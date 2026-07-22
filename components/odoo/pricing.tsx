@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "community", title: "Odoo Community", description: "Open source, self-hosted version.", priceUGX: "900,000 UGX", priceUSD: "$243", buttonText: "Get Started Now", features: ["Full Odoo Community Edition", "Self-hosted (On-premise)", "Unlimited users", "All community apps included", "Community support", "Customization at agreed cost"] },
-  { tier: "standard", title: "Standard", description: "Basic Odoo Online plan — per user.", priceUGX: "1,200,000 UGX", priceUSD: "$324", isPopular: true, buttonText: "Buy Now", features: ["Access to all standard apps", "Odoo Online hosting", "Standard support", "One Company per database", "No Integrations", "Basic customization"] },
-  { tier: "custom", title: "Custom", description: "Enterprise-grade solution — per user.", priceUGX: "1,700,000 UGX", priceUSD: "$459", buttonText: "Contact Sales", features: ["All apps + Odoo Studio", "Odoo Online/On-premise", "Multi-company ready", "External API access", "One-time implementation fee", "Priority support"] },
+  { tier: "community", title: "Odoo Community", description: "Open source, self-hosted version.", priceUGX: "900,000 UGX", priceUSD: "$243", priceUGXMonthly: "100,000 UGX", priceUSDMonthly: "$27", buttonText: "Get Started Now", features: ["Full Odoo Community Edition", "Self-hosted (On-premise)", "Unlimited users", "All community apps included", "Community support", "Customization at agreed cost"] },
+  { tier: "standard", title: "Standard", description: "Basic Odoo Online plan — per user.", priceUGX: "1,200,000 UGX", priceUSD: "$324", priceUGXMonthly: "130,000 UGX", priceUSDMonthly: "$35", isPopular: true, buttonText: "Buy Now", features: ["Access to all standard apps", "Odoo Online hosting", "Standard support", "One Company per database", "No Integrations", "Basic customization"] },
+  { tier: "custom", title: "Custom", description: "Enterprise-grade solution — per user.", priceUGX: "1,700,000 UGX", priceUSD: "$459", priceUGXMonthly: "185,000 UGX", priceUSDMonthly: "$50", buttonText: "Contact Sales", features: ["All apps + Odoo Studio", "Odoo Online/On-premise", "Multi-company ready", "External API access", "One-time implementation fee", "Priority support"] },
 ];
 
 export function Pricing() {

@@ -5,9 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PricingCards } from "@/components/pricing/pricing-cards";
 
 const FALLBACK_PLANS = [
-  { tier: "individual", title: "Individual", description: "For self-paced learners.", priceUGX: "1,500,000 UGX", priceUSD: "$405", buttonText: "Enroll Now", features: ["Access to 1 course track", "Hands-on lab exercises", "Certificate of completion", "Community forum access", "Email support"] },
-  { tier: "team", title: "Team", description: "For small teams (up to 10).", priceUGX: "5,000,000 UGX", priceUSD: "$1,350", isPopular: true, buttonText: "Get Started", features: ["Access to all course tracks", "Instructor-led sessions", "Team progress dashboard", "Recognised certificates", "Priority support", "Custom schedule"] },
-  { tier: "corporate", title: "Corporate", description: "Tailored programmes for organisations.", priceUGX: "Custom", priceUSD: "Custom", buttonText: "Request a Quote", features: ["Unlimited staff", "On-site or remote delivery", "Custom curriculum", "Mentorship & coaching", "Progress reporting", "Dedicated trainer"] },
+  { tier: "individual", title: "Individual", description: "For self-paced learners.", priceUGX: "1,500,000 UGX", priceUSD: "$405", priceUGXMonthly: "150,000 UGX", priceUSDMonthly: "$41", buttonText: "Enroll Now", features: ["Access to 1 course track", "Hands-on lab exercises", "Certificate of completion", "Community forum access", "Email support"] },
+  { tier: "team", title: "Team", description: "For small teams (up to 10).", priceUGX: "5,000,000 UGX", priceUSD: "$1,350", priceUGXMonthly: "500,000 UGX", priceUSDMonthly: "$135", isPopular: true, buttonText: "Get Started", features: ["Access to all course tracks", "Instructor-led sessions", "Team progress dashboard", "Recognised certificates", "Priority support", "Custom schedule"] },
+  { tier: "corporate", title: "Corporate", description: "Tailored programmes for organisations.", priceUGX: "Custom", priceUSD: "Custom", priceUGXMonthly: "Custom", priceUSDMonthly: "Custom", buttonText: "Request a Quote", features: ["Unlimited staff", "On-site or remote delivery", "Custom curriculum", "Mentorship & coaching", "Progress reporting", "Dedicated trainer"] },
 ];
 
 export function ICTTrainingPricing() {

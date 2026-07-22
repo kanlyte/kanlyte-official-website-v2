@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import "dotenv/config";
+import { fileURLToPath } from "node:url";
+import { prisma } from "../../lib/prisma";
 
 // Monthly prices to add to existing plans
 const monthlyPrices: Record<string, Record<string, { priceUGXMonthly: string; priceUSDMonthly: string }>> = {
@@ -41,7 +41,7 @@ const monthlyPrices: Record<string, Record<string, { priceUGXMonthly: string; pr
   },
 };
 
-async function main() {
+export async function seedMonthlyPrices() {
   console.log("Adding monthly prices to existing pricing plans...");
   let updated = 0;
   let skipped = 0;
@@ -71,6 +71,9 @@ async function main() {
   console.log(`\nMonthly prices done — ${updated} updated, ${skipped} skipped.`);
 }
 
-main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(() => prisma.$disconnect());
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isDirectRun) {
+  seedMonthlyPrices()
+    .catch((e) => { console.error(e); process.exit(1); })
+    .finally(() => prisma.$disconnect());
+}
