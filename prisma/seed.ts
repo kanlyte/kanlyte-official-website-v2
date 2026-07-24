@@ -8,6 +8,7 @@ import { seedAdmin } from "./seeds/seed-admin";
 import { seedHeroSlides } from "./seeds/seed-hero-slides";
 import { seedStats } from "./seeds/seed-stats";
 import { seedServices } from "./seeds/seed-services";
+import { seedProducts } from "./seeds/seed-products";
 import { seedProjects } from "./seeds/seed-projects";
 import { seedProcessSteps } from "./seeds/seed-process-steps";
 import { seedFAQs } from "./seeds/seed-faqs";
@@ -27,6 +28,7 @@ async function main() {
   await seedHeroSlides();
   await seedStats();
   await seedServices();
+  await seedProducts();
   await seedProjects();
   await seedProcessSteps();
   await seedFAQs();

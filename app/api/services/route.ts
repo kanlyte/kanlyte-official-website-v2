@@ -4,6 +4,9 @@ import { ok, created, handleError } from "@/lib/api-response";
 
 export async function GET(req: NextRequest) {
   try {
+    const slug = req.nextUrl.searchParams.get("slug");
+    if (slug) return ok(await serviceService.getBySlug(slug));
+
     const activeOnly = req.nextUrl.searchParams.get("active") === "true";
     const data = activeOnly
       ? await serviceService.getActive()

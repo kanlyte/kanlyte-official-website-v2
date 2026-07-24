@@ -6,22 +6,22 @@ import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const footerLinks = {
   company: [
+    { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
-    { label: "Our Team", href: "/about-us" },
-    { label: "Careers", href: "#" },
-    { label: "Contact", href: "/contact-us" },
+    { label: "Careers", href: "/careers" },
+    { label: "Contact Us", href: "/contact-us" },
+    { label: "News", href: "/news" },
   ],
   services: [
-    { label: "Web Development", href: "/web-development" },
-    { label: "Mobile Apps", href: "/app-development" },
-    { label: "E-commerce", href: "/projects" },
-    { label: "Custom Solutions", href: "/odoo" },
+    { label: "Research & Innovation", href: "/services/research-innovation" },
+    { label: "Web & Cloud Services", href: "/services/web-cloud" },
+    { label: "Software Development", href: "/services/software-development" },
+    { label: "ICT Training & Consultancy", href: "/services/ict-training" },
   ],
-  learning: [
-    { label: "Coding School", href: "#" },
-    { label: "Free Courses", href: "https://www.youtube.com/@kanlyteug" },
-    { label: "YouTube Channel", href: "https://www.youtube.com/@kanlyteug" },
-    { label: "Blog", href: "#blog" },
+  products: [
+    { label: "School Sync", href: "/products/school-sync" },
+    { label: "Lyte App", href: "/products/lyte" },
+    { label: "Odoo ERP", href: "/products/odoo" },
   ],
 };
 
@@ -41,8 +41,8 @@ export function Footer() {
               </span>
             </div>
             <p className="text-gray-400 text-sm mb-6 max-w-sm">
-              Leveraging Technology to transform businesses with innovative web
-              and mobile solutions across Uganda and beyond.
+              Unleashing the power of software through a comprehensive digital
+              transformation.
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
@@ -93,9 +93,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Learning</h3>
+            <h3 className="text-white font-semibold mb-4">Products</h3>
             <ul className="space-y-3">
-              {footerLinks.learning.map((link) => (
+              {footerLinks.products.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -114,25 +114,19 @@ export function Footer() {
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} Kanlyte Uganda. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm">
-            <Link
-              href="#privacy"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#terms"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="#cookies"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Cookie Policy
-            </Link>
+          <div className="flex gap-4">
+            {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
+              <a
+                key={social.id}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit our ${social.platform} page`}
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#6EBE45] flex items-center justify-center transition-colors"
+              >
+                <DynamicIcon name={social.icon} className="w-4 h-4 text-gray-300" />
+              </a>
+            ))}
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export function ProjectsSection() {
   const total = projects.length;
 
   return (
-    <section className="py-24 bg-white">
+    <section id="projects" className="py-24 bg-white scroll-mt-24">
       <div className="mx-8 md:mx-14 lg:mx-20 xl:mx-28 2xl:mx-auto 2xl:max-w-6xl">
         <div className="flex items-center justify-between mb-12">
           <div>

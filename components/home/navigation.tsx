@@ -4,27 +4,38 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight, Menu, X, Search } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useProducts } from "@/content-manager/hooks/useProducts";
+import { useServices } from "@/content-manager/hooks/useServices";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
+  const [isMobileResourcesOpen, setIsMobileResourcesOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
   const productsRef = useRef<HTMLDivElement>(null);
+  const resourcesRef = useRef<HTMLDivElement>(null);
 
-  const products = [
-    { title: "Odoo ERP", href: "/products/odoo", desc: "All-in-one business management" },
-    { title: "School Sync", href: "/products/school-sync", desc: "School management system" },
-    { title: "Lyte App", href: "/products/lyte", desc: "Hostel & house booking" },
-  ];
+  const { data: dbProducts } = useProducts(true);
+  const products = (dbProducts ?? []).map((p: { title: string; slug: string }) => ({
+    title: p.title,
+    href: `/products/${p.slug}`,
+  }));
 
-  const services = [
-    { title: "Research & Innovation", href: "/services/research-innovation", desc: "AI, IoT & digital transformation" },
-    { title: "Web & Cloud Services", href: "/services/web-cloud", desc: "Hosting, websites & email" },
-    { title: "Software Development", href: "/services/software-development", desc: "Custom software & mobile apps" },
-    { title: "ICT Training & Consultancy", href: "/services/ict-training", desc: "Training & technology advisory" },
+  const { data: dbServices } = useServices(true);
+  const services = (dbServices ?? [])
+    .filter((s: { featured: boolean }) => s.featured)
+    .map((s: { title: string; slug: string }) => ({ title: s.title, href: `/services/${s.slug}` }));
+
+  const resources = [
+    { title: "Projects", href: "/#projects" },
+    { title: "News", href: "/news" },
+    { title: "Careers", href: "/careers" },
+    { title: "Gallery", href: "/gallery" },
+    { title: "FAQ", href: "/#faq" },
   ];
 
   useEffect(() => {
@@ -34,6 +45,9 @@ export function Navbar() {
       }
       if (productsRef.current && !productsRef.current.contains(event.target as Node)) {
         setIsProductsOpen(false);
+      }
+      if (resourcesRef.current && !resourcesRef.current.contains(event.target as Node)) {
+        setIsResourcesOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -113,6 +127,30 @@ export function Navbar() {
                       className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
                       onClick={() => setIsServicesOpen(false)}>
                       <span className="font-medium text-slate-900 hover:text-[#6EBE45] text-sm">{s.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Resources Dropdown */}
+            <div className="relative" ref={resourcesRef}
+              onMouseEnter={() => { setIsResourcesOpen(true); setIsProductsOpen(false); setIsServicesOpen(false); }}
+              onMouseLeave={() => setIsResourcesOpen(false)}
+            >
+              <button
+                className="flex items-center gap-1 text-sm font-medium text-slate-700 transition-colors hover:text-[#6EBE45] px-3 py-2 rounded-lg hover:bg-slate-50"
+              >
+                Resources
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isResourcesOpen ? "rotate-180" : ""}`} />
+              </button>
+              {isResourcesOpen && (
+                <div className="absolute left-0 top-full w-48 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                  {resources.map((r) => (
+                    <Link key={r.title} href={r.href}
+                      className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
+                      onClick={() => setIsResourcesOpen(false)}>
+                      <span className="font-medium text-slate-900 hover:text-[#6EBE45] text-sm">{r.title}</span>
                     </Link>
                   ))}
                 </div>
@@ -206,6 +244,28 @@ export function Navbar() {
                           className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}>
                           <span className="font-medium text-slate-900 text-sm">{s.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Resources Mobile */}
+                <div className="space-y-1">
+                  <button
+                    onClick={() => setIsMobileResourcesOpen(!isMobileResourcesOpen)}
+                    className="flex w-full items-center justify-between rounded-lg px-4 py-3.5 text-base font-medium text-slate-900 hover:bg-slate-50 transition-colors"
+                  >
+                    <span>Resources</span>
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isMobileResourcesOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {isMobileResourcesOpen && (
+                    <div className="ml-4 space-y-1 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 p-3 animate-in fade-in">
+                      {resources.map((r) => (
+                        <Link key={r.title} href={r.href}
+                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}>
+                          <span className="font-medium text-slate-900 text-sm">{r.title}</span>
                         </Link>
                       ))}
                     </div>

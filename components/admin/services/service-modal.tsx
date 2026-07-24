@@ -31,23 +31,26 @@ export function ServiceModal() {
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateServiceInput>({
     resolver: zodResolver(CreateServiceSchema),
-    defaultValues: { title: "", description: "", icon: "", order: 0, isActive: true },
+    defaultValues: { title: "", slug: "", description: "", icon: "", featured: false, order: 0, isActive: true },
   });
 
   const isActive = watch("isActive");
+  const featured = watch("featured");
   const icon = watch("icon");
 
   useEffect(() => {
     if (isEdit && record) {
       reset({
         title: record.title as string,
+        slug: (record.slug as string) ?? "",
         description: record.description as string,
         icon: record.icon as string,
+        featured: (record.featured as boolean) ?? false,
         order: record.order as number,
         isActive: record.isActive as boolean,
       });
     } else if (isCreate) {
-      reset({ title: "", description: "", icon: "", order: 0, isActive: true });
+      reset({ title: "", slug: "", description: "", icon: "", featured: false, order: 0, isActive: true });
     }
   }, [isEdit, isCreate, record, reset]);
 
@@ -74,10 +77,16 @@ export function ServiceModal() {
                 {errors.title && <p className="text-destructive text-xs">{errors.title.message}</p>}
               </div>
               <div className="space-y-1">
-                <Label htmlFor="order" className="text-xs">Order</Label>
-                <Input id="order" type="number" className="h-8 text-sm" {...register("order", { valueAsNumber: true })} />
-                {errors.order && <p className="text-destructive text-xs">{errors.order.message}</p>}
+                <Label htmlFor="slug" className="text-xs">Slug</Label>
+                <Input id="slug" placeholder="software-development" className="h-8 text-sm" {...register("slug")} />
+                {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="order" className="text-xs">Order</Label>
+              <Input id="order" type="number" className="h-8 text-sm w-32" {...register("order", { valueAsNumber: true })} />
+              {errors.order && <p className="text-destructive text-xs">{errors.order.message}</p>}
             </div>
 
             <div className="space-y-1">
@@ -93,11 +102,20 @@ export function ServiceModal() {
               error={errors.icon?.message}
             />
 
-            <div className="space-y-1">
-              <Label className="text-xs">Status</Label>
-              <div className="flex items-center gap-2 h-8">
-                <Switch id="isActive" checked={isActive} onCheckedChange={(v) => setValue("isActive", v)} />
-                <span className="text-sm text-muted-foreground">{isActive ? "Active" : "Inactive"}</span>
+            <div className="grid grid-cols-2 gap-x-4">
+              <div className="space-y-1">
+                <Label className="text-xs">Status</Label>
+                <div className="flex items-center gap-2 h-8">
+                  <Switch id="isActive" checked={isActive} onCheckedChange={(v) => setValue("isActive", v)} />
+                  <span className="text-sm text-muted-foreground">{isActive ? "Active" : "Inactive"}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">Featured in navbar</Label>
+                <div className="flex items-center gap-2 h-8">
+                  <Switch id="featured" checked={featured} onCheckedChange={(v) => setValue("featured", v)} />
+                  <span className="text-sm text-muted-foreground">{featured ? "Featured" : "Not featured"}</span>
+                </div>
               </div>
             </div>
           </div>

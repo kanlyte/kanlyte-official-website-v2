@@ -18,6 +18,11 @@ import {
   Phone,
   FileText,
   Grid3X3,
+  Newspaper,
+  BriefcaseBusiness,
+  GalleryHorizontal,
+  Send,
+  Package,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -59,6 +64,7 @@ export const sidebarItems: NavGroup[] = [
       { title: "Hero Slides", url: "/admin/hero-slides", icon: Images },
       { title: "Stats", url: "/admin/stats", icon: BarChart2 },
       { title: "Services", url: "/admin/services", icon: Briefcase },
+      { title: "Products", url: "/admin/products", icon: Package },
       { title: "Projects", url: "/admin/projects", icon: FolderKanban },
       { title: "Process Steps", url: "/admin/process-steps", icon: ListOrdered },
       { title: "FAQs", url: "/admin/faqs", icon: HelpCircle },
@@ -73,6 +79,16 @@ export const sidebarItems: NavGroup[] = [
       { title: "Team Members", url: "/admin/team-members", icon: Users },
       { title: "Testimonials", url: "/admin/testimonials", icon: MessageSquareQuote },
       { title: "Milestones", url: "/admin/milestones", icon: Milestone },
+    ],
+  },
+  {
+    id: 8,
+    label: "Resources",
+    items: [
+      { title: "News & Updates", url: "/admin/news-posts", icon: Newspaper },
+      { title: "Careers", url: "/admin/careers", icon: BriefcaseBusiness },
+      { title: "Gallery", url: "/admin/gallery-images", icon: GalleryHorizontal },
+      { title: "Newsletter Subscribers", url: "/admin/newsletter-subscribers", icon: Send },
     ],
   },
   {

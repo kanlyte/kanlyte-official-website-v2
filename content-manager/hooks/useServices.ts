@@ -25,6 +25,14 @@ export function useService(id: string) {
   });
 }
 
+export function useServiceBySlug(slug: string) {
+  return useQuery({
+    queryKey: [KEY, "slug", slug],
+    queryFn: () => fetchJSON(`${BASE}?slug=${slug}`),
+    enabled: !!slug,
+  });
+}
+
 export function useCreateService() {
   const qc = useQueryClient();
   return useMutation({

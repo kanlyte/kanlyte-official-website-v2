@@ -22,7 +22,7 @@ export function PartnersSlider() {
     <section className="py-16 bg-white text-center">
       <div className="container px-4">
         <h2 className="text-[#6EBE45] font-bold text-lg mb-4 tracking-wide">
-          OUR PARTNERS AND BENEFACTORS
+          OUR CLIENT BASE
         </h2>
         <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed mb-12">
           We are proud to collaborate with esteemed partners who share our

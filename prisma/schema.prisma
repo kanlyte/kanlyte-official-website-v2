@@ -67,13 +67,31 @@ model Stat {
 model Service {
   id          String  @id @default(cuid())
   title       String
+  slug        String?
   description String
   icon        String  // lucide icon name e.g. "Code"
+  featured    Boolean @default(false)
   order       Int
   isActive    Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@index([slug])
   @@map("service")
+}
+
+// ─── Products ───────────────────────────────────────────────────────────────
+model Product {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  description String
+  icon        String  // lucide icon name e.g. "Cpu"
+  order       Int
+  isActive    Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@index([slug])
+  @@map("product")
 }
 
 // ─── Projects Section ───────────────────────────────────────────────────────
@@ -338,6 +356,60 @@ model Verification {
   updatedAt  DateTime? @map("updatedat")
 
   @@map("verification")
+}
+
+// ─── News & Updates ─────────────────────────────────────────────────────────
+model NewsPost {
+  id          String   @id @default(cuid())
+  title       String
+  excerpt     String
+  content     String   @db.Text
+  image       String
+  publishedAt DateTime @default(now()) @map("publishedat")
+  order       Int
+  isActive    Boolean  @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("newspost")
+}
+
+// ─── Careers ────────────────────────────────────────────────────────────────
+model Career {
+  id          String   @id @default(cuid())
+  title       String
+  department  String
+  location    String
+  type        String   // e.g. "Full-time", "Part-time", "Internship"
+  description String   @db.Text
+  applyEmail  String   @map("applyemail")
+  order       Int
+  isActive    Boolean  @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("career")
+}
+
+// ─── Gallery ────────────────────────────────────────────────────────────────
+model GalleryImage {
+  id       String  @id @default(cuid())
+  title    String
+  image    String
+  category String?
+  order    Int
+  isActive Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("galleryimage")
+}
+
+// ─── Newsletter Subscribers ─────────────────────────────────────────────────
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true) @map("isactive")
+  createdAt DateTime @default(now()) @map("createdat")
+
+  @@map("newslettersubscriber")
 }
 
 // ─── Social Links ────────────────────────────────────────────────────────────
