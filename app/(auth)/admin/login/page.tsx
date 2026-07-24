@@ -33,8 +33,13 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Left panel — branding */}
-      <div className="hidden lg:flex flex-col justify-between bg-[#6ebe45] p-12 text-white">
-        <div className="flex items-center gap-3">
+      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#6EBE45] to-[#3E8E24] p-12 text-white">
+        {/* Decorative circles + grid texture, matching the newsletter CTA */}
+        <div className="pointer-events-none absolute -top-16 -left-16 h-56 w-56 rounded-full bg-white/10" />
+        <div className="pointer-events-none absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-white/10" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:28px_28px]" />
+
+        <div className="relative flex items-center gap-3">
           <div className="bg-white rounded-xl p-1.5 shrink-0">
             <img
               src="/logos/logo-transparent.png"
@@ -48,9 +53,9 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="relative space-y-4">
           <div className="flex items-center gap-3">
-            <div className="size-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <div className="size-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center shrink-0">
               <ShieldCheck className="size-5" />
             </div>
             <div>
@@ -63,7 +68,7 @@ export default function AdminLoginPage() {
           </blockquote>
         </div>
 
-        <p className="text-white/50 text-xs">© {new Date().getFullYear()} Kanlyte Uganda Limited</p>
+        <p className="relative text-white/50 text-xs">© {new Date().getFullYear()} Kanlyte Uganda Limited</p>
       </div>
 
       {/* Right panel — form */}

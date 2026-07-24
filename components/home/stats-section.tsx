@@ -1,7 +1,14 @@
 "use client";
 
 import { useStats } from "@/content-manager/hooks/useStats";
-import { usePartners } from "@/content-manager/hooks/usePartners";
+import {
+  GraduationCap,
+  HeartHandshake,
+  Building2,
+  Landmark,
+  Users,
+  Banknote,
+} from "lucide-react";
 
 const FALLBACK_STATS = [
   { id: "1", label: "Happy Customers", value: "10+" },
@@ -10,20 +17,19 @@ const FALLBACK_STATS = [
   { id: "4", label: "Team Members", value: "8+" },
 ];
 
-const FALLBACK_BRANDS = [
-  { id: "1", name: "Lira University", logo: "" },
-  { id: "2", name: "Thermosnoop", logo: "" },
-  { id: "3", name: "Oyster Productions", logo: "" },
-  { id: "4", name: "Base Volt and Wak Innovations", logo: "" },
-  { id: "5", name: "Buggade Sacco", logo: "" },
+const SECTORS_SERVED = [
+  { id: "1", name: "Education Institutions", icon: GraduationCap },
+  { id: "2", name: "NGOs", icon: HeartHandshake },
+  { id: "3", name: "Private Companies", icon: Building2 },
+  { id: "4", name: "Public / Government", icon: Landmark },
+  { id: "5", name: "Communities", icon: Users },
+  { id: "6", name: "Financial Institutions", icon: Banknote },
 ];
 
 export function StatsSection() {
   const { data: dbStats } = useStats();
-  const { data: dbPartners } = usePartners(true);
 
   const stats = dbStats?.length ? dbStats : FALLBACK_STATS;
-  const brands = dbPartners?.length ? dbPartners : FALLBACK_BRANDS;
 
   return (
     <section className="py-24 bg-white border-y border-gray-100">
@@ -55,19 +61,21 @@ export function StatsSection() {
               Performance Insights and Analytics Overview
             </h2>
             <div className="space-y-4">
-              <p className="text-gray-500 font-medium">Trusted by Leading Brands</p>
-              <div className="flex flex-wrap gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
-                {brands.map((brand: { id: string; name: string; logo: string }) => (
-                  brand.logo ? (
-                    <div key={brand.id} title={brand.name} className="border border-gray-200 rounded-lg p-2 hover:border-gray-300 transition-colors">
-                      <img src={brand.logo} alt={brand.name} className="h-8 w-auto object-contain" />
+              <p className="text-gray-500 font-medium">Sectors We Serve</p>
+              <div className="flex flex-wrap gap-3">
+                {SECTORS_SERVED.map((sector) => {
+                  const Icon = sector.icon;
+                  return (
+                    <div
+                      key={sector.id}
+                      title={sector.name}
+                      className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 text-xs font-bold text-gray-500 hover:text-white hover:bg-primary hover:border-primary transition-colors cursor-default"
+                    >
+                      <Icon className="h-4 w-4" />
+                      {sector.name}
                     </div>
-                  ) : (
-                    <div key={brand.id} title={brand.name} className="border border-gray-200 rounded-lg px-4 py-2 text-xs font-bold text-gray-400 hover:text-white hover:bg-primary hover:border-primary transition-colors cursor-default">
-                      {brand.name}
-                    </div>
-                  )
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

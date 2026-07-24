@@ -14,6 +14,10 @@ export const serviceRepository = {
     return await prisma.service.findUnique({ where: { id } });
   },
 
+  async findBySlug(slug: string) {
+    return await prisma.service.findUnique({ where: { slug } });
+  },
+
   async create(data: CreateServiceInput) {
     return await prisma.service.create({ data });
   },

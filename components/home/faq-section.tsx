@@ -41,7 +41,7 @@ export function FAQContactSection() {
   const supportImage = supportMember?.image ?? "/team-images/devine.jpg";
   const supportName = supportMember?.name ?? "Support Representative";
   return (
-    <section className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="faq" className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Contact Card Left */}
         <div className="lg:col-span-5 relative group">

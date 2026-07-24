@@ -12,6 +12,9 @@ const FALLBACK_SERVICES = [
   { id: "5", title: "App Development", description: "Native and cross-platform mobile applications for iOS and Android with seamless user experiences.", icon: "Smartphone" },
   { id: "6", title: "School Management Systems", description: "Comprehensive school management solutions for student records, fees, academics, and administration.", icon: "School" },
   { id: "7", title: "Website Development", description: "Responsive, modern websites with SEO optimization, fast loading speeds, and excellent user experience.", icon: "Globe" },
+  { id: "8", title: "Research & Innovation", description: "AI, IoT, and digital transformation research that turns emerging technology into practical solutions for your business.", icon: "Lightbulb" },
+  { id: "9", title: "ICT Training & Consultancy", description: "Hands-on technology training and strategic IT consultancy to build your team's skills and digital capacity.", icon: "GraduationCap" },
+  { id: "10", title: "Cybersecurity & IT Support", description: "Ongoing IT support, systems maintenance, and security safeguards to keep your infrastructure running smoothly.", icon: "ShieldCheck" },
 ];
 
 export function FeaturesGrid() {
@@ -23,7 +26,7 @@ export function FeaturesGrid() {
       <div className="mx-8 md:mx-14 lg:mx-20 xl:mx-28 2xl:mx-auto 2xl:max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-[2.5rem] font-bold text-[#0F172A] mb-4">
-            Our Software Services
+            Our Featured Services
           </h2>
           <p className="text-[#6EBE45] font-semibold text-xs md:text-sm max-w-2xl mx-auto uppercase">
             Comprehensive digital solutions tailored to empower your business growth and efficiency.

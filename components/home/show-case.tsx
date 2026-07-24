@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Check, Play } from "lucide-react";
+import { Check } from "lucide-react";
 
 export function ExperienceShowcase() {
   return (
@@ -30,7 +30,7 @@ export function ExperienceShowcase() {
 
             {/* Experience Badge */}
             <div className="absolute bottom-12 left-0 z-20 bg-[#22C55E] p-8 rounded-3xl shadow-2xl text-white min-w-[200px]">
-              <div className="text-5xl font-extrabold mb-1">3+</div>
+              <div className="text-5xl font-extrabold mb-1">2+</div>
               <div className="text-sm font-medium opacity-90">
                 Years of experience
               </div>
@@ -58,7 +58,7 @@ export function ExperienceShowcase() {
               </h2>
               <p className="text-xl font-bold text-primary">
                 Kanlyte Uganda Limited provides you with innovative solutions to
-                all your technological challenges.
+                all your needs and challenges.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 We&apos;ve streamlined our plans to give you the most reliable
@@ -79,31 +79,6 @@ export function ExperienceShowcase() {
                   <span className="font-bold text-foreground">{item}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Director Profile */}
-            <div className="pt-8 border-t border-border/50 flex items-center gap-6">
-              <div className="relative group cursor-pointer">
-                <div className="w-24 h-16 rounded-xl overflow-hidden relative border-2 border-primary">
-                  <Image
-                    src="/team-images/gaston.jpg"
-                    alt="Director video"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                    <Play className="w-6 h-6 text-white fill-current" />
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-xl font-extrabold text-foreground">
-                  Brian Gaston
-                </h4>
-                <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
-                  Managing Director
-                </p>
-              </div>
             </div>
           </div>
         </div>
