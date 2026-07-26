@@ -20,13 +20,13 @@ export function Navbar() {
   const resourcesRef = useRef<HTMLDivElement>(null);
 
   const { data: dbProducts } = useProducts(true);
-  const products = (dbProducts ?? []).map((p: { title: string; slug: string }) => ({
+  const products: { title: string; href: string }[] = (dbProducts ?? []).map((p: { title: string; slug: string }) => ({
     title: p.title,
     href: `/products/${p.slug}`,
   }));
 
   const { data: dbServices } = useServices(true);
-  const services = (dbServices ?? [])
+  const services: { title: string; href: string }[] = (dbServices ?? [])
     .filter((s: { featured: boolean }) => s.featured)
     .map((s: { title: string; slug: string }) => ({ title: s.title, href: `/services/${s.slug}` }));
 

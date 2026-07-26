@@ -1,6 +1,7 @@
 export * from "./contact-submission.repository";
 export * from "./hero-slide.repository";
 export * from "./stat.repository";
+export * from "./sector-we-serve.repository";
 export * from "./service.repository";
 export * from "./product.repository";
 export * from "./project.repository";
@@ -19,3 +20,4 @@ export * from "./news-post.repository";
 export * from "./career.repository";
 export * from "./gallery-image.repository";
 export * from "./newsletter-subscriber.repository";
+export * from "./resource-category.repository";

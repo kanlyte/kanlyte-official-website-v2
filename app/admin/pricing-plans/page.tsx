@@ -8,21 +8,9 @@ import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { PricingPlanModal } from "@/components/admin/pricing-plans/pricing-plan-modal";
 import { usePricingPlans, useDeletePricingPlan } from "@/content-manager/hooks/usePricingPlans";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useResourceCategories } from "@/content-manager/hooks/useResourceCategories";
 
 const RESOURCE = "pricing-plans";
-
-const CATEGORIES = [
-  { value: "odoo", label: "Odoo ERP" },
-  { value: "school-sync", label: "School Sync" },
-  { value: "lyte", label: "Lyte App" },
-  { value: "research-innovation", label: "Research & Innovation" },
-  { value: "web-cloud", label: "Web & Cloud Services" },
-  { value: "software-development", label: "Software Development" },
-  { value: "ict-training", label: "ICT Training & Consultancy" },
-  { value: "email-hosting", label: "Email Hosting (standalone)" },
-  { value: "app-development", label: "App Development (standalone)" },
-  { value: "web-hosting", label: "Web Hosting (/pricing page)" },
-];
 
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
@@ -38,6 +26,7 @@ const COLUMNS: ResourceColumn[] = [
 export default function PricingPlansPage() {
   const { data = [], isLoading } = usePricingPlans();
   const { mutate: deletePlan, isPending } = useDeletePricingPlan();
+  const { data: categories = [] } = useResourceCategories("pricing-plan");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
   const filtered = categoryFilter === "all" ? data : data.filter((r: { category: string }) => r.category === categoryFilter);
@@ -53,8 +42,8 @@ export default function PricingPlansPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            {CATEGORIES.map((c) => (
-              <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={category.slug}>{category.name}</SelectItem>
             ))}
           </SelectContent>
         </Select>

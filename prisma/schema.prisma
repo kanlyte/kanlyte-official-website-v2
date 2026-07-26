@@ -1,4 +1,3 @@
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
@@ -65,33 +64,62 @@ model Stat {
 
 // ─── Services / Features Grid ───────────────────────────────────────────────
 model Service {
-  id          String  @id @default(cuid())
+  id          String           @id @default(cuid())
   title       String
-  slug        String?
+  slug        String?          @unique
   description String
-  icon        String  // lucide icon name e.g. "Code"
-  featured    Boolean @default(false)
+  icon        String // lucide icon name e.g. "Code"
+  featured    Boolean          @default(false)
+  category    String?
+  categoryRef ServiceCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
   order       Int
-  isActive    Boolean @default(true) @map("isactive")
+  isActive    Boolean          @default(true) @map("isactive")
 
   @@index([order])
   @@index([slug])
+  @@index([category])
   @@map("service")
+}
+
+model ServiceCategory {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  services  Service[]
+  createdAt DateTime  @default(now()) @map("createdat")
+  updatedAt DateTime  @updatedAt @map("updatedat")
+
+  @@map("servicecategory")
 }
 
 // ─── Products ───────────────────────────────────────────────────────────────
 model Product {
-  id          String  @id @default(cuid())
+  id          String           @id @default(cuid())
   title       String
-  slug        String  @unique
+  slug        String           @unique
   description String
-  icon        String  // lucide icon name e.g. "Cpu"
+  image       String?          // card image
+  icon        String           // lucide icon name e.g. "Cpu"
+  category    String?
+  categoryRef ProductCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
   order       Int
-  isActive    Boolean @default(true) @map("isactive")
+  isActive    Boolean          @default(true) @map("isactive")
 
   @@index([order])
   @@index([slug])
+  @@index([category])
   @@map("product")
+}
+
+model ProductCategory {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now()) @map("createdat")
+  updatedAt DateTime  @updatedAt @map("updatedat")
+
+  @@map("productcategory")
 }
 
 // ─── Projects Section ───────────────────────────────────────────────────────
@@ -177,13 +205,13 @@ model TeamMemberSocial {
 
 // ─── Testimonials ───────────────────────────────────────────────────────────
 model Testimonial {
-  id        String  @id @default(cuid())
-  name      String
-  location  String
-  text      String
-  image     String
-  order     Int
-  isActive  Boolean @default(true) @map("isactive")
+  id       String  @id @default(cuid())
+  name     String
+  location String
+  text     String
+  image    String
+  order    Int
+  isActive Boolean @default(true) @map("isactive")
 
   @@index([order])
   @@map("testimonial")
@@ -206,15 +234,16 @@ model Milestone {
 // ─── Pricing Plans (General + Odoo) ─────────────────────────────────────────
 model PricingPlan {
   id              String               @id @default(cuid())
-  category        String               // e.g. "web-hosting", "odoo", "email-hosting"
-  tier            String               // e.g. "core", "advanced", "premium"
+  category        String // e.g. "web-hosting", "odoo", "email-hosting"
+  categoryRef     PricingPlanCategory  @relation(fields: [category], references: [slug], onUpdate: Cascade)
+  tier            String // e.g. "core", "advanced", "premium"
   title           String
   description     String
   priceUGX        String               @map("priceugx")
   priceUSD        String?              @map("priceusd")
   priceUGXMonthly String?              @map("priceugxmonthly")
   priceUSDMonthly String?              @map("priceusdmonthly")
-  period          String?              // e.g. "/ month", "/ one user"
+  period          String? // e.g. "/ month", "/ one user"
   tagline         String?
   isPopular       Boolean              @default(false) @map("ispopular")
   borderColor     String?              @map("bordercolor")
@@ -226,6 +255,17 @@ model PricingPlan {
   @@index([category])
   @@index([order])
   @@map("pricingplan")
+}
+
+model PricingPlanCategory {
+  id        String        @id @default(cuid())
+  name      String
+  slug      String        @unique
+  plans     PricingPlan[]
+  createdAt DateTime      @default(now()) @map("createdat")
+  updatedAt DateTime      @updatedAt @map("updatedat")
+
+  @@map("pricingplancategory")
 }
 
 model PricingPlanFeature {
@@ -243,7 +283,7 @@ model PricingPlanFeature {
 model OdooApp {
   id       String  @id @default(cuid())
   name     String
-  icon     String  // path to svg e.g. "/odoo/icon-acc.svg"
+  icon     String // path to svg e.g. "/odoo/icon-acc.svg"
   order    Int
   isActive Boolean @default(true) @map("isactive")
 
@@ -266,7 +306,7 @@ model ContactInfo {
 model PageContent {
   id                String  @id @default(cuid())
   slug              String  @unique
-  pageType          String  @map("pagetype")          // "product" | "service"
+  pageType          String  @map("pagetype") // "product" | "service"
   badge             String
   title             String
   highlight         String
@@ -278,6 +318,7 @@ model PageContent {
   secondaryBtnHref  String  @map("secondarybtnhref")
   annotationLine1   String  @map("annotationline1")
   annotationLine2   String  @map("annotationline2")
+  annotationLines   String? @db.Text @map("annotationlines") // JSON-encoded string[]
   isActive          Boolean @default(true) @map("isactive")
 
   @@index([slug])
@@ -375,15 +416,15 @@ model NewsPost {
 
 // ─── Careers ────────────────────────────────────────────────────────────────
 model Career {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
   department  String
   location    String
-  type        String   // e.g. "Full-time", "Part-time", "Internship"
-  description String   @db.Text
-  applyEmail  String   @map("applyemail")
+  type        String // e.g. "Full-time", "Part-time", "Internship"
+  description String  @db.Text
+  applyEmail  String  @map("applyemail")
   order       Int
-  isActive    Boolean  @default(true) @map("isactive")
+  isActive    Boolean @default(true) @map("isactive")
 
   @@index([order])
   @@map("career")
@@ -391,15 +432,28 @@ model Career {
 
 // ─── Gallery ────────────────────────────────────────────────────────────────
 model GalleryImage {
-  id       String  @id @default(cuid())
-  title    String
-  image    String
-  category String?
-  order    Int
-  isActive Boolean @default(true) @map("isactive")
+  id          String           @id @default(cuid())
+  title       String
+  image       String
+  category    String?
+  categoryRef GalleryCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  order       Int
+  isActive    Boolean          @default(true) @map("isactive")
 
   @@index([order])
+  @@index([category])
   @@map("galleryimage")
+}
+
+model GalleryCategory {
+  id        String         @id @default(cuid())
+  name      String
+  slug      String         @unique
+  images    GalleryImage[]
+  createdAt DateTime       @default(now()) @map("createdat")
+  updatedAt DateTime       @updatedAt @map("updatedat")
+
+  @@map("gallerycategory")
 }
 
 // ─── Newsletter Subscribers ─────────────────────────────────────────────────
@@ -412,13 +466,26 @@ model NewsletterSubscriber {
   @@map("newslettersubscriber")
 }
 
+// ─── Sectors We Serve ───────────────────────────────────────────────────────
+model SectorWeServe {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  icon        String  // lucide icon name e.g. "GraduationCap"
+  order       Int
+  isActive    Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("sectorweserve")
+}
+
 // ─── Social Links ────────────────────────────────────────────────────────────
 model SocialLink {
   id       String  @id @default(cuid())
-  platform String  // e.g. "Facebook", "Twitter"
+  platform String // e.g. "Facebook", "Twitter"
   icon     String  @default("Globe") // lucide icon name e.g. "Facebook"
   url      String
-  color    String  // e.g. "#1877F2"
+  color    String // e.g. "#1877F2"
   order    Int
   isActive Boolean @default(true) @map("isactive")
 

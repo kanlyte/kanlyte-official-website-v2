@@ -20,6 +20,7 @@ const COLUMNS: ResourceColumn[] = [
     </div>
   )},
   { key: "title", label: "Title" },
+  { key: "category", label: "Category", render: (v) => <span className="text-xs capitalize text-muted-foreground">{v ?? "—"}</span> },
   { key: "slug", label: "Slug", render: (v) => <span className="text-xs text-muted-foreground">/products/{v}</span> },
   { key: "description", label: "Description", render: (v) => <span className="line-clamp-1 max-w-xs text-sm text-muted-foreground">{v}</span> },
   { key: "isActive", label: "Status", render: (v) => <ActiveBadge value={v} /> },

@@ -6,6 +6,7 @@ export const CreateServiceSchema = z.object({
   description: z.string().min(1),
   icon: z.string().min(1),
   featured: z.boolean().default(false),
+  category: z.string().optional().nullable().transform(v => v || null),
   order: z.number().int().nonnegative(),
   isActive: z.boolean().default(true),
 });

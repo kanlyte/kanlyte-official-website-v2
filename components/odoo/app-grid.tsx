@@ -34,7 +34,7 @@ const FALLBACK_APPS = [
 
 export function AppGrid() {
   const { data: dbApps } = useOdooApps(true);
-  const apps = dbApps?.length ? dbApps : FALLBACK_APPS;
+  const apps: { name: string; icon: string }[] = dbApps?.length ? dbApps : FALLBACK_APPS;
 
   return (
     <section className="bg-[#F8F9FA] py-20 px-4">

@@ -1,6 +1,7 @@
 export * from "./contact-submission.dto";
 export * from "./hero-slide.dto";
 export * from "./stat.dto";
+export * from "./sector-we-serve.dto";
 export * from "./service.dto";
 export * from "./product.dto";
 export * from "./project.dto";
@@ -19,3 +20,4 @@ export * from "./news-post.dto";
 export * from "./career.dto";
 export * from "./gallery-image.dto";
 export * from "./newsletter-subscriber.dto";
+export * from "./resource-category.dto";
