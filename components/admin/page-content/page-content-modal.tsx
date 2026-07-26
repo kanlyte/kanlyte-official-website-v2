@@ -20,6 +20,7 @@ import { ImageUpload } from "@/components/admin/shared/image-upload";
 const RESOURCE = "page-content";
 
 const PAGE_SLUGS = [
+  { value: "showcase-home", label: "Innovation Showcase (Home)", type: "section" },
   { value: "about-home", label: "About Section (Home)", type: "section" },
   { value: "odoo", label: "Odoo ERP", type: "product" },
   { value: "school-sync", label: "School Sync", type: "product" },
@@ -55,6 +56,7 @@ export function PageContentModal() {
   const pageType = watch("pageType");
   const slug = watch("slug");
   const isAboutHome = slug === "about-home";
+  const isShowcaseHome = slug === "showcase-home";
 
   const [lines, setLines] = useState<string[]>([""]);
 
@@ -209,28 +211,49 @@ export function PageContentModal() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Secondary Button Label{isAboutHome ? " (Image Alt Text)" : ""}</Label>
-                <Input placeholder="e.g. View Pricing" className="h-8 text-sm" {...register("secondaryBtnLabel")} />
-                {errors.secondaryBtnLabel && <p className="text-destructive text-xs">{errors.secondaryBtnLabel.message}</p>}
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">{isAboutHome ? "Section Image" : "Secondary Button Href"}</Label>
-                {isAboutHome ? (
+            {isShowcaseHome ? (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs">Image 1 (left, background)</Label>
+                  <ImageUpload
+                    label=""
+                    value={watch("secondaryBtnLabel")}
+                    onChange={(url) => setValue("secondaryBtnLabel", url, { shouldValidate: true })}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">Image 2 (right, foreground)</Label>
                   <ImageUpload
                     label=""
                     value={watch("secondaryBtnHref")}
                     onChange={(url) => setValue("secondaryBtnHref", url, { shouldValidate: true })}
                   />
-                ) : (
-                  <Input placeholder="e.g. /pricing" className="h-8 text-sm" {...register("secondaryBtnHref")} />
-                )}
-                {errors.secondaryBtnHref && <p className="text-destructive text-xs">{errors.secondaryBtnHref.message}</p>}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs">Secondary Button Label{isAboutHome ? " (Image Alt Text)" : ""}</Label>
+                  <Input placeholder="e.g. View Pricing" className="h-8 text-sm" {...register("secondaryBtnLabel")} />
+                  {errors.secondaryBtnLabel && <p className="text-destructive text-xs">{errors.secondaryBtnLabel.message}</p>}
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">{isAboutHome ? "Section Image" : "Secondary Button Href"}</Label>
+                  {isAboutHome ? (
+                    <ImageUpload
+                      label=""
+                      value={watch("secondaryBtnHref")}
+                      onChange={(url) => setValue("secondaryBtnHref", url, { shouldValidate: true })}
+                    />
+                  ) : (
+                    <Input placeholder="e.g. /pricing" className="h-8 text-sm" {...register("secondaryBtnHref")} />
+                  )}
+                  {errors.secondaryBtnHref && <p className="text-destructive text-xs">{errors.secondaryBtnHref.message}</p>}
+                </div>
+              </div>
+            )}
 
-            {!isAboutHome && (
+            {!isAboutHome && !isShowcaseHome && (
               <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Annotation Line 1</Label>
@@ -242,6 +265,15 @@ export function PageContentModal() {
                   <Input placeholder="e.g. uptime guaranteed" className="h-8 text-sm" {...register("annotationLine2")} />
                   {errors.annotationLine2 && <p className="text-destructive text-xs">{errors.annotationLine2.message}</p>}
                 </div>
+              </div>
+            )}
+
+            {isShowcaseHome && (
+              <div className="space-y-2">
+                <Label className="text-xs">Highlight Lines (checkmarks — one per line)</Label>
+                <Input placeholder="e.g. Our Hands-on Trainings" className="h-8 text-sm" {...register("primaryBtnLabel")} />
+                <Input placeholder="e.g. Fast Support 24*7" className="h-8 text-sm" {...register("annotationLine1")} />
+                <Input placeholder="e.g. Affordable Prices" className="h-8 text-sm" {...register("annotationLine2")} />
               </div>
             )}
 
