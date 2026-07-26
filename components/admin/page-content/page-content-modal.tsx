@@ -12,26 +12,12 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
 import { useModalStore } from "@/store/modal.store";
-import { useCreatePageContent, useUpdatePageContent } from "@/content-manager/hooks/usePageContent";
+import { useCreatePageContent, useUpdatePageContent, usePageContents } from "@/content-manager/hooks/usePageContent";
 import { CreatePageContentSchema } from "@/content-manager/dtos/page-content.dto";
 import type { CreatePageContentInput } from "@/content-manager/dtos/page-content.dto";
 import { ImageUpload } from "@/components/admin/shared/image-upload";
 
 const RESOURCE = "page-content";
-
-const PAGE_SLUGS = [
-  { value: "showcase-home", label: "Innovation Showcase (Home)", type: "section" },
-  { value: "about-home", label: "About Section (Home)", type: "section" },
-  { value: "odoo", label: "Odoo ERP", type: "product" },
-  { value: "school-sync", label: "School Sync", type: "product" },
-  { value: "lyte", label: "Lyte App", type: "product" },
-  { value: "research-innovation", label: "Research & Innovation", type: "service" },
-  { value: "web-cloud", label: "Web & Cloud Services", type: "service" },
-  { value: "software-development", label: "Software Development", type: "service" },
-  { value: "ict-training", label: "ICT Training & Consultancy", type: "service" },
-  { value: "email-hosting", label: "Email Hosting (standalone)", type: "service" },
-  { value: "app-development", label: "App Development (standalone)", type: "service" },
-];
 
 export function PageContentModal() {
   const { type, resource, record, close } = useModalStore();
@@ -52,11 +38,26 @@ export function PageContentModal() {
     },
   });
 
+  const { data: existingPages = [] } = usePageContents();
+  const existingSlugs = (existingPages as { slug: string }[]).map((p) => p.slug);
+
   const isActive = watch("isActive");
   const pageType = watch("pageType");
   const slug = watch("slug");
   const isAboutHome = slug === "about-home";
   const isShowcaseHome = slug === "showcase-home";
+
+  const [slugSuggestions, setSlugSuggestions] = useState<string[]>([]);
+
+  function onSlugChange(value: string) {
+    const normalized = value.toLowerCase().replace(/\s+/g, "-");
+    setValue("slug", normalized, { shouldValidate: true });
+    setSlugSuggestions(
+      normalized.length > 0
+        ? existingSlugs.filter((s) => s.includes(normalized) && s !== normalized)
+        : []
+    );
+  }
 
   const [lines, setLines] = useState<string[]>([""]);
 
@@ -132,26 +133,29 @@ export function PageContentModal() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="px-6 py-4 space-y-3">
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-              <div className="space-y-1">
+              <div className="space-y-1 relative">
                 <Label className="text-xs">Slug</Label>
-                <Select
+                <Input
                   value={slug}
-                  onValueChange={(v) => {
-                    setValue("slug", v, { shouldValidate: true });
-                    const found = PAGE_SLUGS.find((p) => p.value === v);
-                    if (found) setValue("pageType", found.type as "product" | "service" | "section");
-                  }}
-                >
-                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select page..." /></SelectTrigger>
-                  <SelectContent>
-                    {PAGE_SLUGS.map((p) => (
-                      <SelectItem key={p.value} value={p.value}>
-                        <span>{p.label}</span>
-                        <span className="ml-2 text-xs text-muted-foreground capitalize">({p.type})</span>
-                      </SelectItem>
+                  onChange={(e) => onSlugChange(e.target.value)}
+                  placeholder="e.g. cyber-security"
+                  className="h-8 text-sm"
+                  disabled={isEdit}
+                />
+                {slugSuggestions.length > 0 && (
+                  <div className="absolute z-10 top-full left-0 right-0 bg-white border rounded-md shadow-md mt-0.5 max-h-36 overflow-y-auto">
+                    {slugSuggestions.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="w-full text-left px-3 py-1.5 text-sm hover:bg-muted"
+                        onClick={() => { setValue("slug", s, { shouldValidate: true }); setSlugSuggestions([]); }}
+                      >
+                        {s}
+                      </button>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                )}
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
               <div className="space-y-1">

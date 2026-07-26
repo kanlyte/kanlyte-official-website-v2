@@ -22,3 +22,12 @@ export async function POST(req: NextRequest) {
     return handleError(error);
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { category, pricingEnabled } = await req.json();
+    return ok(await pricingPlanService.updateCategory(category, pricingEnabled));
+  } catch (error) {
+    return handleError(error);
+  }
+}
