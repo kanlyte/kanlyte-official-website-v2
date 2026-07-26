@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const CreatePageContentSchema = z.object({
   slug: z.string().min(1),
-  pageType: z.enum(["product", "service"]),
+  pageType: z.enum(["product", "service", "section"]),
   badge: z.string().min(1),
   title: z.string().min(1),
   highlight: z.string().min(1),
@@ -14,6 +14,7 @@ export const CreatePageContentSchema = z.object({
   secondaryBtnHref: z.string().min(1),
   annotationLine1: z.string().min(1),
   annotationLine2: z.string().min(1),
+  annotationLines: z.string().optional(), // JSON-encoded string[]
   isActive: z.boolean().default(true),
 });
 

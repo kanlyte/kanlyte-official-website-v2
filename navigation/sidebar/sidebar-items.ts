@@ -23,6 +23,7 @@ import {
   GalleryHorizontal,
   Send,
   Package,
+  Globe,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -70,6 +71,7 @@ export const sidebarItems: NavGroup[] = [
       { title: "FAQs", url: "/admin/faqs", icon: HelpCircle },
       { title: "Partners", url: "/admin/partners", icon: Handshake },
       { title: "Social Links", url: "/admin/social-links", icon: Share2 },
+      { title: "Sectors We Serve", url: "/admin/sectors-we-serve", icon: Globe },
     ],
   },
   {

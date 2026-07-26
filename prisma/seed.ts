@@ -18,6 +18,7 @@ import { seedTestimonials } from "./seeds/seed-testimonials";
 import { seedMilestones } from "./seeds/seed-milestones";
 import { seedContactInfo } from "./seeds/seed-contact-info";
 import { seedSocialLinks } from "./seeds/seed-social-links";
+import { seedSectorsWeServe } from "./seeds/seed-sectors-we-serve";
 
 async function main() {
   // await seedPageContent();
@@ -38,6 +39,7 @@ async function main() {
   await seedMilestones();
   await seedContactInfo();
   await seedSocialLinks();
+  await seedSectorsWeServe();
 }
 
 main()

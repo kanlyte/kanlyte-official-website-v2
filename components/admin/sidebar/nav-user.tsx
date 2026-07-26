@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { CircleUser, CreditCard, EllipsisVertical, LogOut, MessageSquareDot } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,7 +29,10 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const name = session?.user?.name ?? user.name;
   const email = session?.user?.email ?? user.email;
@@ -54,8 +58,17 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name}</span>
-                <span className="truncate text-muted-foreground text-xs">{email}</span>
+                {!mounted || isPending ? (
+                  <>
+                    <span className="h-3 w-24 rounded bg-muted animate-pulse" />
+                    <span className="h-2.5 w-32 rounded bg-muted animate-pulse mt-1" />
+                  </>
+                ) : (
+                  <>
+                    <span className="truncate font-medium">{name}</span>
+                    <span className="truncate text-muted-foreground text-xs">{email}</span>
+                  </>
+                )}
               </div>
               <EllipsisVertical className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -73,8 +86,17 @@ export function NavUser({
                   <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{name}</span>
-                  <span className="truncate text-muted-foreground text-xs">{email}</span>
+                  {!mounted || isPending ? (
+                    <>
+                      <span className="h-3 w-24 rounded bg-muted animate-pulse" />
+                      <span className="h-2.5 w-32 rounded bg-muted animate-pulse mt-1" />
+                    </>
+                  ) : (
+                    <>
+                      <span className="truncate font-medium">{name}</span>
+                      <span className="truncate text-muted-foreground text-xs">{email}</span>
+                    </>
+                  )}
                 </div>
               </div>
             </DropdownMenuLabel>

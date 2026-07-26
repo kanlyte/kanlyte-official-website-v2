@@ -16,39 +16,39 @@ import { useHeroSlides } from "@/content-manager/hooks/useHeroSlides";
 const FALLBACK_SLIDES = [
   {
     id: "1",
-    image: "/images/image1.jpg",
-    title: "Empowering",
-    subtitle: "Technology in Healthcare",
-    description: "To Love and Serve",
-    buttonText: "For more info",
-    buttonLink: "/contact-us",
+    image: "/images/image4.png",
+    title: "Odoo ERP",
+    subtitle: "All-in-One Business Management",
+    description: "Streamline your operations with a fully integrated ERP solution",
+    buttonText: "Explore Odoo",
+    buttonLink: "/products/odoo",
   },
   {
     id: "2",
-    image: "/images/image2.jpg",
-    title: "Digital Transformation",
-    subtitle: "Technology in Healthcare",
-    description: "To Love and Serve",
-    buttonText: "For more info",
-    buttonLink: "/contact-us",
+    image: "/images/image3.jpg",
+    title: "School Sync",
+    subtitle: "Smart School Management",
+    description: "Manage students, fees, academics and administration in one place",
+    buttonText: "Discover School Sync",
+    buttonLink: "/products/school-sync",
   },
   {
     id: "3",
-    image: "/images/image3.jpg",
-    title: "Tech Education",
-    subtitle: "For Future Innovators",
-    description: "Building Africa's Next Tech Leaders",
-    buttonText: "View Our School System",
-    buttonLink: "/school-systems",
+    image: "/images/image1.jpg",
+    title: "Lyte App",
+    subtitle: "Hostel & House Booking",
+    description: "Find and book accommodation with ease — built for Africa",
+    buttonText: "Explore Lyte",
+    buttonLink: "/products/lyte",
   },
   {
     id: "4",
-    image: "/images/image4.png",
-    title: "Software & systems Developments",
-    subtitle: "Tailored to Your Needs",
-    description: "Perfectly Digital",
-    buttonText: "Explore Our Services",
-    buttonLink: "/odoo",
+    image: "/images/image2.jpg",
+    title: "Software Development",
+    subtitle: "Custom Solutions for Your Business",
+    description: "From web apps to enterprise systems — built with modern technologies",
+    buttonText: "View Our Services",
+    buttonLink: "/services/software-development",
   },
 ];
 
@@ -169,7 +169,7 @@ export default function HeroSlider() {
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${slide.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
               />
-              <div className="absolute inset-0 bg-black/10" />
+              <div className="absolute inset-0 bg-black/45" />
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#6EBE45]/30 via-transparent to-transparent" />

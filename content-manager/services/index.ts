@@ -1,6 +1,7 @@
 export * from "./contact-submission.service";
 export * from "./hero-slide.service";
 export * from "./stat.service";
+export * from "./sector-we-serve.service";
 export * from "./service.service";
 export * from "./product.service";
 export * from "./project.service";
@@ -19,3 +20,4 @@ export * from "./news-post.service";
 export * from "./career.service";
 export * from "./gallery-image.service";
 export * from "./newsletter-subscriber.service";
+export * from "./resource-category.service";

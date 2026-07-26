@@ -16,6 +16,7 @@ import { useCreateService, useUpdateService } from "@/content-manager/hooks/useS
 import { CreateServiceSchema } from "@/content-manager/dtos/service.dto";
 import type { CreateServiceInput } from "@/content-manager/dtos/service.dto";
 import { IconPicker } from "@/components/admin/shared/icon-picker";
+import { CreatableCategoryAutocomplete } from "@/components/admin/shared/creatable-category-autocomplete";
 
 const RESOURCE = "services";
 
@@ -31,7 +32,7 @@ export function ServiceModal() {
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateServiceInput>({
     resolver: zodResolver(CreateServiceSchema),
-    defaultValues: { title: "", slug: "", description: "", icon: "", featured: false, order: 0, isActive: true },
+    defaultValues: { title: "", slug: "", description: "", icon: "", category: null, featured: false, order: 0, isActive: true },
   });
 
   const isActive = watch("isActive");
@@ -45,12 +46,13 @@ export function ServiceModal() {
         slug: (record.slug as string) ?? "",
         description: record.description as string,
         icon: record.icon as string,
+        category: (record.category as string) ?? null,
         featured: (record.featured as boolean) ?? false,
         order: record.order as number,
         isActive: record.isActive as boolean,
       });
     } else if (isCreate) {
-      reset({ title: "", slug: "", description: "", icon: "", featured: false, order: 0, isActive: true });
+      reset({ title: "", slug: "", description: "", icon: "", category: null, featured: false, order: 0, isActive: true });
     }
   }, [isEdit, isCreate, record, reset]);
 
@@ -81,6 +83,17 @@ export function ServiceModal() {
                 <Input id="slug" placeholder="software-development" className="h-8 text-sm" {...register("slug")} />
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs">Service Category (optional)</Label>
+              <CreatableCategoryAutocomplete
+                kind="service"
+                value={watch("category")}
+                onChange={(category) => setValue("category", category || null, { shouldDirty: true, shouldValidate: true })}
+                placeholder="Search or add a service category…"
+                optional
+              />
             </div>
 
             <div className="space-y-1">

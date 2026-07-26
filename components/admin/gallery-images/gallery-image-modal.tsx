@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { useModalStore } from "@/store/modal.store";
 import { useCreateGalleryImage, useUpdateGalleryImage } from "@/content-manager/hooks/useGalleryImages";
 import { ImageUpload } from "@/components/admin/shared/image-upload";
+import { CreatableCategoryAutocomplete } from "@/components/admin/shared/creatable-category-autocomplete";
 import { CreateGalleryImageSchema } from "@/content-manager/dtos/gallery-image.dto";
 import type { CreateGalleryImageInput } from "@/content-manager/dtos/gallery-image.dto";
 
@@ -73,7 +74,13 @@ export function GalleryImageModal() {
               </div>
               <div className="space-y-1">
                 <Label htmlFor="category" className="text-xs">Category (optional)</Label>
-                <Input id="category" placeholder="e.g. Events" className="h-8 text-sm" {...register("category")} />
+                <CreatableCategoryAutocomplete
+                  kind="gallery"
+                  value={watch("category")}
+                  onChange={(category) => setValue("category", category, { shouldDirty: true, shouldValidate: true })}
+                  placeholder="Search or add a gallery category…"
+                  optional
+                />
               </div>
             </div>
 

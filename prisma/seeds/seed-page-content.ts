@@ -3,6 +3,25 @@ import { fileURLToPath } from "node:url";
 import { prisma } from "../../lib/prisma";
 
 const pageContents = [
+  // ── HOME ABOUT SECTION ────────────────────────────────────────────────────
+  {
+    slug: "about-home",
+    pageType: "section",
+    badge: "About Kanlyte Uganda",
+    title: "Purposefully Built for",
+    highlight: "Africa's Digital Future",
+    subtitle: "End-to-end digital transformation",
+    description:
+      "Kanlyte Uganda Limited is a technology company delivering custom software, web and cloud solutions, ICT training, and research-driven innovation to organisations across Uganda and beyond. We turn technology into practical, lasting impact.",
+    primaryBtnLabel: "Discover Our Story",
+    primaryBtnHref: "/about-us",
+    secondaryBtnLabel: "Kanlyte team at work",
+    secondaryBtnHref: "/images/about-04.jpg",
+    annotationLine1: "Serving Uganda & beyond since 2018",
+    annotationLine2: "Trusted by schools, NGOs & enterprises",
+    isActive: true,
+  },
+
   // ── PRODUCTS ──────────────────────────────────────────────────────────────
   {
     slug: "odoo",

@@ -16,6 +16,8 @@ import { useCreateProduct, useUpdateProduct } from "@/content-manager/hooks/useP
 import { CreateProductSchema } from "@/content-manager/dtos/product.dto";
 import type { CreateProductInput } from "@/content-manager/dtos/product.dto";
 import { IconPicker } from "@/components/admin/shared/icon-picker";
+import { CreatableCategoryAutocomplete } from "@/components/admin/shared/creatable-category-autocomplete";
+import { ImageUpload } from "@/components/admin/shared/image-upload";
 
 const RESOURCE = "products";
 
@@ -31,7 +33,7 @@ export function ProductModal() {
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateProductInput>({
     resolver: zodResolver(CreateProductSchema),
-    defaultValues: { title: "", slug: "", description: "", icon: "", order: 0, isActive: true },
+    defaultValues: { title: "", slug: "", description: "", image: "", icon: "", category: null, order: 0, isActive: true },
   });
 
   const isActive = watch("isActive");
@@ -43,12 +45,14 @@ export function ProductModal() {
         title: record.title as string,
         slug: record.slug as string,
         description: record.description as string,
+        image: (record.image as string) ?? "",
         icon: record.icon as string,
+        category: (record.category as string) ?? null,
         order: record.order as number,
         isActive: record.isActive as boolean,
       });
     } else if (isCreate) {
-      reset({ title: "", slug: "", description: "", icon: "", order: 0, isActive: true });
+      reset({ title: "", slug: "", description: "", image: "", icon: "", category: null, order: 0, isActive: true });
     }
   }, [isEdit, isCreate, record, reset]);
 
@@ -82,6 +86,17 @@ export function ProductModal() {
             </div>
 
             <div className="space-y-1">
+              <Label className="text-xs">Product Category (optional)</Label>
+              <CreatableCategoryAutocomplete
+                kind="product"
+                value={watch("category")}
+                onChange={(category) => setValue("category", category || null, { shouldDirty: true, shouldValidate: true })}
+                placeholder="Search or add a product category…"
+                optional
+              />
+            </div>
+
+            <div className="space-y-1">
               <Label htmlFor="order" className="text-xs">Order</Label>
               <Input id="order" type="number" className="h-8 text-sm w-32" {...register("order", { valueAsNumber: true })} />
               {errors.order && <p className="text-destructive text-xs">{errors.order.message}</p>}
@@ -92,6 +107,12 @@ export function ProductModal() {
               <Textarea id="description" placeholder="Describe this product..." className="text-sm resize-none h-16" {...register("description")} />
               {errors.description && <p className="text-destructive text-xs">{errors.description.message}</p>}
             </div>
+
+            <ImageUpload
+              label="Product Image"
+              value={watch("image") ?? ""}
+              onChange={(url) => setValue("image", url, { shouldValidate: true })}
+            />
 
             <IconPicker
               label="Icon"
