@@ -258,12 +258,13 @@ model PricingPlan {
 }
 
 model PricingPlanCategory {
-  id        String        @id @default(cuid())
-  name      String
-  slug      String        @unique
-  plans     PricingPlan[]
-  createdAt DateTime      @default(now()) @map("createdat")
-  updatedAt DateTime      @updatedAt @map("updatedat")
+  id             String        @id @default(cuid())
+  name           String
+  slug           String        @unique
+  pricingEnabled Boolean       @default(true) @map("pricingenabled")
+  plans          PricingPlan[]
+  createdAt      DateTime      @default(now()) @map("createdat")
+  updatedAt      DateTime      @updatedAt @map("updatedat")
 
   @@map("pricingplancategory")
 }

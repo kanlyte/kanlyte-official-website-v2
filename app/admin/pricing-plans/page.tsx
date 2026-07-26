@@ -6,9 +6,11 @@ import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { PricingPlanModal } from "@/components/admin/pricing-plans/pricing-plan-modal";
-import { usePricingPlans, useDeletePricingPlan } from "@/content-manager/hooks/usePricingPlans";
+import { usePricingPlans, useDeletePricingPlan, useTogglePricingEnabled } from "@/content-manager/hooks/usePricingPlans";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useResourceCategories } from "@/content-manager/hooks/useResourceCategories";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const RESOURCE = "pricing-plans";
 
@@ -26,10 +28,13 @@ const COLUMNS: ResourceColumn[] = [
 export default function PricingPlansPage() {
   const { data = [], isLoading } = usePricingPlans();
   const { mutate: deletePlan, isPending } = useDeletePricingPlan();
+  const { mutate: togglePricing } = useTogglePricingEnabled();
   const { data: categories = [] } = useResourceCategories("pricing-plan");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
   const filtered = categoryFilter === "all" ? data : data.filter((r: { category: string }) => r.category === categoryFilter);
+
+  const selectedCategory = categories.find((c) => c.slug === categoryFilter);
 
   return (
     <div className="flex flex-col gap-6">
@@ -49,6 +54,18 @@ export default function PricingPlansPage() {
         </Select>
         {categoryFilter !== "all" && (
           <span className="text-xs text-muted-foreground">{filtered.length} record{filtered.length !== 1 ? "s" : ""}</span>
+        )}
+        {categoryFilter !== "all" && selectedCategory && (
+          <div className="flex items-center gap-2 ml-auto">
+            <Switch
+              id="pricing-enabled"
+              checked={selectedCategory.pricingEnabled ?? true}
+              onCheckedChange={(v) => togglePricing({ category: categoryFilter, pricingEnabled: v })}
+            />
+            <Label htmlFor="pricing-enabled" className="text-sm cursor-pointer">
+              Pricing section {selectedCategory.pricingEnabled ?? true ? "enabled" : "disabled"}
+            </Label>
+          </div>
         )}
       </div>
 

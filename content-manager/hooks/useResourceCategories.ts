@@ -7,6 +7,7 @@ export interface ResourceCategory {
   id: string;
   name: string;
   slug: string;
+  pricingEnabled?: boolean;
 }
 
 async function fetchJSON(url: string, init?: RequestInit) {

@@ -46,6 +46,15 @@ export function useUpdatePricingPlan() {
   });
 }
 
+export function useTogglePricingEnabled() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ category, pricingEnabled }: { category: string; pricingEnabled: boolean }) =>
+      fetchJSON(BASE, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ category, pricingEnabled }) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [KEY] }),
+  });
+}
+
 export function useDeletePricingPlan() {
   const qc = useQueryClient();
   return useMutation({

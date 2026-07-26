@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -8,26 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useModalStore } from "@/store/modal.store";
 import { useCreatePageCapability, useUpdatePageCapability } from "@/content-manager/hooks/usePageCapabilities";
 import { CreatePageCapabilitySchema } from "@/content-manager/dtos/page-capability.dto";
 import type { CreatePageCapabilityInput } from "@/content-manager/dtos/page-capability.dto";
 import { IconPicker } from "@/components/admin/shared/icon-picker";
+import { usePageContents } from "@/content-manager/hooks/usePageContent";
 
 const RESOURCE = "page-capabilities";
-
-const PAGE_SLUGS = [
-  { value: "odoo", label: "Odoo ERP" },
-  { value: "school-sync", label: "School Sync" },
-  { value: "lyte", label: "Lyte App" },
-  { value: "research-innovation", label: "Research & Innovation" },
-  { value: "web-cloud", label: "Web & Cloud Services" },
-  { value: "software-development", label: "Software Development" },
-  { value: "ict-training", label: "ICT Training & Consultancy" },
-  { value: "email-hosting", label: "Email Hosting (standalone)" },
-  { value: "app-development", label: "App Development (standalone)" },
-];
 
 export function PageCapabilityModal() {
   const { type, resource, record, close } = useModalStore();
@@ -44,9 +32,22 @@ export function PageCapabilityModal() {
     defaultValues: { slug: "", name: "", icon: "", order: 0, isActive: true },
   });
 
+  const { data: pages = [] } = usePageContents();
+  const pageSlugs = (pages as { slug: string }[]).map((p) => p.slug);
+
   const isActive = watch("isActive");
   const icon = watch("icon");
   const slug = watch("slug");
+
+  const [slugSuggestions, setSlugSuggestions] = useState<string[]>([]);
+
+  function onSlugChange(value: string) {
+    const normalized = value.toLowerCase().replace(/\s+/g, "-");
+    setValue("slug", normalized, { shouldValidate: true });
+    setSlugSuggestions(
+      normalized.length > 0 ? pageSlugs.filter((s) => s.includes(normalized)) : []
+    );
+  }
 
   useEffect(() => {
     if (isEdit && record) {
@@ -79,19 +80,28 @@ export function PageCapabilityModal() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="px-6 py-4 space-y-3">
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-              <div className="space-y-1">
+              <div className="space-y-1 relative">
                 <Label className="text-xs">Page Slug</Label>
-                <Select
+                <Input
                   value={slug}
-                  onValueChange={(v) => setValue("slug", v, { shouldValidate: true })}
-                >
-                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select page..." /></SelectTrigger>
-                  <SelectContent>
-                    {PAGE_SLUGS.map((p) => (
-                      <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                  onChange={(e) => onSlugChange(e.target.value)}
+                  placeholder="e.g. cyber-security"
+                  className="h-8 text-sm"
+                />
+                {slugSuggestions.length > 0 && (
+                  <div className="absolute z-10 top-full left-0 right-0 bg-white border rounded-md shadow-md mt-0.5 max-h-36 overflow-y-auto">
+                    {slugSuggestions.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="w-full text-left px-3 py-1.5 text-sm hover:bg-muted"
+                        onClick={() => { setValue("slug", s, { shouldValidate: true }); setSlugSuggestions([]); }}
+                      >
+                        {s}
+                      </button>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                )}
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
               <div className="space-y-1">

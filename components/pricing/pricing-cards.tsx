@@ -46,7 +46,12 @@ export function PricingCards({
     "Integration with existing systems",
   ],
 }: PricingCardsProps) {
-  const { data: dbPlans } = usePricingPlans(category);
+  const { data: dbData } = usePricingPlans(category);
+
+  const pricingEnabled = dbData?.pricingEnabled ?? true;
+  const dbPlans = dbData?.plans;
+
+  if (!pricingEnabled) return null;
 
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {

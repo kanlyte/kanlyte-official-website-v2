@@ -12,6 +12,10 @@ export const pricingPlanService = {
     return await pricingPlanRepository.findByCategory(category);
   },
 
+  async updateCategory(slug: string, pricingEnabled: boolean) {
+    return await pricingPlanRepository.updateCategory(slug, { pricingEnabled });
+  },
+
   async getById(id: string) {
     const plan = await pricingPlanRepository.findById(id);
     if (!plan) throw new Error(`Pricing plan ${id} not found`);
