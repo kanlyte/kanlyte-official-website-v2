@@ -3,6 +3,25 @@ import { fileURLToPath } from "node:url";
 import { prisma } from "../../lib/prisma";
 
 const pageContents = [
+  // ── HOME SHOWCASE SECTION ──────────────────────────────────────────────────
+  {
+    slug: "showcase-home",
+    pageType: "section",
+    badge: "Innovation Showcase",
+    title: "Discover A Wider World Of",
+    highlight: "Innovation",
+    subtitle: "Digital solutions",
+    description:
+      "Kanlyte Uganda Limited provides you with innovative solutions to all your needs and challenges. We've streamlined our plans to give you the most reliable innovative I.T solutions at affordable prices.",
+    primaryBtnLabel: "Our Hands-on Trainings",
+    primaryBtnHref: "/services/ict-training",
+    secondaryBtnLabel: "/images/about-04.jpg",
+    secondaryBtnHref: "/images/about-05.jpg",
+    annotationLine1: "Affordable Prices",
+    annotationLine2: "",
+    isActive: true,
+  },
+
   // ── HOME ABOUT SECTION ────────────────────────────────────────────────────
   {
     slug: "about-home",

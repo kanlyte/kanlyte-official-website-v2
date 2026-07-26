@@ -7,7 +7,7 @@ export const pageContentRepository = {
   },
 
   async findBySlug(slug: string) {
-    return await prisma.pageContent.findUnique({ where: { slug } });
+    return await prisma.pageContent.findFirst({ where: { slug, isActive: true } });
   },
 
   async findByPageType(pageType: string) {

@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const CreateNewsPostSchema = z.object({
   title: z.string().min(1),
-  excerpt: z.string().min(1),
-  content: z.string().min(1),
-  image: z.string().min(1),
+  excerpt: z.string().default(""),
+  content: z.string().default(""),
+  image: z.string().default(""),
   publishedAt: z.coerce.date(),
   order: z.number().int().nonnegative(),
   isActive: z.boolean().default(true),
