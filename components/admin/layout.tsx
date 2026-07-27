@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import { AppSidebar } from "@/components/admin/sidebar/app-sidebar";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { SearchDialog } from "@/components/admin/sidebar/search-dialog";
 import { ThemeSwitcher } from "@/components/admin/sidebar/theme-switcher";
 import { useUIStore } from "@/store/ui.store";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { ExternalLink, Menu } from "lucide-react";
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const { sidebarOpen, toggleSidebar } = useUIStore();
@@ -50,6 +51,12 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               <SearchDialog />
             </div>
             <div className="flex items-center gap-2">
+              <Button asChild variant="outline" size="sm" className="h-8 gap-2">
+                <Link href="/" target="_blank" rel="noopener noreferrer">
+                  <span className="hidden sm:inline">View Website</span>
+                  <ExternalLink className="size-3.5" />
+                </Link>
+              </Button>
               {/* <LayoutControls /> */}
               <ThemeSwitcher />
               <AccountSwitcher />

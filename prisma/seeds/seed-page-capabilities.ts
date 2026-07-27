@@ -159,6 +159,49 @@ const pageCapabilities = [
   { slug: "cpanel", name: "24/7 Support", icon: "Headphones", order: 8 },
 ];
 
+const offeringCapabilities: Record<string, Array<[string, string]>> = {
+  "custom-software": [
+    ["Requirements Discovery", "Search"], ["Solution Architecture", "Layers"], ["Web Applications", "Globe"],
+    ["API Development", "Code"], ["Quality Assurance", "CheckCircle"], ["Ongoing Maintenance", "Headphones"],
+  ],
+  "odoo-erp-customizations": [
+    ["Module Customization", "Settings"], ["Workflow Automation", "RefreshCw"], ["Third-party Integrations", "Layers"],
+    ["Data Migration", "Database"], ["Custom Reporting", "BarChart2"], ["User Training", "GraduationCap"],
+  ],
+  "school-management-systems": [
+    ["Student Records", "Users"], ["Fees & Billing", "CreditCard"], ["Academic Management", "BookOpen"],
+    ["Parent Communication", "MessageSquare"], ["Timetabling", "Calendar"], ["School Analytics", "TrendingUp"],
+  ],
+  "website-development": [
+    ["Responsive Design", "Smartphone"], ["Content Management", "FileText"], ["E-commerce", "ShoppingCart"],
+    ["SEO Foundations", "TrendingUp"], ["Performance Optimization", "Zap"], ["Security & SSL", "Shield"],
+  ],
+  "cloud-infrastructure": [
+    ["Cloud Architecture", "Cloud"], ["Server Deployment", "Server"], ["Backup & Recovery", "RefreshCw"],
+    ["Monitoring", "Activity"], ["Access Security", "Lock"], ["Scaling & Optimization", "TrendingUp"],
+  ],
+  "it-consultancy": [
+    ["Technology Audit", "Search"], ["IT Strategy", "Lightbulb"], ["Architecture Advisory", "Layers"],
+    ["Vendor Selection", "CheckCircle"], ["Risk Management", "Shield"], ["Implementation Roadmap", "Map"],
+  ],
+  "corporate-training": [
+    ["Skills Assessment", "ClipboardCheck"], ["Custom Curriculum", "BookOpen"], ["Instructor-led Training", "Users"],
+    ["Hands-on Labs", "Code"], ["Progress Evaluation", "BarChart2"], ["Completion Certificates", "Award"],
+  ],
+  "ai-machine-learning": [
+    ["AI Readiness Assessment", "Search"], ["Predictive Analytics", "TrendingUp"], ["Natural Language AI", "MessageSquare"],
+    ["Computer Vision", "Eye"], ["Model Integration", "Cpu"], ["Responsible AI", "Shield"],
+  ],
+  "iot-solutions": [
+    ["Device Integration", "Wifi"], ["Sensor Networks", "Radio"], ["Real-time Monitoring", "Activity"],
+    ["IoT Dashboards", "BarChart2"], ["Alerts & Automation", "Bell"], ["Device Security", "Lock"],
+  ],
+  "digital-transformation": [
+    ["Digital Maturity Audit", "Search"], ["Transformation Strategy", "Map"], ["Process Automation", "RefreshCw"],
+    ["Systems Integration", "Layers"], ["Change Enablement", "Users"], ["Performance Measurement", "BarChart2"],
+  ],
+};
+
 export async function seedPageCapabilities() {
   console.log("Seeding page capabilities...");
   let created = 0;
@@ -174,6 +217,15 @@ export async function seedPageCapabilities() {
     } else {
       await prisma.pageCapability.create({ data: { ...item, isActive: true } });
       console.log(`  ✓  Created: ${item.slug} / ${item.name}`);
+      created++;
+    }
+  }
+
+  for (const [slug, capabilities] of Object.entries(offeringCapabilities)) {
+    for (const [order, [name, icon]] of capabilities.entries()) {
+      const existing = await prisma.pageCapability.findFirst({ where: { slug, name } });
+      if (existing) continue;
+      await prisma.pageCapability.create({ data: { slug, name, icon, order, isActive: true } });
       created++;
     }
   }

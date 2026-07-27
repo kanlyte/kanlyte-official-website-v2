@@ -54,6 +54,7 @@ export function ProjectsSection() {
               description={project.description}
               tags={project.tags}
               image={project.image}
+              viewDetailsHref={`/projects/${project.id}`}
             />
           ))}
         </div>
