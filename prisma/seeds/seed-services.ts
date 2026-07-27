@@ -185,8 +185,25 @@ export async function seedServices() {
     const hasContent = await prisma.pageContent.findFirst({ where: { slug: service.slug } });
     if (!hasContent) {
       const content = pageContents.find((p) => p.slug === service.slug);
-      if (content) {
-        await prisma.pageContent.create({ data: content });
+      {
+        await prisma.pageContent.create({
+          data: content ?? {
+            slug: service.slug,
+            pageType: "service",
+            badge: `${service.title} — Kanlyte Uganda`,
+            title: service.title,
+            highlight: "built around you.",
+            subtitle: "Practical, scalable, *reliable!",
+            description: service.description,
+            primaryBtnLabel: "Request a Consultation",
+            primaryBtnHref: "/contact-us",
+            secondaryBtnLabel: "View Pricing",
+            secondaryBtnHref: "/pricing",
+            annotationLine1: "Local expertise",
+            annotationLine2: "long-term support",
+            isActive: true,
+          },
+        });
         console.log(`  ✓  PageContent: ${service.slug}`);
       }
     }

@@ -78,13 +78,15 @@ export function ProjectCard({
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
 
-          <Link
-            href={previewHref}
-            className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
-            aria-label={`Live preview of ${title}`}
-          >
-            Preview
-          </Link>
+          {previewHref !== "#" && (
+            <Link
+              href={previewHref}
+              className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={`Live preview of ${title}`}
+            >
+              Preview
+            </Link>
+          )}
         </div>
       </div>
     </article>

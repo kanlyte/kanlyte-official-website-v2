@@ -431,12 +431,55 @@ const pricingPlans = [
   },
 ];
 
+const offeringPriceConfig: Record<string, {
+  title: string;
+  starter: string;
+  business: string;
+  starterUSD: string;
+  businessUSD: string;
+}> = {
+  "custom-software": { title: "Custom Software", starter: "From 5,000,000 UGX", business: "From 15,000,000 UGX", starterUSD: "From $1,350", businessUSD: "From $4,050" },
+  "odoo-erp-customizations": { title: "Odoo Customization", starter: "From 2,500,000 UGX", business: "From 7,500,000 UGX", starterUSD: "From $675", businessUSD: "From $2,025" },
+  "school-management-systems": { title: "School Management System", starter: "From 3,500,000 UGX", business: "From 9,000,000 UGX", starterUSD: "From $945", businessUSD: "From $2,430" },
+  "website-development": { title: "Website Development", starter: "From 1,500,000 UGX", business: "From 4,500,000 UGX", starterUSD: "From $405", businessUSD: "From $1,215" },
+  "cloud-infrastructure": { title: "Cloud Infrastructure", starter: "From 800,000 UGX", business: "From 2,500,000 UGX", starterUSD: "From $216", businessUSD: "From $675" },
+  "it-consultancy": { title: "IT Consultancy", starter: "From 750,000 UGX", business: "From 2,000,000 UGX", starterUSD: "From $203", businessUSD: "From $540" },
+  "corporate-training": { title: "Corporate Training", starter: "From 1,500,000 UGX", business: "From 4,000,000 UGX", starterUSD: "From $405", businessUSD: "From $1,080" },
+  "ai-machine-learning": { title: "AI & Machine Learning", starter: "From 4,000,000 UGX", business: "From 12,000,000 UGX", starterUSD: "From $1,080", businessUSD: "From $3,240" },
+  "iot-solutions": { title: "IoT Solutions", starter: "From 3,500,000 UGX", business: "From 10,000,000 UGX", starterUSD: "From $945", businessUSD: "From $2,700" },
+  "digital-transformation": { title: "Digital Transformation", starter: "From 3,000,000 UGX", business: "From 10,000,000 UGX", starterUSD: "From $810", businessUSD: "From $2,700" },
+};
+
+const offeringPricingPlans = Object.entries(offeringPriceConfig).flatMap(([category, config]) => [
+  {
+    category, tier: "starter", title: `${config.title} Starter`, order: 0,
+    description: `A focused ${config.title.toLowerCase()} engagement for a clearly defined need.`,
+    priceUGX: config.starter, priceUSD: config.starterUSD, period: "per project",
+    isPopular: false, buttonText: "Request a Quote", isActive: true,
+    features: ["Discovery consultation", "Defined project scope", "Core implementation", "Documentation", "30 days post-launch support"],
+  },
+  {
+    category, tier: "business", title: `${config.title} Business`, order: 1,
+    description: `A broader implementation for growing organisations with integration and support needs.`,
+    priceUGX: config.business, priceUSD: config.businessUSD, period: "per project",
+    isPopular: true, buttonText: "Start a Project", isActive: true,
+    features: ["Detailed requirements workshop", "Advanced implementation", "Third-party integrations", "Team onboarding", "90 days priority support"],
+  },
+  {
+    category, tier: "enterprise", title: `${config.title} Enterprise`, order: 2,
+    description: "A fully tailored engagement for complex, multi-team or organisation-wide requirements.",
+    priceUGX: "Custom", priceUSD: "Custom", period: "",
+    isPopular: false, buttonText: "Contact Sales", isActive: true,
+    features: ["Custom solution architecture", "Phased delivery roadmap", "Enterprise integrations", "Governance and training", "Dedicated ongoing support"],
+  },
+]);
+
 export async function seedPricingPlans() {
   console.log("Seeding pricing plans...");
   let created = 0;
   let skipped = 0;
 
-  for (const plan of pricingPlans) {
+  for (const plan of [...pricingPlans, ...offeringPricingPlans]) {
     const { features, ...planData } = plan;
     const existing = await prisma.pricingPlan.findFirst({
       where: { category: planData.category, tier: planData.tier },
