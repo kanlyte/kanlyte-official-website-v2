@@ -2,6 +2,7 @@
 
 import { use } from "react";
 import { notFound } from "next/navigation";
+import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
 import { ServiceOfferings } from "@/components/services-pages/service-offerings";
@@ -15,8 +16,25 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ slug: 
   if (!isLoading && !service) notFound();
   if (!service) return null;
 
+  const titleWords = service.title.trim().split(/\s+/);
+  const highlightedTitle = titleWords.length > 1 ? titleWords.at(-1) : service.title;
+
   return (
     <>
+      <Hero
+        backgroundImage="/images/office.jpeg"
+        backgroundAlt="Kanlyte Uganda office"
+        title={service.title}
+        highlightedTitle={highlightedTitle}
+        tagline={service.kind === "main" ? "Main Service" : "Service Offering"}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          ...(service.parent
+            ? [{ label: service.parent.title, href: `/services/${service.parent.slug}` }]
+            : []),
+          { label: service.title, isActive: true },
+        ]}
+      />
       <ServiceHero
         slug={slug}
         badge={`${service.title} — Kanlyte Uganda`}

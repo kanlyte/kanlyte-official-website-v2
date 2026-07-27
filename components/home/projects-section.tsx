@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { ProjectCard } from "./project-card";
 import { useProjects } from "@/content-manager/hooks/useProjects";
 
@@ -58,6 +60,13 @@ export function ProjectsSection() {
             />
           ))}
         </div>
+        {total > 0 && (
+          <div className="mt-12 text-center">
+            <Link href="/projects" className="inline-flex items-center gap-2 rounded-md bg-[#6EBE45] px-7 py-3 font-semibold text-white transition-colors hover:bg-[#5a9e3a]">
+              View All Projects <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

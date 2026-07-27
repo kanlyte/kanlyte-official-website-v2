@@ -3,10 +3,12 @@
 import { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Layers3 } from "lucide-react";
+import { Hero } from "@/components/about-us/hero";
+import { ProjectCard } from "@/components/home/project-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useProject } from "@/content-manager/hooks/useProjects";
+import { useProject, useProjects } from "@/content-manager/hooks/useProjects";
 
 type Project = {
   id: string;
@@ -23,76 +25,133 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ id: s
     isLoading: boolean;
     isError: boolean;
   };
+  const { data: projects = [] } = useProjects(true) as { data?: Project[] };
 
   if (isLoading) {
     return (
-      <main className="mx-auto min-h-[70vh] max-w-6xl px-6 py-20">
-        <div className="mb-8 h-5 w-40 animate-pulse rounded bg-slate-200" />
-        <div className="mb-6 h-14 max-w-3xl animate-pulse rounded bg-slate-200" />
-        <div className="aspect-[16/8] animate-pulse rounded-3xl bg-slate-200" />
+      <main className="min-h-screen bg-white">
+        <div className="h-[400px] animate-pulse bg-slate-200" />
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="mb-6 h-10 w-64 animate-pulse rounded bg-slate-200" />
+          <div className="aspect-[16/8] animate-pulse rounded-2xl bg-slate-200" />
+        </div>
       </main>
     );
   }
 
   if (isError || !project) {
     return (
-      <main className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+      <main className="flex min-h-[70vh] flex-col items-center justify-center bg-white px-6 text-center">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[#6EBE45]">Projects</p>
         <h1 className="mb-3 text-4xl font-bold text-slate-900">Project not found</h1>
         <p className="mb-8 text-slate-500">This project may have been removed or is no longer available.</p>
-        <Button asChild><Link href="/#projects">Back to projects</Link></Button>
+        <Button asChild className="bg-[#6EBE45] hover:bg-[#5a9e3a]">
+          <Link href="/projects"><ArrowLeft className="mr-2 h-4 w-4" /> Back to projects</Link>
+        </Button>
       </main>
     );
   }
 
+  const titleWords = project.title.trim().split(/\s+/);
+  const highlightedTitle = titleWords.length > 1 ? titleWords.at(-1) : project.title;
+  const related = (projects ?? []).filter((item) => item.id !== project.id).slice(0, 3);
+
   return (
-    <main>
-      <section className="border-b bg-gradient-to-b from-[#6EBE45]/10 to-white px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <Link href="/#projects" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-[#6EBE45]">
-            <ArrowLeft className="h-4 w-4" /> Back to projects
-          </Link>
-          <div className="max-w-4xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-[#6EBE45]">Kanlyte project</p>
-            <h1 className="mb-6 text-4xl font-black leading-tight text-slate-900 md:text-6xl">{project.title}</h1>
-            <p className="max-w-3xl text-lg leading-relaxed text-slate-600 md:text-xl">{project.description}</p>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {project.tags.map((tag) => <Badge key={tag} variant="secondary" className="px-3 py-1">{tag}</Badge>)}
+    <main className="min-h-screen bg-white">
+      <Hero
+        backgroundImage="/images/office.jpeg"
+        backgroundAlt="Kanlyte Uganda office"
+        title={project.title}
+        highlightedTitle={highlightedTitle}
+        tagline="Kanlyte Project"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Projects", href: "/projects" },
+          { label: project.title, isActive: true },
+        ]}
+      />
+
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <Link href="/projects" className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-[#6EBE45] hover:underline">
+          <ArrowLeft className="h-4 w-4" /> Back to featured projects
+        </Link>
+
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,.55fr)]">
+          <div>
+            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-xl shadow-slate-900/10">
+              <Image
+                src={project.image}
+                alt={`${project.title} project preview`}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 760px"
+              />
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="relative mb-16 aspect-[16/8] overflow-hidden rounded-3xl border bg-slate-100 shadow-2xl shadow-slate-900/10">
-            <Image src={project.image} alt={`${project.title} project preview`} fill className="object-cover" priority sizes="(max-width: 1200px) 100vw, 1152px" />
+            <article className="pt-12">
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#6EBE45]">Project overview</p>
+              <h2 className="mb-5 text-3xl font-bold text-[#212529] md:text-4xl">The solution</h2>
+              <p className="border-l-4 border-[#6EBE45] pl-5 text-lg leading-8 text-gray-600">{project.description}</p>
+            </article>
           </div>
 
-          <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
-            <article>
-              <h2 className="mb-5 text-3xl font-bold text-slate-900">Project overview</h2>
-              <p className="text-lg leading-8 text-slate-600">{project.description}</p>
-              <h3 className="mb-5 mt-10 text-xl font-bold text-slate-900">Technology and capabilities</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
+          <aside className="space-y-6 lg:sticky lg:top-20">
+            <div className="rounded-2xl border border-[#6EBE45]/20 bg-gradient-to-br from-[#6EBE45]/5 to-[#6EBE45]/10 p-7">
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#6EBE45] text-white">
+                <Layers3 className="h-5 w-5" />
+              </div>
+              <h2 className="mb-4 text-xl font-bold text-[#212529]">Technology & capabilities</h2>
+              <div className="space-y-3">
                 {project.tags.map((tag) => (
-                  <div key={tag} className="flex items-center gap-3 rounded-xl border bg-white p-4 text-sm font-semibold text-slate-700">
-                    <CheckCircle2 className="h-5 w-5 shrink-0 text-[#6EBE45]" /> {tag}
+                  <div key={tag} className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-[#6EBE45]" /> {tag}
                   </div>
                 ))}
               </div>
-            </article>
+              <div className="mt-6 flex flex-wrap gap-2 border-t border-[#6EBE45]/20 pt-6">
+                {project.tags.map((tag) => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-            <aside className="h-fit rounded-2xl bg-slate-900 p-8 text-white lg:sticky lg:top-24">
-              <p className="mb-3 text-sm font-semibold text-[#8bd267]">Have a similar project?</p>
-              <h2 className="mb-4 text-2xl font-bold">Let&apos;s build the right solution for you.</h2>
-              <p className="mb-7 text-sm leading-6 text-slate-300">Tell us about your goals and we&apos;ll help turn them into a practical digital product.</p>
-              <Button asChild className="w-full bg-[#6EBE45] hover:bg-[#5da63b]">
-                <Link href="/contact-us">Start a project <ArrowRight className="ml-2 h-4 w-4" /></Link>
-              </Button>
-            </aside>
+      <section className="bg-gray-50/70 px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-2xl bg-[#212529] px-8 py-12 text-center md:px-14">
+            <p className="mb-3 text-sm font-semibold text-[#6EBE45]">Have a similar project in mind?</p>
+            <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">Let&apos;s build your next digital solution.</h2>
+            <p className="mx-auto mb-8 max-w-2xl text-gray-400">Tell us what you want to achieve and our team will help shape the right practical, scalable approach.</p>
+            <Button asChild className="bg-[#6EBE45] px-8 py-6 text-base hover:bg-[#5a9e3a]">
+              <Link href="/contact-us">Start Your Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
           </div>
         </div>
       </section>
+
+      {related.length > 0 && (
+        <section className="px-6 py-20">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-10">
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#6EBE45]">More work</p>
+              <h2 className="text-3xl font-bold text-[#212529]">Explore other projects</h2>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {related.map((item) => (
+                <ProjectCard
+                  key={item.id}
+                  title={item.title}
+                  description={item.description}
+                  tags={item.tags}
+                  image={item.image}
+                  viewDetailsHref={`/projects/${item.id}`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }
