@@ -2,7 +2,8 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ICTTrainingPricing } from "@/components/services/ICTTrainingPricing";
+import { ServiceOfferings } from "@/components/services-pages/service-offerings";
+import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
 import { GraduationCap, Users, BookOpen, Briefcase, Award, TrendingUp, Code, Database, Shield, Cloud, Smartphone, HeadphonesIcon } from "lucide-react";
 
 const capabilities = [
@@ -55,7 +56,8 @@ export default function ICTTrainingPage() {
         ctaLabel="View All Programmes"
         ctaHref="/contact-us"
       />
-      <ICTTrainingPricing />
+      <ServiceOfferings slug="ict-training" />
+      <EntityPricingSection ownerType="service" ownerSlug="ict-training" ownerTitle="ICT Training & Consultancy" includeChildServices />
       {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Upskill Your Team?"

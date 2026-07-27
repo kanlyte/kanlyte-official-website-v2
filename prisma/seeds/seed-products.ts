@@ -27,6 +27,29 @@ export async function seedProducts() {
     }
   }
 
+  const seededProducts = await prisma.product.findMany({
+    select: { id: true, slug: true },
+  });
+  for (const product of seededProducts) {
+    const productRecord = PRODUCTS.find((item) => item.slug === product.slug);
+    await prisma.pricingPlanCategory.upsert({
+      where: { slug: product.slug },
+      create: {
+        name: productRecord?.title ?? product.slug,
+        slug: product.slug,
+        ownerType: "product",
+        ownerSlug: product.slug,
+        productId: product.id,
+      },
+      update: {
+        name: productRecord?.title,
+        ownerType: "product",
+        ownerSlug: product.slug,
+        productId: product.id,
+      },
+    });
+  }
+
   console.log(`\nProducts done — ${created} created, ${skipped} skipped.`);
 }
 

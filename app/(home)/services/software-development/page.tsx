@@ -2,7 +2,8 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { SoftwareDevelopmentPricing } from "@/components/services/SoftwareDevelopmentPricing";
+import { ServiceOfferings } from "@/components/services-pages/service-offerings";
+import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
 import { Code, Smartphone, Database, Settings, RefreshCw, CheckCircle, Layers, Globe, Cpu, Shield, Zap, HeadphonesIcon } from "lucide-react";
 
 const capabilities = [
@@ -55,7 +56,8 @@ export default function SoftwareDevelopmentPage() {
         ctaLabel="Let's Build Together"
         ctaHref="/contact-us"
       />
-      <SoftwareDevelopmentPricing />
+      <ServiceOfferings slug="software-development" />
+      <EntityPricingSection ownerType="service" ownerSlug="software-development" ownerTitle="Software Development" includeChildServices />
       {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Have a Project in Mind?"

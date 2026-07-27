@@ -64,19 +64,26 @@ model Stat {
 
 // ─── Services / Features Grid ───────────────────────────────────────────────
 model Service {
-  id          String           @id @default(cuid())
-  title       String
-  slug        String?          @unique
-  description String
-  icon        String // lucide icon name e.g. "Code"
-  featured    Boolean          @default(false)
-  category    String?
-  categoryRef ServiceCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
-  order       Int
-  isActive    Boolean          @default(true) @map("isactive")
+  id              String               @id @default(cuid())
+  title           String
+  slug            String?              @unique
+  description     String
+  icon            String // lucide icon name e.g. "Code"
+  kind            String               @default("offering") // "main" | "offering"
+  parentId        String?              @map("parentid")
+  parent          Service?             @relation("ServiceHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children        Service[]            @relation("ServiceHierarchy")
+  featured        Boolean              @default(false)
+  category        String?
+  categoryRef     ServiceCategory?     @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  pricingCategory PricingPlanCategory?
+  order           Int
+  isActive        Boolean              @default(true) @map("isactive")
 
   @@index([order])
   @@index([slug])
+  @@index([kind])
+  @@index([parentId])
   @@index([category])
   @@map("service")
 }
@@ -94,16 +101,17 @@ model ServiceCategory {
 
 // ─── Products ───────────────────────────────────────────────────────────────
 model Product {
-  id          String           @id @default(cuid())
-  title       String
-  slug        String           @unique
-  description String
-  image       String?          // card image
-  icon        String           // lucide icon name e.g. "Cpu"
-  category    String?
-  categoryRef ProductCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
-  order       Int
-  isActive    Boolean          @default(true) @map("isactive")
+  id              String               @id @default(cuid())
+  title           String
+  slug            String               @unique
+  description     String
+  image           String? // card image
+  icon            String // lucide icon name e.g. "Cpu"
+  category        String?
+  categoryRef     ProductCategory?     @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  pricingCategory PricingPlanCategory?
+  order           Int
+  isActive        Boolean              @default(true) @map("isactive")
 
   @@index([order])
   @@index([slug])
@@ -262,7 +270,11 @@ model PricingPlanCategory {
   name           String
   slug           String        @unique
   ownerType      String        @default("standalone") @map("ownertype") // "product" | "service" | "standalone"
-  ownerSlug      String?       @map("ownerslug")  // matches Product.slug or Service.slug
+  ownerSlug      String?       @map("ownerslug") // matches Product.slug or Service.slug
+  serviceId      String?       @unique @map("serviceid")
+  service        Service?      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  productId      String?       @unique @map("productid")
+  product        Product?      @relation(fields: [productId], references: [id], onDelete: Cascade)
   pricingEnabled Boolean       @default(true) @map("pricingenabled")
   plans          PricingPlan[]
   createdAt      DateTime      @default(now()) @map("createdat")
@@ -323,7 +335,7 @@ model PageContent {
   secondaryBtnHref  String  @map("secondarybtnhref")
   annotationLine1   String  @map("annotationline1")
   annotationLine2   String  @map("annotationline2")
-  annotationLines   String? @db.Text @map("annotationlines") // JSON-encoded string[]
+  annotationLines   String? @map("annotationlines") @db.Text // JSON-encoded string[]
   isActive          Boolean @default(true) @map("isactive")
 
   @@index([slug])
@@ -476,7 +488,7 @@ model SectorWeServe {
   id          String  @id @default(cuid())
   name        String
   description String?
-  icon        String  // lucide icon name e.g. "GraduationCap"
+  icon        String // lucide icon name e.g. "GraduationCap"
   order       Int
   isActive    Boolean @default(true) @map("isactive")
 

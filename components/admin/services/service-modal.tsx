@@ -12,11 +12,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useModalStore } from "@/store/modal.store";
-import { useCreateService, useUpdateService } from "@/content-manager/hooks/useServices";
+import { useCreateService, useServices, useUpdateService } from "@/content-manager/hooks/useServices";
 import { CreateServiceSchema } from "@/content-manager/dtos/service.dto";
 import type { CreateServiceInput } from "@/content-manager/dtos/service.dto";
 import { IconPicker } from "@/components/admin/shared/icon-picker";
 import { CreatableCategoryAutocomplete } from "@/components/admin/shared/creatable-category-autocomplete";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RESOURCE = "services";
 
@@ -32,12 +33,17 @@ export function ServiceModal() {
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateServiceInput>({
     resolver: zodResolver(CreateServiceSchema),
-    defaultValues: { title: "", slug: "", description: "", icon: "", category: null, featured: false, order: 0, isActive: true },
+    defaultValues: { title: "", slug: "", description: "", icon: "", kind: "offering", parentId: null, category: null, featured: false, order: 0, isActive: true },
   });
+  const { data: services = [] } = useServices();
 
   const isActive = watch("isActive");
   const featured = watch("featured");
   const icon = watch("icon");
+  const kind = watch("kind");
+  const parentId = watch("parentId");
+  const mainServices = (services as { id: string; title: string; kind: string }[])
+    .filter((service) => service.kind === "main" && service.id !== record?.id);
 
   useEffect(() => {
     if (isEdit && record) {
@@ -46,13 +52,15 @@ export function ServiceModal() {
         slug: (record.slug as string) ?? "",
         description: record.description as string,
         icon: record.icon as string,
+        kind: (record.kind as "main" | "offering") ?? "offering",
+        parentId: (record.parentId as string) ?? null,
         category: (record.category as string) ?? null,
         featured: (record.featured as boolean) ?? false,
         order: record.order as number,
         isActive: record.isActive as boolean,
       });
     } else if (isCreate) {
-      reset({ title: "", slug: "", description: "", icon: "", category: null, featured: false, order: 0, isActive: true });
+      reset({ title: "", slug: "", description: "", icon: "", kind: "offering", parentId: null, category: null, featured: false, order: 0, isActive: true });
     }
   }, [isEdit, isCreate, record, reset]);
 
@@ -85,8 +93,43 @@ export function ServiceModal() {
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-x-4">
+              <div className="space-y-1">
+                <Label className="text-xs">Service type</Label>
+                <Select
+                  value={kind}
+                  onValueChange={(value: "main" | "offering") => {
+                    setValue("kind", value, { shouldValidate: true });
+                    if (value === "main") setValue("parentId", null);
+                  }}
+                >
+                  <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="main">Main service</SelectItem>
+                    <SelectItem value="offering">Service offering</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">Parent main service</Label>
+                <Select
+                  value={parentId ?? "none"}
+                  onValueChange={(value) => setValue("parentId", value === "none" ? null : value, { shouldValidate: true })}
+                  disabled={kind === "main"}
+                >
+                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select parent…" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No parent</SelectItem>
+                    {mainServices.map((service) => (
+                      <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             <div className="space-y-1">
-              <Label className="text-xs">Service Category (optional)</Label>
+              <Label className="text-xs">Legacy category (optional)</Label>
               <CreatableCategoryAutocomplete
                 kind="service"
                 value={watch("category")}

@@ -2,7 +2,8 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { ResearchInnovationPricing } from "@/components/services/ResearchInnovationPricing";
+import { ServiceOfferings } from "@/components/services-pages/service-offerings";
+import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
 import { FlaskConical, Lightbulb, TrendingUp, Cpu, Globe, Users, BarChart2, Layers, RefreshCw, Zap } from "lucide-react";
 
 const capabilities = [
@@ -53,7 +54,8 @@ export default function ResearchInnovationPage() {
         ctaLabel="Explore Our Work"
         ctaHref="/contact-us"
       />
-      <ResearchInnovationPricing />
+      <ServiceOfferings slug="research-innovation" />
+      <EntityPricingSection ownerType="service" ownerSlug="research-innovation" ownerTitle="Research & Innovation" includeChildServices />
       {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Have a Research Challenge?"

@@ -162,7 +162,7 @@ export function CategoryManager({ kind }: CategoryManagerProps) {
       <AlertDialog open={deleteOpen} onOpenChange={(v) => !v && setDeleteOpen(false)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete "{toDelete?.name}"?</AlertDialogTitle>
+            <AlertDialogTitle>Delete &ldquo;{toDelete?.name}&rdquo;?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete this category. Services or products assigned to it will become uncategorised.
             </AlertDialogDescription>

@@ -13,7 +13,13 @@ export const pricingPlanRepository = {
       include: { features: { orderBy: { order: "asc" } } },
       orderBy: { order: "asc" },
     });
-    return { pricingEnabled: cat?.pricingEnabled ?? true, plans };
+    return {
+      exists: Boolean(cat),
+      pricingEnabled: cat?.pricingEnabled ?? false,
+      ownerType: cat?.ownerType ?? null,
+      ownerSlug: cat?.ownerSlug ?? null,
+      plans,
+    };
   },
 
   async updateCategory(slug: string, data: { pricingEnabled: boolean }) {

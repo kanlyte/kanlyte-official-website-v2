@@ -193,6 +193,45 @@ export async function seedServices() {
   }
 
   console.log(`\nServices done — ${created} created, ${skipped} skipped.`);
+  // Build the stable hierarchy after all records exist. `category` remains
+  // available during the transition, but parentId now drives the website.
+  for (const category of categories) {
+    const parent = await prisma.service.findUnique({ where: { slug: category.slug } });
+    if (!parent) continue;
+    await prisma.service.update({
+      where: { id: parent.id },
+      data: { kind: "main", parentId: null },
+    });
+    await prisma.service.updateMany({
+      where: { category: category.slug, id: { not: parent.id } },
+      data: { kind: "offering", parentId: parent.id },
+    });
+  }
+
+  const seededServices = await prisma.service.findMany({
+    where: { slug: { not: null } },
+    select: { id: true, slug: true },
+  });
+  for (const service of seededServices) {
+    if (!service.slug) continue;
+    const serviceRecord = services.find((item) => item.slug === service.slug);
+    await prisma.pricingPlanCategory.upsert({
+      where: { slug: service.slug },
+      create: {
+        name: serviceRecord?.title ?? service.slug,
+        slug: service.slug,
+        ownerType: "service",
+        ownerSlug: service.slug,
+        serviceId: service.id,
+      },
+      update: {
+        name: serviceRecord?.title,
+        ownerType: "service",
+        ownerSlug: service.slug,
+        serviceId: service.id,
+      },
+    });
+  }
 }
 
 const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
