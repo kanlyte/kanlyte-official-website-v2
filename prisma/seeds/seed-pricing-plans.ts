@@ -474,13 +474,29 @@ const offeringPricingPlans = Object.entries(offeringPriceConfig).flatMap(([categ
   },
 ]);
 
+const pricingEnabledCategories = [
+  "odoo",
+  "odoo-erp-customizations",
+  "go-digital",
+  "cpanel",
+  "web-hosting",
+  "web-cloud",
+  "website-development",
+];
+
 export async function seedPricingPlans() {
   console.log("Seeding pricing plans...");
+  await prisma.pricingPlan.updateMany({ data: { isActive: false } });
+  await prisma.pricingPlan.updateMany({
+    where: { category: { in: pricingEnabledCategories } },
+    data: { isActive: true },
+  });
   let created = 0;
   let skipped = 0;
 
   for (const plan of [...pricingPlans, ...offeringPricingPlans]) {
     const { features, ...planData } = plan;
+    planData.isActive = pricingEnabledCategories.includes(planData.category);
     const existing = await prisma.pricingPlan.findFirst({
       where: { category: planData.category, tier: planData.tier },
     });
