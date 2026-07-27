@@ -46,12 +46,12 @@ export function PricingCards({
     "Integration with existing systems",
   ],
 }: PricingCardsProps) {
-  const { data: dbData } = usePricingPlans(category);
+  const { data: dbData, isLoading } = usePricingPlans(category);
 
-  const pricingEnabled = dbData?.pricingEnabled ?? true;
+  const pricingEnabled = dbData?.pricingEnabled ?? false;
   const dbPlans = dbData?.plans;
 
-  if (!pricingEnabled) return null;
+  if (isLoading || !pricingEnabled) return null;
 
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {
@@ -73,6 +73,8 @@ export function PricingCards({
         features: p.features.map((f) => f.text),
       }))
     : fallbackPlans;
+
+  if (!plans.length) return null;
 
   function getPrice(plan: FallbackPlan): string {
     const isMonthly = billing === "monthly";

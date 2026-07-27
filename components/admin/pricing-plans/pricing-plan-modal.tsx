@@ -9,12 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { CreatableCategoryAutocomplete } from "@/components/admin/shared/creatable-category-autocomplete";
 import { useModalStore } from "@/store/modal.store";
 import { useCreatePricingPlan, useUpdatePricingPlan } from "@/content-manager/hooks/usePricingPlans";
 import { CreatePricingPlanSchema } from "@/content-manager/dtos/pricing-plan.dto";
 import type { CreatePricingPlanInput } from "@/content-manager/dtos/pricing-plan.dto";
 import { Trash2, Plus } from "lucide-react";
+import { useResourceCategories } from "@/content-manager/hooks/useResourceCategories";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RESOURCE = "pricing-plans";
 
@@ -44,6 +45,7 @@ export function PricingPlanModal() {
   const isPopular = watch("isPopular");
   const isActive = watch("isActive");
   const category = watch("category");
+  const { data: pricingCategories = [] } = useResourceCategories("pricing-plan");
 
   useEffect(() => {
     if (isEdit && record) {
@@ -121,13 +123,19 @@ export function PricingPlanModal() {
             {/* Category + Tier */}
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-1">
-                <Label className="text-xs">Category</Label>
-                <CreatableCategoryAutocomplete
-                  kind="pricing-plan"
-                  value={category}
-                  onChange={(value) => setValue("category", value, { shouldDirty: true, shouldValidate: true })}
-                  placeholder="Search or add a pricing category…"
-                />
+                <Label className="text-xs">Product, service or package</Label>
+                <Select value={category} onValueChange={(value) => setValue("category", value, { shouldDirty: true, shouldValidate: true })}>
+                  <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Select pricing owner…" /></SelectTrigger>
+                  <SelectContent>
+                    {pricingCategories.map((item) => (
+                      <SelectItem key={item.id} value={item.slug}>
+                        {item.ownerType === "service" && item.service?.parent
+                          ? `${item.service.parent.title} / ${item.name}`
+                          : item.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {errors.category && <p className="text-destructive text-xs">{errors.category.message}</p>}
               </div>
               <div className="space-y-1">

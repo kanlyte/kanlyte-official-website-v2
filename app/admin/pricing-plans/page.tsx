@@ -63,7 +63,11 @@ export default function PricingPlansPage() {
             {serviceCats.length > 0 && (
               <>
                 <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Services</div>
-                {serviceCats.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
+                {serviceCats.map((c) => (
+                  <SelectItem key={c.id} value={c.slug}>
+                    {c.service?.parent ? `${c.service.parent.title} / ${c.name}` : c.name}
+                  </SelectItem>
+                ))}
               </>
             )}
             {standaloneCats.length > 0 && (

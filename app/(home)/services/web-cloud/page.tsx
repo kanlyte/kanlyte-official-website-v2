@@ -2,7 +2,8 @@
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
-import { WebCloudPricing } from "@/components/services/WebCloudPricing";
+import { ServiceOfferings } from "@/components/services-pages/service-offerings";
+import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
 import { Globe, Cloud, Mail, Server, Shield, Zap, Database, Lock, RefreshCw, BarChart2, HeadphonesIcon, TrendingUp } from "lucide-react";
 
 const capabilities = [
@@ -55,7 +56,8 @@ export default function WebCloudPage() {
         ctaLabel="Start Your Project"
         ctaHref="/contact-us"
       />
-      <WebCloudPricing />
+      <ServiceOfferings slug="web-cloud" />
+      <EntityPricingSection ownerType="service" ownerSlug="web-cloud" ownerTitle="Web & Cloud Services" includeChildServices />
       {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Build Your Online Presence?"

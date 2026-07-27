@@ -24,6 +24,11 @@ export const serviceService = {
 
   async create(input: CreateServiceInput) {
     const data = CreateServiceSchema.parse(input);
+    if (data.kind === "main" && data.parentId) throw new Error("A main service cannot have a parent");
+    if (data.kind === "offering" && data.parentId) {
+      const parent = await serviceRepository.findById(data.parentId);
+      if (!parent || parent.kind !== "main") throw new Error("Offerings must belong to a main service");
+    }
     const existing = await serviceRepository.findBySlug(data.slug);
     if (existing) throw new Error(`Slug "${data.slug}" already exists`);
     const service = await serviceRepository.create(data);
@@ -52,19 +57,49 @@ export const serviceService = {
     // Auto-create PricingPlanCategory so pricing plans can be added immediately
     const hasPricingCategory = await prisma.pricingPlanCategory.findUnique({ where: { slug: data.slug } });
     if (!hasPricingCategory) {
-      await prisma.pricingPlanCategory.create({ data: { name: data.title, slug: data.slug, ownerType: "service", ownerSlug: data.slug } });
+      await prisma.pricingPlanCategory.create({
+        data: { name: data.title, slug: data.slug, ownerType: "service", ownerSlug: data.slug, serviceId: service.id },
+      });
+    } else if (!hasPricingCategory.serviceId) {
+      await prisma.pricingPlanCategory.update({
+        where: { id: hasPricingCategory.id },
+        data: { serviceId: service.id, ownerType: "service", ownerSlug: data.slug },
+      });
     }
     return service;
   },
 
   async update(id: string, input: UpdateServiceInput) {
-    await serviceService.getById(id);
+    const current = await serviceService.getById(id);
     const data = UpdateServiceSchema.parse(input);
+    const nextKind = data.kind ?? current.kind;
+    const nextParentId = data.parentId === undefined ? current.parentId : data.parentId;
+    if (nextKind === "main" && nextParentId) throw new Error("A main service cannot have a parent");
+    if (nextParentId === id) throw new Error("A service cannot be its own parent");
+    if (nextKind === "offering" && nextParentId) {
+      const parent = await serviceRepository.findById(nextParentId);
+      if (!parent || parent.kind !== "main") throw new Error("Offerings must belong to a main service");
+    }
     if (data.slug) {
       const existing = await serviceRepository.findBySlug(data.slug);
       if (existing && existing.id !== id) throw new Error(`Slug "${data.slug}" already exists`);
     }
-    return await serviceRepository.update(id, data);
+    const oldSlug = current.slug;
+    const updated = await serviceRepository.update(id, {
+      ...data,
+      parentId: nextKind === "main" ? null : data.parentId,
+    });
+    if (data.slug && oldSlug && data.slug !== oldSlug) {
+      await prisma.$transaction([
+        prisma.pageContent.updateMany({ where: { slug: oldSlug }, data: { slug: data.slug } }),
+        prisma.pageCapability.updateMany({ where: { slug: oldSlug }, data: { slug: data.slug } }),
+        prisma.pricingPlanCategory.updateMany({
+          where: { ownerType: "service", ownerSlug: oldSlug },
+          data: { ownerSlug: data.slug, slug: data.slug },
+        }),
+      ]);
+    }
+    return updated;
   },
 
   async delete(id: string) {

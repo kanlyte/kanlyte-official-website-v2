@@ -26,9 +26,16 @@ export function Navbar() {
   }));
 
   const { data: dbServices } = useServices(true);
-  const services: { title: string; href: string }[] = (dbServices ?? [])
-    .filter((s: { featured: boolean }) => s.featured)
-    .map((s: { title: string; slug: string }) => ({ title: s.title, href: `/services/${s.slug}` }));
+  const services: { title: string; href: string; children: { title: string; href: string }[] }[] = (dbServices ?? [])
+    .filter((service: { kind: string }) => service.kind === "main")
+    .map((service: { title: string; slug: string; children?: { title: string; slug: string }[] }) => ({
+      title: service.title,
+      href: `/services/${service.slug}`,
+      children: (service.children ?? []).map((child) => ({
+        title: child.title,
+        href: `/services/${child.slug}`,
+      })),
+    }));
 
   const resources = [
     { title: "Projects", href: "/#projects" },
@@ -121,13 +128,20 @@ export function Navbar() {
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`} />
               </button>
               {isServicesOpen && (
-                <div className="absolute left-0 top-full w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
+                <div className="absolute left-1/2 top-full grid w-[680px] -translate-x-1/2 grid-cols-2 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-900/5 animate-in fade-in slide-in-from-top-2">
                   {services.map((s) => (
-                    <Link key={s.title} href={s.href}
-                      className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors"
-                      onClick={() => setIsServicesOpen(false)}>
-                      <span className="font-medium text-slate-900 hover:text-[#6EBE45] text-sm">{s.title}</span>
-                    </Link>
+                    <div key={s.title} className="rounded-lg border border-slate-100 p-3">
+                      <Link href={s.href} className="mb-2 block text-sm font-bold text-slate-900 hover:text-[#6EBE45]" onClick={() => setIsServicesOpen(false)}>
+                        {s.title}
+                      </Link>
+                      <div className="space-y-1">
+                        {s.children.slice(0, 4).map((child) => (
+                          <Link key={child.href} href={child.href} className="block rounded px-2 py-1 text-xs text-slate-500 hover:bg-slate-50 hover:text-[#6EBE45]" onClick={() => setIsServicesOpen(false)}>
+                            {child.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
@@ -240,11 +254,16 @@ export function Navbar() {
                   {isMobileServicesOpen && (
                     <div className="ml-4 space-y-1 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 p-3 animate-in fade-in">
                       {services.map((s) => (
-                        <Link key={s.title} href={s.href}
-                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-white transition-colors"
-                          onClick={() => setIsMobileMenuOpen(false)}>
-                          <span className="font-medium text-slate-900 text-sm">{s.title}</span>
-                        </Link>
+                        <div key={s.title} className="rounded-lg bg-white p-3">
+                          <Link href={s.href} className="block text-sm font-semibold text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>
+                            {s.title}
+                          </Link>
+                          {s.children.map((child) => (
+                            <Link key={child.href} href={child.href} className="mt-2 block pl-3 text-xs text-slate-500" onClick={() => setIsMobileMenuOpen(false)}>
+                              {child.title}
+                            </Link>
+                          ))}
+                        </div>
                       ))}
                     </div>
                   )}

@@ -10,6 +10,11 @@ export interface ResourceCategory {
   pricingEnabled?: boolean;
   ownerType?: string;
   ownerSlug?: string | null;
+  serviceId?: string | null;
+  productId?: string | null;
+  service?: { id: string; title: string; kind: string; parent?: { id: string; title: string } | null } | null;
+  product?: { id: string; title: string } | null;
+  _count?: { plans: number };
 }
 
 async function fetchJSON(url: string, init?: RequestInit) {

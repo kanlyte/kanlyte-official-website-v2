@@ -52,7 +52,14 @@ export const productService = {
     // Auto-create PricingPlanCategory so pricing plans can be added immediately
     const hasPricingCategory = await prisma.pricingPlanCategory.findUnique({ where: { slug: data.slug } });
     if (!hasPricingCategory) {
-      await prisma.pricingPlanCategory.create({ data: { name: data.title, slug: data.slug, ownerType: "product", ownerSlug: data.slug } });
+      await prisma.pricingPlanCategory.create({
+        data: { name: data.title, slug: data.slug, ownerType: "product", ownerSlug: data.slug, productId: product.id },
+      });
+    } else if (!hasPricingCategory.productId) {
+      await prisma.pricingPlanCategory.update({
+        where: { id: hasPricingCategory.id },
+        data: { productId: product.id, ownerType: "product", ownerSlug: data.slug },
+      });
     }
     return product;
   },

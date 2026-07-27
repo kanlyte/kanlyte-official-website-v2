@@ -9,7 +9,14 @@ export const resourceCategoryRepository = {
       case "service":
         return prisma.serviceCategory.findMany({ orderBy: { name: "asc" } });
       case "pricing-plan":
-        return prisma.pricingPlanCategory.findMany({ orderBy: { name: "asc" } });
+        return prisma.pricingPlanCategory.findMany({
+          include: {
+            service: { select: { id: true, title: true, kind: true, parent: { select: { id: true, title: true } } } },
+            product: { select: { id: true, title: true } },
+            _count: { select: { plans: true } },
+          },
+          orderBy: { name: "asc" },
+        });
       case "gallery":
         return prisma.galleryCategory.findMany({ orderBy: { name: "asc" } });
     }
