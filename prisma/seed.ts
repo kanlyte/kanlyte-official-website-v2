@@ -19,6 +19,7 @@ import { seedMilestones } from "./seeds/seed-milestones";
 import { seedContactInfo } from "./seeds/seed-contact-info";
 import { seedSocialLinks } from "./seeds/seed-social-links";
 import { seedSectorsWeServe } from "./seeds/seed-sectors-we-serve";
+import { seedGalleryImages } from "./seeds/seed-gallery-images";
 
 async function main() {
   await seedAdmin();
@@ -47,6 +48,7 @@ async function main() {
   await seedContactInfo();
   await seedSocialLinks();
   await seedSectorsWeServe();
+  await seedGalleryImages();
 }
 
 main()

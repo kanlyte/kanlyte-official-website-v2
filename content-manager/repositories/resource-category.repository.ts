@@ -13,7 +13,11 @@ export const resourceCategoryRepository = {
           include: {
             service: { select: { id: true, title: true, kind: true, parent: { select: { id: true, title: true } } } },
             product: { select: { id: true, title: true } },
-            _count: { select: { plans: true } },
+            _count: {
+              select: {
+                plans: { where: { isActive: true } },
+              },
+            },
           },
           orderBy: { name: "asc" },
         });
