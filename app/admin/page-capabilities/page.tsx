@@ -7,21 +7,10 @@ import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { PageCapabilityModal } from "@/components/admin/page-capabilities/page-capability-modal";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 import { useAllPageCapabilities, useDeletePageCapability } from "@/content-manager/hooks/usePageCapabilities";
+import { usePageContents } from "@/content-manager/hooks/usePageContent";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RESOURCE = "page-capabilities";
-
-const PAGE_SLUGS = [
-  { value: "odoo", label: "Odoo ERP" },
-  { value: "school-sync", label: "School Sync" },
-  { value: "lyte", label: "Lyte App" },
-  { value: "research-innovation", label: "Research & Innovation" },
-  { value: "web-cloud", label: "Web & Cloud Services" },
-  { value: "software-development", label: "Software Development" },
-  { value: "ict-training", label: "ICT Training & Consultancy" },
-  { value: "email-hosting", label: "Email Hosting (standalone)" },
-  { value: "app-development", label: "App Development (standalone)" },
-];
 
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
@@ -41,9 +30,15 @@ const COLUMNS: ResourceColumn[] = [
 export default function PageCapabilitiesAdminPage() {
   const { data = [], isLoading } = useAllPageCapabilities();
   const { mutate: deleteItem, isPending } = useDeletePageCapability();
+  const { data: pages = [] } = usePageContents();
   const [slugFilter, setSlugFilter] = useState("all");
 
   const filtered = slugFilter === "all" ? data : data.filter((r: { slug: string }) => r.slug === slugFilter);
+
+  // Build slug list from PageContent records (source of truth for all registered pages)
+  const pageList = (pages as { slug: string; title?: string }[]).filter(
+    (p) => p.slug !== "about-home" && p.slug !== "showcase-home"
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -56,8 +51,8 @@ export default function PageCapabilitiesAdminPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Pages</SelectItem>
-            {PAGE_SLUGS.map((p) => (
-              <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+            {pageList.map((p) => (
+              <SelectItem key={p.slug} value={p.slug}>{p.slug}</SelectItem>
             ))}
           </SelectContent>
         </Select>

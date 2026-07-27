@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -14,6 +14,7 @@ import { CreatePageCapabilitySchema } from "@/content-manager/dtos/page-capabili
 import type { CreatePageCapabilityInput } from "@/content-manager/dtos/page-capability.dto";
 import { IconPicker } from "@/components/admin/shared/icon-picker";
 import { usePageContents } from "@/content-manager/hooks/usePageContent";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RESOURCE = "page-capabilities";
 
@@ -33,21 +34,12 @@ export function PageCapabilityModal() {
   });
 
   const { data: pages = [] } = usePageContents();
-  const pageSlugs = (pages as { slug: string }[]).map((p) => p.slug);
+  const pageList = (pages as { slug: string; badge?: string }[])
+    .filter((p) => p.slug !== "about-home" && p.slug !== "showcase-home");
 
   const isActive = watch("isActive");
   const icon = watch("icon");
   const slug = watch("slug");
-
-  const [slugSuggestions, setSlugSuggestions] = useState<string[]>([]);
-
-  function onSlugChange(value: string) {
-    const normalized = value.toLowerCase().replace(/\s+/g, "-");
-    setValue("slug", normalized, { shouldValidate: true });
-    setSlugSuggestions(
-      normalized.length > 0 ? pageSlugs.filter((s) => s.includes(normalized)) : []
-    );
-  }
 
   useEffect(() => {
     if (isEdit && record) {
@@ -80,28 +72,24 @@ export function PageCapabilityModal() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="px-6 py-4 space-y-3">
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-              <div className="space-y-1 relative">
-                <Label className="text-xs">Page Slug</Label>
-                <Input
+              <div className="space-y-1">
+                <Label className="text-xs">Page</Label>
+                <Select
                   value={slug}
-                  onChange={(e) => onSlugChange(e.target.value)}
-                  placeholder="e.g. cyber-security"
-                  className="h-8 text-sm"
-                />
-                {slugSuggestions.length > 0 && (
-                  <div className="absolute z-10 top-full left-0 right-0 bg-white border rounded-md shadow-md mt-0.5 max-h-36 overflow-y-auto">
-                    {slugSuggestions.map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        className="w-full text-left px-3 py-1.5 text-sm hover:bg-muted"
-                        onClick={() => { setValue("slug", s, { shouldValidate: true }); setSlugSuggestions([]); }}
-                      >
-                        {s}
-                      </button>
+                  onValueChange={(v) => setValue("slug", v, { shouldValidate: true })}
+                  disabled={isEdit}
+                >
+                  <SelectTrigger className="h-8 text-sm">
+                    <SelectValue placeholder="Select a page..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {pageList.map((p) => (
+                      <SelectItem key={p.slug} value={p.slug}>
+                        {p.badge ? p.badge.split("—")[0].trim() : p.slug}
+                      </SelectItem>
                     ))}
-                  </div>
-                )}
+                  </SelectContent>
+                </Select>
                 {errors.slug && <p className="text-destructive text-xs">{errors.slug.message}</p>}
               </div>
               <div className="space-y-1">

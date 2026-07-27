@@ -6,6 +6,7 @@ import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { ServiceModal } from "@/components/admin/services/service-modal";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 import { useServices, useDeleteService } from "@/content-manager/hooks/useServices";
+import { CategoryManager } from "@/components/admin/shared/category-manager";
 
 const RESOURCE = "services";
 
@@ -34,6 +35,7 @@ export default function ServicesPage() {
   return (
     <div className="flex flex-col gap-6">
       <ResourceHeader title="Services" description="Manage the services displayed on the homepage." resource={RESOURCE} />
+      <CategoryManager kind="service" />
       <ResourceTable resource={RESOURCE} data={data} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search services..." />
       <ServiceModal />
       <DeleteModal resource={RESOURCE} onConfirm={deleteService} isPending={isPending} />

@@ -261,11 +261,15 @@ model PricingPlanCategory {
   id             String        @id @default(cuid())
   name           String
   slug           String        @unique
+  ownerType      String        @default("standalone") @map("ownertype") // "product" | "service" | "standalone"
+  ownerSlug      String?       @map("ownerslug")  // matches Product.slug or Service.slug
   pricingEnabled Boolean       @default(true) @map("pricingenabled")
   plans          PricingPlan[]
   createdAt      DateTime      @default(now()) @map("createdat")
   updatedAt      DateTime      @updatedAt @map("updatedat")
 
+  @@index([ownerType])
+  @@index([ownerSlug])
   @@map("pricingplancategory")
 }
 

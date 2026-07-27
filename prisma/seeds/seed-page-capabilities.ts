@@ -124,6 +124,39 @@ const pageCapabilities = [
   { slug: "app-development", name: "QA & Testing", icon: "CheckCircle", order: 9 },
   { slug: "app-development", name: "API Integration", icon: "Wrench", order: 10 },
   { slug: "app-development", name: "Maintenance", icon: "Headphones", order: 11 },
+
+  // ── web-hosting ───────────────────────────────────────────────────────────
+  { slug: "web-hosting", name: "Domain Registration", icon: "Globe", order: 0 },
+  { slug: "web-hosting", name: "SSD Hosting", icon: "Server", order: 1 },
+  { slug: "web-hosting", name: "SSL Certificate", icon: "Shield", order: 2 },
+  { slug: "web-hosting", name: "Business Email", icon: "Mail", order: 3 },
+  { slug: "web-hosting", name: "Daily Backups", icon: "RefreshCw", order: 4 },
+  { slug: "web-hosting", name: "99.9% Uptime", icon: "Zap", order: 5 },
+  { slug: "web-hosting", name: "cPanel Access", icon: "Settings", order: 6 },
+  { slug: "web-hosting", name: "CDN Support", icon: "Cloud", order: 7 },
+  { slug: "web-hosting", name: "SEO Tools", icon: "TrendingUp", order: 8 },
+  { slug: "web-hosting", name: "24/7 Support", icon: "Headphones", order: 9 },
+
+  // ── go-digital ────────────────────────────────────────────────────────────
+  { slug: "go-digital", name: "Domain Name", icon: "Globe", order: 0 },
+  { slug: "go-digital", name: "Business Email", icon: "Mail", order: 1 },
+  { slug: "go-digital", name: "Website Design", icon: "Palette", order: 2 },
+  { slug: "go-digital", name: "Web Hosting", icon: "Server", order: 3 },
+  { slug: "go-digital", name: "SSL Certificate", icon: "Shield", order: 4 },
+  { slug: "go-digital", name: "Support & Maintenance", icon: "Headphones", order: 5 },
+  { slug: "go-digital", name: "SEO Setup", icon: "TrendingUp", order: 6 },
+  { slug: "go-digital", name: "Mobile Responsive", icon: "Smartphone", order: 7 },
+
+  // ── cpanel ────────────────────────────────────────────────────────────────
+  { slug: "cpanel", name: "SSD Disk Space", icon: "Database", order: 0 },
+  { slug: "cpanel", name: "Mailboxes", icon: "Mail", order: 1 },
+  { slug: "cpanel", name: "Multi-Domain", icon: "Globe", order: 2 },
+  { slug: "cpanel", name: "SSL Certificate", icon: "Shield", order: 3 },
+  { slug: "cpanel", name: "Unmetered Bandwidth", icon: "Zap", order: 4 },
+  { slug: "cpanel", name: "MySQL & PostgreSQL", icon: "Server", order: 5 },
+  { slug: "cpanel", name: "cPanel Dashboard", icon: "Settings", order: 6 },
+  { slug: "cpanel", name: "Daily Backups", icon: "RefreshCw", order: 7 },
+  { slug: "cpanel", name: "24/7 Support", icon: "Headphones", order: 8 },
 ];
 
 export async function seedPageCapabilities() {

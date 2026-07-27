@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useResourceCategories } from "@/content-manager/hooks/useResourceCategories";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { CategoryManager } from "@/components/admin/shared/category-manager";
 
 const RESOURCE = "pricing-plans";
 
@@ -36,9 +37,15 @@ export default function PricingPlansPage() {
 
   const selectedCategory = categories.find((c) => c.slug === categoryFilter);
 
+  const productCats = categories.filter((c) => c.ownerType === "product");
+  const serviceCats = categories.filter((c) => c.ownerType === "service");
+  const standaloneCats = categories.filter((c) => c.ownerType === "standalone" || !c.ownerType);
+
   return (
     <div className="flex flex-col gap-6">
-      <ResourceHeader title="Pricing Plans" description="Manage all pricing plans across service and product categories." resource={RESOURCE} />
+      <ResourceHeader title="Pricing Plans" description="Manage pricing plans. Categories link to products, services, or standalone packages (e.g. Go-Digital, cPanel)." resource={RESOURCE} />
+
+      <CategoryManager kind="pricing-plan" />
 
       <div className="flex items-center gap-3">
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
@@ -47,9 +54,24 @@ export default function PricingPlansPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            {categories.map((category) => (
-              <SelectItem key={category.id} value={category.slug}>{category.name}</SelectItem>
-            ))}
+            {productCats.length > 0 && (
+              <>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Products</div>
+                {productCats.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
+              </>
+            )}
+            {serviceCats.length > 0 && (
+              <>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Services</div>
+                {serviceCats.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
+              </>
+            )}
+            {standaloneCats.length > 0 && (
+              <>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Standalone</div>
+                {standaloneCats.map((c) => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
+              </>
+            )}
           </SelectContent>
         </Select>
         {categoryFilter !== "all" && (

@@ -18,4 +18,18 @@ export const resourceCategoryService = {
     if (existing) return existing;
     return resourceCategoryRepository.create(kind, data);
   },
+
+  async update(rawKind: string, id: string, name: string) {
+    const kind = ResourceCategoryKindSchema.parse(rawKind);
+    const existing = await resourceCategoryRepository.findById(kind, id);
+    if (!existing) throw new Error(`Category ${id} not found`);
+    return resourceCategoryRepository.update(kind, id, name);
+  },
+
+  async delete(rawKind: string, id: string) {
+    const kind = ResourceCategoryKindSchema.parse(rawKind);
+    const existing = await resourceCategoryRepository.findById(kind, id);
+    if (!existing) throw new Error(`Category ${id} not found`);
+    return resourceCategoryRepository.delete(kind, id);
+  },
 };

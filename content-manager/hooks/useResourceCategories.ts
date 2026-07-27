@@ -8,6 +8,8 @@ export interface ResourceCategory {
   name: string;
   slug: string;
   pricingEnabled?: boolean;
+  ownerType?: string;
+  ownerSlug?: string | null;
 }
 
 async function fetchJSON(url: string, init?: RequestInit) {
@@ -32,6 +34,28 @@ export function useCreateResourceCategory(kind: ResourceCategoryKind) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       }) as Promise<ResourceCategory>,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["resource-categories", kind] }),
+  });
+}
+
+export function useUpdateResourceCategory(kind: ResourceCategoryKind) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, name }: { id: string; name: string }) =>
+      fetchJSON(`/api/categories/${kind}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, name }),
+      }) as Promise<ResourceCategory>,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["resource-categories", kind] }),
+  });
+}
+
+export function useDeleteResourceCategory(kind: ResourceCategoryKind) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      fetchJSON(`/api/categories/${kind}?id=${id}`, { method: "DELETE" }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["resource-categories", kind] }),
   });
 }
