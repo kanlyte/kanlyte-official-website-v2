@@ -19,8 +19,8 @@ export function RecentSubmissions() {
   const recent = submissions.slice(0, 6);
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="gap-0 py-0">
+      <CardHeader className="border-b px-5 py-5">
         <CardTitle className="leading-none">Recent Submissions</CardTitle>
         <CardDescription>Latest contact form inquiries from the website.</CardDescription>
         <div className="ml-auto">
@@ -29,7 +29,7 @@ export function RecentSubmissions() {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="px-3 py-2 md:px-5">
         {isLoading ? (
           <p className="text-muted-foreground text-sm py-4 text-center">Loading...</p>
         ) : (
@@ -37,24 +37,24 @@ export function RecentSubmissions() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Service</TableHead>
+                <TableHead className="hidden md:table-cell">Service</TableHead>
                 <TableHead>Subject</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead className="hidden sm:table-cell">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {recent.map((s: { id: string; fullName: string; service: string; subject: string; status: string; createdAt: string | Date }) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium">{s.fullName}</TableCell>
-                  <TableCell className="text-muted-foreground">{s.service}</TableCell>
+                  <TableCell className="hidden text-muted-foreground md:table-cell">{s.service}</TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">{s.subject}</TableCell>
                   <TableCell>
                     <Badge variant={STATUS_VARIANT[s.status] ?? "outline"} className="capitalize">
                       {s.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-muted-foreground text-xs">
+                  <TableCell className="hidden text-muted-foreground text-xs sm:table-cell">
                     {format(new Date(s.createdAt), "dd MMM yyyy")}
                   </TableCell>
                 </TableRow>
