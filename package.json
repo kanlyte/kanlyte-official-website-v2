@@ -20,7 +20,8 @@
     "seed:monthly": "npx tsx prisma/seeds/seed-monthly-prices.ts",
     "seed:all": "npm run seed:content && npm run seed:capabilities && npm run seed:pricing && npm run seed:monthly",
     "seed:admin": "npx tsx prisma/seeds/seed-admin.ts",
-    "seed:news": "npx tsx prisma/seeds/seed-news-posts.ts"
+    "seed:news": "npx tsx prisma/seeds/seed-news-posts.ts",
+    "seed:gallery": "npx tsx prisma/seeds/seed-gallery-images.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
