@@ -38,7 +38,7 @@ export function Navbar() {
     }));
 
   const resources = [
-    { title: "Projects", href: "/#projects" },
+    { title: "Projects", href: "/projects" },
     { title: "News", href: "/news" },
     { title: "Careers", href: "/careers" },
     { title: "Gallery", href: "/gallery" },
