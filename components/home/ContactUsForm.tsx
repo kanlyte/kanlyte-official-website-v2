@@ -23,12 +23,43 @@ import {
 import { toast } from "sonner";
 import { submitContactForm } from "@/actions/contact-submission";
 import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
+import { useServices } from "@/content-manager/hooks/useServices";
+import { useStats } from "@/content-manager/hooks/useStats";
+import { Hero } from "@/components/about-us/hero";
 
 const FALLBACK = {
   phone: "(+256) 200 929 550",
   email: "info@kanlyte.com",
   address: "Robert Mugabe Rd, Kampala",
   schedule: "Mon to Sat - 08:00am to 06:00pm",
+  heroImage: "/images/pricing.webp",
+  heroTitle: "Get In Touch",
+  heroHighlight: "Touch",
+  heroTagline: "We'd Love to Hear From You",
+  introTitle: "Get in Touch",
+  introHighlight: "Touch",
+  introDescription: "Have a project in mind? Let's discuss how we can bring your vision to life with our digital solutions.",
+  formTitle: "Send us a message",
+  formDescription: "Fill out the form below and our team will contact you within 24 hours.",
+  callTitle: "Call Us",
+  callDescription: "Speak directly with our team",
+  emailTitle: "Email Us",
+  emailDescription: "Send us an email anytime",
+  emailResponseText: "Typically reply within 24h",
+  visitTitle: "Visit Us",
+  visitDescription: "Our office location",
+  companyName: "Kanlyte Uganda Limited",
+  hoursTitle: "Business Hours",
+  locationTitle: "Our Location",
+  locationSubtitle: "Kampala, Uganda",
+  directionsUrl: "https://maps.google.com/?q=Kanlyte+Uganda+Limited",
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.751634720311!2d32.63057907496472!3d0.33126669966548355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177db932f92ab395%3A0x4a5c75e2da8dae77!2sKanlyte%20Uganda%20Limited!5e0!3m2!1sen!2sug!4v1785153567610!5m2!1sen!2sug",
+  urgentTitle: "Need Immediate Assistance?",
+  urgentDescription: "Contact us now for urgent inquiries",
+  statsTitle: "Why Clients Choose Kanlyte",
+  statsDescription: "We're committed to delivering exceptional digital solutions with transparency and expertise",
+  newsletterText: "Subscribe to our newsletter for tech insights, updates, and exclusive offers",
+  submitButtonText: "Send Message",
 };
 
 // Define the form schema with Zod (matching server schema) - REMOVED agreeToTerms
@@ -51,27 +82,20 @@ interface ValidationError {
   path?: string[];
 }
 
-// Service options based on Kanlyte's services
-const serviceOptions = [
-  "Software & Systems Development",
-  "Mobile App Development",
-  "Website Design & Development",
-  "UI/UX Design",
-  "Graphics Design & Branding",
-  "Cloud Hosting & Domain Services",
-  "AI & Data Analytics",
-  "Business Automation",
-  "Internet of Things (IoT)",
-  "ICT Training & Skilling",
-  "IT Consulting",
-  "Other Services",
-];
-
 export function ContactUsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const { data: contactInfo } = useContactInfo();
-  const info = contactInfo ?? FALLBACK;
+  const { data: services = [] } = useServices(true);
+  const { data: stats = [] } = useStats();
+  const savedInfo = Object.fromEntries(
+    Object.entries(contactInfo ?? {}).filter(([, value]) => value !== null && value !== "")
+  );
+  const info = { ...FALLBACK, ...savedInfo } as typeof FALLBACK;
+  const serviceOptions = [
+    ...services.map((service: { title: string }) => service.title),
+    "Other Services",
+  ];
 
   const {
     register,
@@ -135,6 +159,17 @@ export function ContactUsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Hero
+        backgroundImage={info.heroImage}
+        backgroundAlt={`${info.heroTitle} background`}
+        title={info.heroTitle}
+        highlightedTitle={info.heroHighlight}
+        tagline={info.heroTagline}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Contact Us", isActive: true },
+        ]}
+      />
       {/* Hero Section */}
       <div className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#6EBE45]/5 via-white to-[#6EBE45]/5" />
@@ -147,11 +182,11 @@ export function ContactUsPage() {
               <MessageSquare className="h-10 w-10 text-[#6EBE45]" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Get in <span className="text-[#6EBE45]">Touch</span>
+              {info.introTitle.replace(info.introHighlight, "")}
+              <span className="text-[#6EBE45]">{info.introHighlight}</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Have a project in mind? Let&apos;s discuss how we can bring your
-              vision to life with our digital solutions.
+              {info.introDescription}
             </p>
           </div>
         </div>
@@ -166,11 +201,10 @@ export function ContactUsPage() {
               <div className="bg-white rounded-2xl p-8 md:p-10 shadow-xl border border-gray-100">
                 <div className="mb-8">
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-                    Send us a message
+                    {info.formTitle}
                   </h2>
                   <p className="text-gray-600">
-                    Fill out the form below and our team will contact you within
-                    24 hours.
+                    {info.formDescription}
                   </p>
                 </div>
 
@@ -385,8 +419,7 @@ export function ContactUsPage() {
                           isSubmitting ? "opacity-60 cursor-not-allowed" : ""
                         }`}
                       >
-                        Subscribe to our newsletter for tech insights, updates,
-                        and exclusive offers
+                        {info.newsletterText}
                       </Label>
                     </div>
                   </div>
@@ -422,7 +455,7 @@ export function ContactUsPage() {
                       ) : (
                         <>
                           <Send className="h-5 w-5 mr-2" />
-                          <span>Send Message</span>
+                          <span>{info.submitButtonText}</span>
                         </>
                       )}
                     </Button>
@@ -462,10 +495,10 @@ export function ContactUsPage() {
                     <Phone className="h-6 w-6 text-[#6EBE45]" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Call Us
+                    {info.callTitle}
                   </h3>
                   <p className="text-gray-600 mb-3">
-                    Speak directly with our team
+                    {info.callDescription}
                   </p>
                   <a
                     href={`tel:${info.phone}`}
@@ -475,7 +508,7 @@ export function ContactUsPage() {
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </a>
                   <p className="text-sm text-gray-500 mt-2">
-                    Mon-Fri, 8am-6pm EAT
+                    {info.schedule}
                   </p>
                 </div>
 
@@ -485,9 +518,9 @@ export function ContactUsPage() {
                     <Mail className="h-6 w-6 text-gray-600" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Email Us
+                    {info.emailTitle}
                   </h3>
-                  <p className="text-gray-600 mb-3">Send us an email anytime</p>
+                  <p className="text-gray-600 mb-3">{info.emailDescription}</p>
                   <a
                     href={`mailto:${info.email}`}
                     className="text-lg font-medium text-gray-900 hover:text-[#6EBE45] transition-colors break-all"
@@ -495,7 +528,7 @@ export function ContactUsPage() {
                     {info.email}
                   </a>
                   <p className="text-sm text-gray-500 mt-2">
-                    Typically reply within 24h
+                    {info.emailResponseText}
                   </p>
                 </div>
 
@@ -505,14 +538,14 @@ export function ContactUsPage() {
                     <MapPin className="h-6 w-6 text-gray-600" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Visit Us
+                    {info.visitTitle}
                   </h3>
-                  <p className="text-gray-600 mb-3">Our office location</p>
+                  <p className="text-gray-600 mb-3">{info.visitDescription}</p>
                   <div className="text-gray-900">
-                    <p className="font-medium">Kanlyte Uganda Limited</p>
+                    <p className="font-medium">{info.companyName}</p>
                     <p className="text-sm mt-1">{info.address}</p>
                     <a
-                      href="https://maps.app.goo.gl/Lv86BVqxiHjGykij8"
+                      href={info.directionsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-[#6EBE45] hover:underline mt-1 inline-block"
@@ -528,7 +561,7 @@ export function ContactUsPage() {
                     <Clock className="h-6 w-6 text-gray-600" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Business Hours
+                    {info.hoursTitle}
                   </h3>
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600">{info.schedule}</p>
@@ -541,16 +574,16 @@ export function ContactUsPage() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">
-                      Our Location
+                      {info.locationTitle}
                     </h3>
-                    <p className="text-gray-600">Kampala, Uganda</p>
+                    <p className="text-gray-600">{info.locationSubtitle}</p>
                   </div>
                   <Button
                     className="bg-[#6EBE45] hover:bg-[#5EA83A] rounded-xl transition-all"
                     asChild
                   >
                     <a
-                      href="https://maps.google.com/?q=Kanlyte+Uganda+Limited&ll=0.33126759010085627,32.630785658406054"
+                      href={info.directionsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -563,7 +596,7 @@ export function ContactUsPage() {
                 {/* Google Maps Embed — Edmart Systems */}
                 <div className="relative h-64 rounded-xl overflow-hidden border border-gray-300">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.6183045147004!2d32.630785658406054!3d0.33126759010085627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177db932f92ab395%3A0x4a5c75e2da8dae77!2sKanlyte%20Uganda%20Limited!5e0!3m2!1sen!2sug!4v1782592359634!5m2!1sen!2sug"
+                    src={info.mapEmbedUrl}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -582,10 +615,10 @@ export function ContactUsPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold">
-                      Need Immediate Assistance?
+                      {info.urgentTitle}
                     </h3>
                     <p className="opacity-90">
-                      Contact us now for urgent inquiries
+                      {info.urgentDescription}
                     </p>
                   </div>
                 </div>
@@ -618,36 +651,30 @@ export function ContactUsPage() {
           </div>
 
           {/* Stats Section */}
-          <div className="mt-20">
+          {stats.length > 0 && <div className="mt-20">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Clients Choose Kanlyte
+                {info.statsTitle}
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                We&apos;re committed to delivering exceptional digital solutions
-                with transparency and expertise
+                {info.statsDescription}
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { number: "24/7", label: "Support Available" },
-                { number: "90%+", label: "Client Satisfaction" },
-                { number: "50+", label: "Projects Completed" },
-                { number: "100%", label: "Custom Solutions" },
-              ].map((stat, index) => (
+              {stats.map((stat: { id: string; value: string; label: string }) => (
                 <div
-                  key={index}
+                  key={stat.id}
                   className="bg-white rounded-2xl p-6 border border-gray-200 text-center hover:border-[#6EBE45]/30 hover:shadow-md transition-all"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-[#6EBE45] mb-2">
-                    {stat.number}
+                    {stat.value}
                   </div>
                   <div className="text-gray-700 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

@@ -310,11 +310,39 @@ model OdooApp {
 
 // ─── Contact Info (singleton) ────────────────────────────────────────────────
 model ContactInfo {
-  id       String @id @default(cuid())
-  phone    String
-  email    String
-  address  String
-  schedule String // e.g. "Mon to Sat - 08:00am to 06:00pm"
+  id                String  @id @default(cuid())
+  phone             String
+  email             String
+  address           String
+  schedule          String
+  heroImage         String? @map("heroimage")
+  heroTitle         String? @map("herotitle")
+  heroHighlight     String? @map("herohighlight")
+  heroTagline       String? @map("herotagline")
+  introTitle        String? @map("introtitle")
+  introHighlight    String? @map("introhighlight")
+  introDescription  String? @map("introdescription") @db.Text
+  formTitle         String? @map("formtitle")
+  formDescription   String? @map("formdescription") @db.Text
+  callTitle         String? @map("calltitle")
+  callDescription   String? @map("calldescription")
+  emailTitle        String? @map("emailtitle")
+  emailDescription  String? @map("emaildescription")
+  emailResponseText String? @map("emailresponsetext")
+  visitTitle        String? @map("visittitle")
+  visitDescription  String? @map("visitdescription")
+  companyName       String? @map("companyname")
+  hoursTitle        String? @map("hourstitle")
+  locationTitle     String? @map("locationtitle")
+  locationSubtitle  String? @map("locationsubtitle")
+  directionsUrl     String? @map("directionsurl") @db.Text
+  mapEmbedUrl       String? @map("mapembedurl") @db.Text
+  urgentTitle       String? @map("urgenttitle")
+  urgentDescription String? @map("urgentdescription")
+  statsTitle        String? @map("statstitle")
+  statsDescription  String? @map("statsdescription") @db.Text
+  newsletterText    String? @map("newslettertext") @db.Text
+  submitButtonText  String? @map("submitbuttontext")
 
   @@map("contactinfo")
 }
