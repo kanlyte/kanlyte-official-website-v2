@@ -6,6 +6,7 @@ import { DeleteModal } from "@/components/admin/resources/delete-modal";
 import { ProductModal } from "@/components/admin/products/product-modal";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 import { useProducts, useDeleteProduct } from "@/content-manager/hooks/useProducts";
+import { CategoryManager } from "@/components/admin/shared/category-manager";
 
 const RESOURCE = "products";
 
@@ -33,6 +34,7 @@ export default function ProductsPage() {
   return (
     <div className="flex flex-col gap-6">
       <ResourceHeader title="Products" description="Manage the products displayed on the homepage and navbar." resource={RESOURCE} />
+      <CategoryManager kind="product" />
       <ResourceTable resource={RESOURCE} data={data} columns={COLUMNS} isLoading={isLoading} searchPlaceholder="Search products..." />
       <ProductModal />
       <DeleteModal resource={RESOURCE} onConfirm={deleteProduct} isPending={isPending} />

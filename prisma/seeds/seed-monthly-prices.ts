@@ -39,6 +39,32 @@ const monthlyPrices: Record<string, Record<string, { priceUGXMonthly: string; pr
     team:       { priceUGXMonthly: "500,000 UGX", priceUSDMonthly: "$135" },
     corporate:  { priceUGXMonthly: "Custom",       priceUSDMonthly: "Custom" },
   },
+  "software-development": {
+    starter:    { priceUGXMonthly: "200,000 UGX",   priceUSDMonthly: "$54" },
+    business:   { priceUGXMonthly: "800,000 UGX",   priceUSDMonthly: "$216" },
+    enterprise: { priceUGXMonthly: "Custom",         priceUSDMonthly: "Custom" },
+  },
+  "app-development": {
+    mvp:        { priceUGXMonthly: "300,000 UGX",   priceUSDMonthly: "$81" },
+    full:       { priceUGXMonthly: "1,000,000 UGX", priceUSDMonthly: "$270" },
+    enterprise: { priceUGXMonthly: "Custom",         priceUSDMonthly: "Custom" },
+  },
+  "research-innovation": {
+    feasibility:     { priceUGXMonthly: "300,000 UGX",   priceUSDMonthly: "$81" },
+    sprint:          { priceUGXMonthly: "800,000 UGX",   priceUSDMonthly: "$216" },
+    transformation:  { priceUGXMonthly: "Custom",         priceUSDMonthly: "Custom" },
+  },
+  "go-digital": {
+    core:       { priceUGXMonthly: "100,000 UGX",  priceUSDMonthly: "$27" },
+    advanced:   { priceUGXMonthly: "150,000 UGX",  priceUSDMonthly: "$41" },
+    premium:    { priceUGXMonthly: "300,000 UGX",  priceUSDMonthly: "$81" },
+  },
+  cpanel: {
+    core:       { priceUGXMonthly: "10,000 UGX",   priceUSDMonthly: "$3" },
+    advanced:   { priceUGXMonthly: "20,000 UGX",   priceUSDMonthly: "$5" },
+    business:   { priceUGXMonthly: "50,000 UGX",   priceUSDMonthly: "$14" },
+    ultimate:   { priceUGXMonthly: "100,000 UGX",  priceUSDMonthly: "$27" },
+  },
 };
 
 export async function seedMonthlyPrices() {

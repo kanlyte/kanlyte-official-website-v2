@@ -28,6 +28,19 @@ export const resourceCategoryRepository = {
     }
   },
 
+  findById(kind: ResourceCategoryKind, id: string) {
+    switch (kind) {
+      case "product":
+        return prisma.productCategory.findUnique({ where: { id } });
+      case "service":
+        return prisma.serviceCategory.findUnique({ where: { id } });
+      case "pricing-plan":
+        return prisma.pricingPlanCategory.findUnique({ where: { id } });
+      case "gallery":
+        return prisma.galleryCategory.findUnique({ where: { id } });
+    }
+  },
+
   create(kind: ResourceCategoryKind, data: CreateResourceCategoryInput) {
     switch (kind) {
       case "product":
@@ -38,6 +51,32 @@ export const resourceCategoryRepository = {
         return prisma.pricingPlanCategory.create({ data });
       case "gallery":
         return prisma.galleryCategory.create({ data });
+    }
+  },
+
+  update(kind: ResourceCategoryKind, id: string, name: string) {
+    switch (kind) {
+      case "product":
+        return prisma.productCategory.update({ where: { id }, data: { name } });
+      case "service":
+        return prisma.serviceCategory.update({ where: { id }, data: { name } });
+      case "pricing-plan":
+        return prisma.pricingPlanCategory.update({ where: { id }, data: { name } });
+      case "gallery":
+        return prisma.galleryCategory.update({ where: { id }, data: { name } });
+    }
+  },
+
+  delete(kind: ResourceCategoryKind, id: string) {
+    switch (kind) {
+      case "product":
+        return prisma.productCategory.delete({ where: { id } });
+      case "service":
+        return prisma.serviceCategory.delete({ where: { id } });
+      case "pricing-plan":
+        return prisma.pricingPlanCategory.delete({ where: { id } });
+      case "gallery":
+        return prisma.galleryCategory.delete({ where: { id } });
     }
   },
 };

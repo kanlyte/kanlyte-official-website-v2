@@ -21,3 +21,26 @@ export async function POST(req: NextRequest, { params }: Context) {
     return handleError(error);
   }
 }
+
+export async function PATCH(req: NextRequest, { params }: Context) {
+  try {
+    const { kind } = await params;
+    const { id, name } = await req.json();
+    return ok(await resourceCategoryService.update(kind, id, name));
+  } catch (error) {
+    return handleError(error);
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: Context) {
+  try {
+    const { kind } = await params;
+    const { searchParams } = req.nextUrl;
+    const id = searchParams.get("id");
+    if (!id) throw new Error("id is required");
+    await resourceCategoryService.delete(kind, id);
+    return ok({ success: true });
+  } catch (error) {
+    return handleError(error);
+  }
+}

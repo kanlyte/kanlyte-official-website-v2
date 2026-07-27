@@ -1,6 +1,7 @@
 import { CreateServiceSchema, UpdateServiceSchema } from "../dtos";
 import type { CreateServiceInput, UpdateServiceInput } from "../dtos";
 import { serviceRepository } from "../repositories";
+import { prisma } from "@/lib/prisma";
 
 export const serviceService = {
   async getAll() {
@@ -25,7 +26,35 @@ export const serviceService = {
     const data = CreateServiceSchema.parse(input);
     const existing = await serviceRepository.findBySlug(data.slug);
     if (existing) throw new Error(`Slug "${data.slug}" already exists`);
-    return await serviceRepository.create(data);
+    const service = await serviceRepository.create(data);
+    // Auto-create PageContent skeleton so the page is immediately manageable
+    const hasPageContent = await prisma.pageContent.findFirst({ where: { slug: data.slug } });
+    if (!hasPageContent) {
+      await prisma.pageContent.create({
+        data: {
+          slug: data.slug,
+          pageType: "service",
+          badge: `${data.title} — Kanlyte Uganda`,
+          title: data.title,
+          highlight: "by Kanlyte Uganda",
+          subtitle: "Practical, reliable, *affordable!",
+          description: data.description,
+          primaryBtnLabel: "Enquire Now",
+          primaryBtnHref: "/contact-us",
+          secondaryBtnLabel: "Learn More",
+          secondaryBtnHref: "/contact-us",
+          annotationLine1: "Trusted by",
+          annotationLine2: "Ugandan businesses",
+          isActive: true,
+        },
+      });
+    }
+    // Auto-create PricingPlanCategory so pricing plans can be added immediately
+    const hasPricingCategory = await prisma.pricingPlanCategory.findUnique({ where: { slug: data.slug } });
+    if (!hasPricingCategory) {
+      await prisma.pricingPlanCategory.create({ data: { name: data.title, slug: data.slug, ownerType: "service", ownerSlug: data.slug } });
+    }
+    return service;
   },
 
   async update(id: string, input: UpdateServiceInput) {

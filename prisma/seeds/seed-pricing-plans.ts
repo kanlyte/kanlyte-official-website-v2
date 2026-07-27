@@ -293,6 +293,111 @@ const pricingPlans = [
     ],
   },
 
+  // ── go-digital ────────────────────────────────────────────────────────────
+  {
+    category: "go-digital", tier: "core", title: "Core", order: 0,
+    description: "Get your business online with a professional website and email.",
+    priceUGX: "1,000,000 UGX", priceUSD: null, period: "one-time",
+    tagline: "Renewal: 300,000 UGX / yr",
+    isPopular: false, buttonText: "Get Started", isActive: true,
+    features: [
+      "1 domain name (.com, .org, .ug, …)",
+      "3 professional email accounts",
+      "Basic static website",
+      "2 GB hosting space",
+      "Standard SSL Certificate",
+      "Support & maintenance",
+    ],
+  },
+  {
+    category: "go-digital", tier: "advanced", title: "Advanced", order: 1,
+    description: "A dynamic website with more emails and storage for growing businesses.",
+    priceUGX: "1,500,000 UGX", priceUSD: null, period: "one-time",
+    tagline: "Renewal: 500,000 UGX / yr",
+    isPopular: true, buttonText: "Get Started", isActive: true,
+    features: [
+      "1 domain name (.com, .org, .ug, …)",
+      "10 professional email accounts",
+      "Dynamic website",
+      "5 GB hosting space",
+      "Standard SSL Certificate",
+      "Support & maintenance",
+    ],
+  },
+  {
+    category: "go-digital", tier: "premium", title: "Premium", order: 2,
+    description: "A fully custom dynamic website with large storage for established businesses.",
+    priceUGX: "3,000,000 UGX", priceUSD: null, period: "one-time",
+    tagline: "Renewal: 800,000 UGX / yr",
+    isPopular: false, buttonText: "Contact Sales", isActive: true,
+    features: [
+      "1 domain name (.com, .org, .ug, …)",
+      "50 professional email accounts",
+      "Custom dynamic website",
+      "50 GB hosting space",
+      "Standard SSL Certificate",
+      "Support & maintenance",
+    ],
+  },
+
+  // ── cpanel ────────────────────────────────────────────────────────────────
+  {
+    category: "cpanel", tier: "core", title: "Core", order: 0,
+    description: "Entry-level cPanel hosting for personal sites and small projects.",
+    priceUGX: "100,000 UGX", priceUSD: null, period: "/ year",
+    isPopular: false, buttonText: "Get Started", isActive: true,
+    features: [
+      "3 mailboxes",
+      "2 GB SSD disk space",
+      "1 domain allowed",
+      "Standard SSL Certificate",
+      "1 Gbit/s unmetered bandwidth",
+      "MySQL & PostgreSQL databases",
+    ],
+  },
+  {
+    category: "cpanel", tier: "advanced", title: "Advanced", order: 1,
+    description: "More mailboxes and storage for small businesses with multiple domains.",
+    priceUGX: "200,000 UGX", priceUSD: null, period: "/ year",
+    isPopular: true, buttonText: "Get Started", isActive: true,
+    features: [
+      "10 mailboxes",
+      "5 GB SSD disk space",
+      "Up to 2 domains",
+      "Standard SSL Certificate",
+      "1 Gbit/s unmetered bandwidth",
+      "MySQL & PostgreSQL databases",
+    ],
+  },
+  {
+    category: "cpanel", tier: "business", title: "Business", order: 2,
+    description: "Generous storage and mailboxes for growing businesses.",
+    priceUGX: "500,000 UGX", priceUSD: null, period: "/ year",
+    isPopular: false, buttonText: "Get Started", isActive: true,
+    features: [
+      "50 mailboxes",
+      "50 GB SSD disk space",
+      "Up to 5 domains",
+      "Standard SSL Certificate",
+      "1 Gbit/s unmetered bandwidth",
+      "MySQL & PostgreSQL databases",
+    ],
+  },
+  {
+    category: "cpanel", tier: "ultimate", title: "Ultimate", order: 3,
+    description: "High-capacity hosting for agencies and large organisations.",
+    priceUGX: "1,000,000 UGX", priceUSD: null, period: "/ year",
+    isPopular: false, buttonText: "Contact Sales", isActive: true,
+    features: [
+      "100 mailboxes",
+      "100 GB SSD disk space",
+      "Up to 10 domains",
+      "Standard SSL Certificate",
+      "1 Gbit/s unmetered bandwidth",
+      "MySQL & PostgreSQL databases",
+    ],
+  },
+
   // ── research-innovation ───────────────────────────────────────────────────
   {
     category: "research-innovation", tier: "feasibility", title: "Feasibility Study", order: 0,

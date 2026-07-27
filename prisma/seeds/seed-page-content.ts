@@ -190,12 +190,24 @@ const pageContents = [
   },
 ];
 
+// Slugs handled by seed-services.ts and seed-products.ts — skip here to avoid duplicates
+const HANDLED_BY_OTHER_SEEDS = new Set([
+  "odoo", "school-sync", "lyte",
+  "web-cloud", "ict-training", "software-development",
+  "research-innovation", "email-hosting", "app-development",
+]);
+
 export async function seedPageContent() {
   console.log("Seeding page content...");
   let created = 0;
   let skipped = 0;
 
   for (const item of pageContents) {
+    if (HANDLED_BY_OTHER_SEEDS.has(item.slug)) {
+      console.log(`  ⏭  Skipped (handled by services/products seed): ${item.slug}`);
+      skipped++;
+      continue;
+    }
     const existing = await prisma.pageContent.findUnique({ where: { slug: item.slug } });
     if (existing) {
       console.log(`  ⏭  Skipped (already exists): ${item.slug}`);

@@ -1,0 +1,195 @@
+// Shared seed data — imported by seed-products, seed-services, seed-page-content
+// Single source of truth for all page content, pricing categories, and entity data
+
+export const SERVICE_CATEGORIES = [
+  { name: "Software Development", slug: "software-development" },
+  { name: "Web & Cloud Services", slug: "web-cloud" },
+  { name: "ICT Training & Consultancy", slug: "ict-training" },
+  { name: "Research & Innovation", slug: "research-innovation" },
+];
+
+export const PRICING_CATEGORIES = [
+  { name: "Odoo ERP", slug: "odoo", ownerType: "product", ownerSlug: "odoo" },
+  { name: "School Sync", slug: "school-sync", ownerType: "product", ownerSlug: "school-sync" },
+  { name: "Lyte App", slug: "lyte", ownerType: "product", ownerSlug: "lyte" },
+  { name: "Web & Cloud Services", slug: "web-cloud", ownerType: "service", ownerSlug: "web-cloud" },
+  { name: "ICT Training & Consultancy", slug: "ict-training", ownerType: "service", ownerSlug: "ict-training" },
+  { name: "Research & Innovation", slug: "research-innovation", ownerType: "service", ownerSlug: "research-innovation" },
+  { name: "Software Development", slug: "software-development", ownerType: "service", ownerSlug: "software-development" },
+  { name: "App Development", slug: "app-development", ownerType: "service", ownerSlug: "app-development" },
+  { name: "Email Hosting", slug: "email-hosting", ownerType: "service", ownerSlug: "email-hosting" },
+  { name: "Web Hosting", slug: "web-hosting", ownerType: "standalone", ownerSlug: null },
+  { name: "Go-Digital Packages", slug: "go-digital", ownerType: "standalone", ownerSlug: null },
+  { name: "cPanel Hosting", slug: "cpanel", ownerType: "standalone", ownerSlug: null },
+];
+
+export const PRODUCTS = [
+  {
+    title: "Odoo ERP",
+    slug: "odoo",
+    description: "All-in-one business management platform for accounting, inventory, CRM, e-commerce and more — implemented and supported by Kanlyte Uganda.",
+    image: "/images/odoo.png",
+    icon: "Cpu",
+    order: 1,
+    isActive: true,
+  },
+  {
+    title: "School Sync",
+    slug: "school-sync",
+    description: "Complete school management system for student records, fee collection, academics, timetabling, and parent communication — built for East African schools.",
+    image: "/images/image3.jpg",
+    icon: "School",
+    order: 2,
+    isActive: true,
+  },
+  {
+    title: "Lyte App",
+    slug: "lyte",
+    description: "Find and book verified hostels and rental houses across Uganda — search, compare, and pay securely from your phone.",
+    image: "/images/lyteapp1.jpeg",
+    icon: "Building2",
+    order: 3,
+    isActive: true,
+  },
+];
+
+export const SERVICES = [
+  // Software Development
+  { title: "Custom Software", slug: "custom-software", description: "Bespoke software solutions built from scratch to solve your unique business challenges.", icon: "Code2", featured: false, category: "software-development", order: 1, isActive: true },
+  { title: "Odoo ERP Customizations", slug: "odoo-erp-customizations", description: "Extend and customize Odoo ERP to perfectly match your business workflows and requirements.", icon: "Monitor", featured: false, category: "software-development", order: 2, isActive: true },
+  { title: "App Development", slug: "app-development", description: "Native and cross-platform mobile applications for iOS and Android with seamless user experiences.", icon: "Smartphone", featured: true, category: "software-development", order: 3, isActive: true },
+  { title: "School Management Systems", slug: "school-management-systems", description: "Comprehensive school management solutions for student records, fees, academics, and administration.", icon: "School", featured: false, category: "software-development", order: 4, isActive: true },
+  { title: "Software Development", slug: "software-development", description: "From mobile apps and ERP systems to custom web platforms — software that solves real business problems, on time and within budget.", icon: "Code", featured: true, category: "software-development", order: 5, isActive: true },
+  // Web & Cloud Services
+  { title: "Website Development", slug: "website-development", description: "Responsive, modern websites with SEO optimization, fast loading speeds, and excellent user experience.", icon: "Globe", featured: false, category: "web-cloud", order: 6, isActive: true },
+  { title: "Web Hosting", slug: "web-hosting", description: "Reliable, secure, and high-performance web hosting with 99.9% uptime guarantee and 24/7 support.", icon: "Server", featured: false, category: "web-cloud", order: 7, isActive: true },
+  { title: "Email Hosting", slug: "email-hosting", description: "Professional business email hosting with advanced security, spam filtering, and large storage capacity.", icon: "Mail", featured: false, category: "web-cloud", order: 8, isActive: true },
+  { title: "Cloud Infrastructure", slug: "cloud-infrastructure", description: "Scalable cloud server setup, management, and monitoring for businesses of all sizes.", icon: "Cloud", featured: false, category: "web-cloud", order: 9, isActive: true },
+  { title: "Web & Cloud Services", slug: "web-cloud", description: "From building your website to hosting it on the cloud — everything you need for a powerful, secure online presence.", icon: "Globe", featured: true, category: "web-cloud", order: 10, isActive: true },
+  // ICT Training & Consultancy
+  { title: "ICT Training", slug: "ict-training", description: "Hands-on technology training programmes covering web dev, mobile, databases, and more.", icon: "GraduationCap", featured: true, category: "ict-training", order: 11, isActive: true },
+  { title: "IT Consultancy", slug: "it-consultancy", description: "Strategic IT consultancy to help your organisation make smarter technology decisions.", icon: "Briefcase", featured: false, category: "ict-training", order: 12, isActive: true },
+  { title: "Corporate Training", slug: "corporate-training", description: "Customised technology training packages designed for teams and organisations.", icon: "Users", featured: false, category: "ict-training", order: 13, isActive: true },
+  // Research & Innovation
+  { title: "Research & Innovation", slug: "research-innovation", description: "We combine deep technical research with practical innovation to help organisations stay ahead — from AI and IoT to digital transformation.", icon: "FlaskConical", featured: true, category: "research-innovation", order: 14, isActive: true },
+  { title: "AI & Machine Learning", slug: "ai-machine-learning", description: "Applied AI and ML solutions that turn your data into actionable business intelligence.", icon: "Cpu", featured: false, category: "research-innovation", order: 15, isActive: true },
+  { title: "IoT Solutions", slug: "iot-solutions", description: "Internet of Things integrations that connect your physical assets to smart digital systems.", icon: "Wifi", featured: false, category: "research-innovation", order: 16, isActive: true },
+  { title: "Digital Transformation", slug: "digital-transformation", description: "End-to-end digital transformation strategies that modernise your business operations.", icon: "TrendingUp", featured: false, category: "research-innovation", order: 17, isActive: true },
+];
+
+export const PAGE_CONTENTS = [
+  // ── Home sections ──────────────────────────────────────────────────────────
+  {
+    slug: "showcase-home", pageType: "section",
+    badge: "Innovation Showcase",
+    title: "Discover A Wider World Of", highlight: "Innovation",
+    subtitle: "Digital solutions",
+    description: "Kanlyte Uganda Limited provides you with innovative solutions to all your needs and challenges. We've streamlined our plans to give you the most reliable innovative I.T solutions at affordable prices.",
+    primaryBtnLabel: "Our Hands-on Trainings", primaryBtnHref: "/services/ict-training",
+    secondaryBtnLabel: "/images/about-04.jpg", secondaryBtnHref: "/images/about-05.jpg",
+    annotationLine1: "Affordable Prices", annotationLine2: "", isActive: true,
+  },
+  {
+    slug: "about-home", pageType: "section",
+    badge: "About Kanlyte Uganda",
+    title: "Purposefully Built for", highlight: "Africa's Digital Future",
+    subtitle: "End-to-end digital transformation",
+    description: "Kanlyte Uganda Limited is a technology company delivering custom software, web and cloud solutions, ICT training, and research-driven innovation to organisations across Uganda and beyond. We turn technology into practical, lasting impact.",
+    primaryBtnLabel: "Discover Our Story", primaryBtnHref: "/about-us",
+    secondaryBtnLabel: "Kanlyte team at work", secondaryBtnHref: "/images/about-04.jpg",
+    annotationLine1: "Serving Uganda & beyond since 2018", annotationLine2: "Trusted by schools, NGOs & enterprises",
+    isActive: true,
+  },
+  // ── Products ───────────────────────────────────────────────────────────────
+  {
+    slug: "odoo", pageType: "product",
+    badge: "Odoo ERP — by Kanlyte Uganda",
+    title: "All your business on", highlight: "one platform.",
+    subtitle: "Simple, efficient, yet *affordable!",
+    description: "Kanlyte delivers expert Odoo ERP implementation for businesses across East Africa — from accounting and inventory to CRM and e-commerce, all in one unified system.",
+    primaryBtnLabel: "Start now - It's free", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "Meet an advisor", secondaryBtnHref: "/contact-us",
+    annotationLine1: "US$ 7.25 / month", annotationLine2: "for ALL apps", isActive: true,
+  },
+  {
+    slug: "school-sync", pageType: "product",
+    badge: "School Sync — by Kanlyte Uganda",
+    title: "Your entire school on", highlight: "one platform.",
+    subtitle: "Simple, powerful, yet *affordable!",
+    description: "School Sync streamlines student management, fee collection, academics, and parent communication — all in one cloud-based system built for East African schools.",
+    primaryBtnLabel: "Visit School Sync", primaryBtnHref: "https://schoolsync.ac",
+    secondaryBtnLabel: "Request a Demo", secondaryBtnHref: "/contact-us",
+    annotationLine1: "Free to start", annotationLine2: "for small schools", isActive: true,
+  },
+  {
+    slug: "lyte", pageType: "product",
+    badge: "Lyte App — by Kanlyte Uganda",
+    title: "Find your perfect home", highlight: "in minutes.",
+    subtitle: "Hostels & houses, *verified!",
+    description: "Lyte connects students and professionals with verified, affordable hostels and rental houses across Uganda — search, book, and pay securely from your phone.",
+    primaryBtnLabel: "Get Early Access", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "List Your Property", secondaryBtnHref: "/contact-us",
+    annotationLine1: "100% verified", annotationLine2: "properties", isActive: true,
+  },
+  // ── Services ───────────────────────────────────────────────────────────────
+  {
+    slug: "web-cloud", pageType: "service",
+    badge: "Web & Cloud Services — Kanlyte Uganda",
+    title: "Your business,", highlight: "always online.",
+    subtitle: "Fast, secure, *reliable!",
+    description: "From building your website to hosting it on the cloud — Kanlyte delivers everything you need for a powerful, secure, and professional online presence.",
+    primaryBtnLabel: "Get Started", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "View Pricing", secondaryBtnHref: "/pricing",
+    annotationLine1: "99.9%", annotationLine2: "uptime guaranteed", isActive: true,
+  },
+  {
+    slug: "ict-training", pageType: "service",
+    badge: "ICT Training & Consultancy — Kanlyte Uganda",
+    title: "Skills that build", highlight: "careers.",
+    subtitle: "Practical, hands-on, *job-ready!",
+    description: "Kanlyte trains the next generation of Ugandan tech professionals and helps organisations make smarter technology decisions through expert ICT consultancy.",
+    primaryBtnLabel: "Enquire Now", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "Corporate Training", secondaryBtnHref: "/contact-us",
+    annotationLine1: "500+", annotationLine2: "learners trained", isActive: true,
+  },
+  {
+    slug: "software-development", pageType: "service",
+    badge: "Software Development — Kanlyte Uganda",
+    title: "We build software", highlight: "that works.",
+    subtitle: "Scalable, reliable, *beautifully built!",
+    description: "From mobile apps and ERP systems to custom web platforms — Kanlyte delivers software that solves real business problems, on time and within budget.",
+    primaryBtnLabel: "Start Your Project", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "View Our Work", secondaryBtnHref: "/contact-us",
+    annotationLine1: "Built to", annotationLine2: "scale with you", isActive: true,
+  },
+  {
+    slug: "research-innovation", pageType: "service",
+    badge: "Research & Innovation — Kanlyte Uganda",
+    title: "Technology that", highlight: "solves problems.",
+    subtitle: "Data-driven, *results-focused!",
+    description: "We combine deep technical research with practical innovation to help organisations stay ahead — from AI and IoT to digital transformation strategies built for East Africa.",
+    primaryBtnLabel: "Start a Project", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "Learn More", secondaryBtnHref: "/contact-us",
+    annotationLine1: "Real-world", annotationLine2: "impact", isActive: true,
+  },
+  {
+    slug: "email-hosting", pageType: "service",
+    badge: "Email Hosting — Kanlyte Uganda",
+    title: "Professional email,", highlight: "your domain.",
+    subtitle: "Secure, reliable, *always delivered!",
+    description: "Get a professional business email address with your own domain. Kanlyte's email hosting comes with enterprise-grade security, spam protection, and 99.9% uptime.",
+    primaryBtnLabel: "Get Started", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "View Pricing", secondaryBtnHref: "/pricing",
+    annotationLine1: "99.9%", annotationLine2: "uptime guaranteed", isActive: true,
+  },
+  {
+    slug: "app-development", pageType: "service",
+    badge: "App Development — Kanlyte Uganda",
+    title: "Apps that users", highlight: "love to use.",
+    subtitle: "Native, cross-platform, *beautifully built!",
+    description: "From MVP to full-scale mobile products — Kanlyte designs and builds iOS and Android apps that are fast, secure, and built to grow with your business.",
+    primaryBtnLabel: "Start Your Project", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "View Pricing", secondaryBtnHref: "/pricing",
+    annotationLine1: "iOS +", annotationLine2: "Android", isActive: true,
+  },
+];

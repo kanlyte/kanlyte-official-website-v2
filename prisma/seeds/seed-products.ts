@@ -1,51 +1,29 @@
 import "dotenv/config";
 import { fileURLToPath } from "node:url";
 import { prisma } from "../../lib/prisma";
-
-const products = [
-  {
-    title: "Odoo ERP",
-    slug: "odoo",
-    description: "All-in-one business management",
-    image: "/images/odoo.png",
-    icon: "Cpu",
-    order: 1,
-    isActive: true,
-  },
-  {
-    title: "School Sync",
-    slug: "school-sync",
-    description: "School management system",
-    image: "/images/image3.jpg",
-    icon: "School",
-    order: 2,
-    isActive: true,
-  },
-  {
-    title: "Lyte App",
-    slug: "lyte",
-    description: "Hostel & house booking",
-    image: "/images/lyteapp1.jpeg",
-    icon: "Building2",
-    order: 3,
-    isActive: true,
-  },
-];
+import { PRODUCTS, PRICING_CATEGORIES, PAGE_CONTENTS } from "./seed-data";
 
 export async function seedProducts() {
   console.log("Seeding products...");
-  let created = 0;
-  let skipped = 0;
+  let created = 0, skipped = 0;
 
-  for (const product of products) {
-    const existing = await prisma.product.findFirst({ where: { slug: product.slug } });
-    if (existing) {
-      console.log(`  ⏭  Skipped: ${product.title}`);
-      skipped++;
-    } else {
-      await prisma.product.create({ data: product });
-      console.log(`  ✓  Created: ${product.title}`);
-      created++;
+  for (const cat of PRICING_CATEGORIES.filter((c) => ["odoo", "school-sync", "lyte"].includes(c.slug))) {
+    const exists = await prisma.pricingPlanCategory.findUnique({ where: { slug: cat.slug } });
+    if (!exists) {
+      await prisma.pricingPlanCategory.create({ data: cat });
+      console.log(`  ✓  Pricing category: ${cat.name}`);
+    }
+  }
+
+  for (const product of PRODUCTS) {
+    const exists = await prisma.product.findFirst({ where: { slug: product.slug } });
+    if (exists) { console.log(`  ⏭  Skipped: ${product.title}`); skipped++; }
+    else { await prisma.product.create({ data: product }); console.log(`  ✓  Created: ${product.title}`); created++; }
+
+    const hasContent = await prisma.pageContent.findFirst({ where: { slug: product.slug } });
+    if (!hasContent) {
+      const content = PAGE_CONTENTS.find((p) => p.slug === product.slug);
+      if (content) { await prisma.pageContent.create({ data: content }); console.log(`  ✓  PageContent: ${product.slug}`); }
     }
   }
 
