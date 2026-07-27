@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Star } from "lucide-react";
+import { Check, Star, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -48,10 +48,9 @@ export function PricingCards({
 }: PricingCardsProps) {
   const { data: dbData, isLoading } = usePricingPlans(category);
 
-  const pricingEnabled = dbData?.pricingEnabled ?? false;
   const dbPlans = dbData?.plans;
 
-  if (isLoading || !pricingEnabled) return null;
+  if (isLoading) return null;
 
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {
@@ -74,7 +73,29 @@ export function PricingCards({
       }))
     : fallbackPlans;
 
-  if (!plans.length) return null;
+  if (!plans.length) return (
+    <div className="max-w-2xl mx-auto text-center py-16 px-6">
+      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#6EBE45]/10 mb-6">
+        <MessageCircle className="w-7 h-7 text-[#6EBE45]" />
+      </div>
+      <h3 className="text-2xl font-bold text-slate-900 mb-3">Pricing on Request</h3>
+      <p className="text-slate-500 mb-8 leading-relaxed">
+        Pricing for this service is tailored to your specific needs. Get in touch with our team and we&apos;ll put together a custom quote for you.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Link href="/contact-us">
+          <Button className="text-white px-8 py-5" style={{ backgroundColor: primaryColor }}>
+            Get a Custom Quote
+          </Button>
+        </Link>
+        <Link href="/contact-us">
+          <Button variant="outline" className="px-8 py-5 border-slate-200 text-slate-700 hover:border-[#6EBE45] hover:text-[#6EBE45]">
+            Talk to Our Team
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
 
   function getPrice(plan: FallbackPlan): string {
     const isMonthly = billing === "monthly";

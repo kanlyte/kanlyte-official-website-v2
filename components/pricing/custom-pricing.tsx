@@ -14,16 +14,15 @@ const TABS = [
 export function PricingSection() {
   const { data: categories = [], isLoading } = useResourceCategories("pricing-plan");
 
-  const [ownerType, setOwnerType] = useState<"product" | "service" | "standalone">("product");
+  const [ownerType, setOwnerType] = useState<"product" | "service" | "standalone">("standalone");
   const [category, setCategory] = useState("");
   const [billing, setBilling] = useState("yearly");
   const [currency, setCurrency] = useState("UGX");
 
-  const filtered = categories.filter(
-    (c) => c.ownerType === ownerType || (!c.ownerType && ownerType === "standalone")
-  );
+  const filtered = categories
+    .filter((c) => (c._count?.plans ?? 0) > 0)
+    .filter((c) => c.ownerType === ownerType || (!c.ownerType && ownerType === "standalone"));
 
-  // Reset category when tab changes
   useEffect(() => {
     if (filtered.length > 0) setCategory(filtered[0].slug);
     else setCategory("");
@@ -41,7 +40,7 @@ export function PricingSection() {
           <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1 gap-1">
             {TABS.map((tab) => {
               const count = categories.filter(
-                (c) => c.ownerType === tab.key || (!c.ownerType && tab.key === "standalone")
+                (c) => (c._count?.plans ?? 0) > 0 && (c.ownerType === tab.key || (!c.ownerType && tab.key === "standalone"))
               ).length;
               if (count === 0) return null;
               return (
@@ -63,7 +62,6 @@ export function PricingSection() {
 
         {/* Category + billing + currency filters */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 flex-wrap">
-
           <Select value={category} onValueChange={setCategory}>
             <SelectTrigger className="w-[220px] bg-slate-50 border-slate-200">
               <SelectValue placeholder="Select..." />
@@ -94,7 +92,6 @@ export function PricingSection() {
               <SelectItem value="USD">USD</SelectItem>
             </SelectContent>
           </Select>
-
         </div>
 
         {category && (
