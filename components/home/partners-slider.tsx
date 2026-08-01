@@ -34,7 +34,13 @@ export function PartnersSlider() {
         </p>
 
         <TooltipProvider delayDuration={0}>
-          <div className="relative overflow-hidden">
+          <div
+            className="relative overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            }}
+          >
             <div className="flex w-max animate-marquee gap-6 md:gap-12">
               {[...partners, ...partners].map((partner: { id: string; name: string; logo: string }, index: number) => (
                 <Tooltip key={`${partner.id}-${index}`}>
