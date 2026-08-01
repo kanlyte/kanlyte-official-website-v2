@@ -19,12 +19,12 @@ export function PartnersSlider() {
   const partners = dbPartners?.length ? dbPartners : FALLBACK_PARTNERS;
 
   return (
-    <section className="py-16 bg-white text-center">
+    <section className="py-8 bg-white text-center">
       <div className="container px-4">
-        <h2 className="text-[#6EBE45] font-bold text-lg mb-4 tracking-wide">
+        <h2 className="text-[#6EBE45] font-bold text-lg mb-3 tracking-wide">
           OUR CLIENT BASE
         </h2>
-        <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed mb-12">
+        <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed mb-8">
           We are proud to collaborate with esteemed partners who share our
           vision for innovation and excellence.
           <br />
@@ -35,16 +35,16 @@ export function PartnersSlider() {
 
         <TooltipProvider delayDuration={0}>
           <div className="relative overflow-hidden">
-            <div className="flex w-max animate-marquee gap-8 md:gap-16">
+            <div className="flex w-max animate-marquee gap-6 md:gap-12">
               {[...partners, ...partners].map((partner: { id: string; name: string; logo: string }, index: number) => (
                 <Tooltip key={`${partner.id}-${index}`}>
                   <TooltipTrigger asChild>
-                    <div className="relative h-24 w-40 md:h-28 md:w-48 shrink-0 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                    <div className="relative h-40 w-64 md:h-48 md:w-72 shrink-0 transition-transform duration-300 hover:scale-105 cursor-pointer">
                       <Image
                         src={partner.logo || "/placeholder.svg"}
                         alt={partner.name}
                         fill
-                        className="object-contain p-4"
+                        className="object-contain p-1"
                       />
                     </div>
                   </TooltipTrigger>

@@ -19,13 +19,18 @@ const adapter = new PrismaMariaDb({
   port: dbUrl.port ? Number(dbUrl.port) : 3306,
   user: decodeURIComponent(dbUrl.username),
   password: decodeURIComponent(dbUrl.password),
-  database: dbUrl.pathname.slice(1),
-  connectionLimit: 3,
+  database: dbUrl.pathname.replace(/^\//, ""),
+  connectionLimit: Number(process.env.DATABASE_CONNECTION_LIMIT ?? 1),
   acquireTimeout: 10_000,
   idleTimeout: 60,
 });
 
-const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
+const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    adapter,
+    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
