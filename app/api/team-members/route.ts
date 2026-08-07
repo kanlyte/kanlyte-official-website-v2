@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { teamMemberService } from "@/content-manager/services";
 import { ok, created, handleError } from "@/lib/api-response";
+import { revalidateResource } from "@/lib/revalidate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -20,7 +21,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    return created(await teamMemberService.create(body));
+    const result = await teamMemberService.create(body);
+    revalidateResource("team-members");
+    return created(result);
   } catch (error) {
     return handleError(error);
   }

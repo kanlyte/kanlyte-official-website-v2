@@ -8,6 +8,7 @@ import {
   Landmark,
   Users,
   Banknote,
+  PersonStanding,
 } from "lucide-react";
 
 const FALLBACK_STATS = [
@@ -24,6 +25,7 @@ const SECTORS_SERVED = [
   { id: "4", name: "Public / Government", icon: Landmark },
   { id: "5", name: "Communities", icon: Users },
   { id: "6", name: "Financial Institutions", icon: Banknote },
+  { id: "7", name: "People", icon: PersonStanding },
 ];
 
 export function StatsSection() {
@@ -55,10 +57,10 @@ export function StatsSection() {
           {/* Content Section */}
           <div>
             <div className="inline-block rounded-full bg-green-100 px-4 py-1 text-sm font-bold text-green-600 mb-4">
-              Results & Analytics
+              Corporate & Professional
             </div>
             <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 mb-6">
-              Performance Insights and Analytics Overview
+              Our commitment is to deliver our services seamlessly to you.
             </h2>
             <div className="space-y-4">
               <p className="text-gray-500 font-medium">Sectors We Serve</p>

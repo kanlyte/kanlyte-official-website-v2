@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { pricingPlanService } from "@/content-manager/services";
 import { ok, created, handleError } from "@/lib/api-response";
+import { revalidateResource } from "@/lib/revalidate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,7 +18,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    return created(await pricingPlanService.create(body));
+    const result = await pricingPlanService.create(body);
+    revalidateResource("pricing-plans");
+    return created(result);
   } catch (error) {
     return handleError(error);
   }
@@ -26,7 +29,9 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const { category, pricingEnabled } = await req.json();
-    return ok(await pricingPlanService.updateCategory(category, pricingEnabled));
+    const result = await pricingPlanService.updateCategory(category, pricingEnabled);
+    revalidateResource("pricing-plans");
+    return ok(result);
   } catch (error) {
     return handleError(error);
   }

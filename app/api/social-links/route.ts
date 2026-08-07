@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { socialLinkService } from "@/content-manager/services/social-link.service";
 import { ok, created, handleError } from "@/lib/api-response";
+import { revalidateResource } from "@/lib/revalidate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,7 +14,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    return created(await socialLinkService.create(await req.json()));
+    const result = await socialLinkService.create(await req.json());
+    revalidateResource("social-links");
+    return created(result);
   } catch (error) {
     return handleError(error);
   }

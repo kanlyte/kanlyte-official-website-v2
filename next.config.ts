@@ -11,7 +11,14 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    localPatterns: [{ pathname: "/**" }],
+    unoptimized: true,
+
+    localPatterns: [
+      {
+        pathname: "/uploads/**",
+      },
+    ],
+
     remotePatterns: [
       {
         protocol: "https",

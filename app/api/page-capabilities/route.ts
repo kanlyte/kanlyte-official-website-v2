@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { pageCapabilityService } from "@/content-manager/services";
 import { ok, created, handleError } from "@/lib/api-response";
+import { revalidateResource } from "@/lib/revalidate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,7 +16,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    return created(await pageCapabilityService.create(body));
+    const result = await pageCapabilityService.create(body);
+    revalidateResource("page-capabilities");
+    return created(result);
   } catch (error) {
     return handleError(error);
   }

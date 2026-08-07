@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { odooAppService } from "@/content-manager/services";
 import { ok, created, handleError } from "@/lib/api-response";
+import { revalidateResource } from "@/lib/revalidate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,7 +18,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    return created(await odooAppService.create(body));
+    const result = await odooAppService.create(body);
+    revalidateResource("odoo-apps");
+    return created(result);
   } catch (error) {
     return handleError(error);
   }
