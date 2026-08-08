@@ -49,8 +49,12 @@ export function PricingCards({
   const { data: dbData, isLoading } = usePricingPlans(category);
 
   const dbPlans = dbData?.plans;
+  const pricingEnabled = dbData?.pricingEnabled;
 
   if (isLoading) return null;
+
+  // If the category exists in DB but pricing is disabled, hide the section entirely
+  if (dbData?.exists && !pricingEnabled) return null;
 
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {

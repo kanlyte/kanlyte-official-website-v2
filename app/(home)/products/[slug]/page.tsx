@@ -2,6 +2,7 @@
 
 import { use } from "react";
 import { notFound } from "next/navigation";
+import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
 import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
@@ -16,6 +17,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
+      <Hero
+        backgroundImage="/images/office.jpeg"
+        backgroundAlt="Kanlyte Uganda office"
+        title={product.title}
+        tagline={`${product.title} — Kanlyte Uganda`}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Products", href: "/products" },
+          { label: product.title, isActive: true },
+        ]}
+      />
       <ServiceHero
         slug={slug}
         badge={`${product.title} — Kanlyte Uganda`}

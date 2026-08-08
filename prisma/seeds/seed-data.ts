@@ -51,6 +51,24 @@ export const PRODUCTS = [
     order: 3,
     isActive: true,
   },
+  {
+    title: "cPanel Hosting",
+    slug: "cpanel-hosting",
+    description: "Reliable, affordable cPanel web hosting with SSD storage, unlimited bandwidth, professional email accounts, and full database support — perfect for businesses of all sizes.",
+    image: "/cloud-infrastructure.png",
+    icon: "Server",
+    order: 4,
+    isActive: true,
+  },
+  {
+    title: "Go Digital Package",
+    slug: "go-digital",
+    description: "Everything your business needs to get online — domain name, professional email, website, and hosting in one affordable bundle built for Ugandan businesses.",
+    image: "/website-development.png",
+    icon: "Globe",
+    order: 5,
+    isActive: true,
+  },
 ];
 
 export const SERVICES = [
@@ -130,6 +148,26 @@ export const PAGE_CONTENTS = [
     primaryBtnLabel: "Get Early Access", primaryBtnHref: "/contact-us",
     secondaryBtnLabel: "List Your Property", secondaryBtnHref: "/contact-us",
     annotationLine1: "100% verified", annotationLine2: "properties", isActive: true,
+  },
+  {
+    slug: "cpanel-hosting", pageType: "product",
+    badge: "cPanel Hosting — by Kanlyte Uganda",
+    title: "Reliable hosting,", highlight: "your way.",
+    subtitle: "Fast, secure, *always online!",
+    description: "Kanlyte's cPanel hosting gives you SSD-powered speed, professional email, and full database support — all managed through the world's most popular hosting control panel.",
+    primaryBtnLabel: "Get Started", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "View Plans", secondaryBtnHref: "/contact-us",
+    annotationLine1: "99.9%", annotationLine2: "uptime guaranteed", isActive: true,
+  },
+  {
+    slug: "go-digital", pageType: "product",
+    badge: "Go Digital — by Kanlyte Uganda",
+    title: "Get your business", highlight: "online today.",
+    subtitle: "Domain, email, website, *all-in-one!",
+    description: "The Go Digital Package bundles everything a Ugandan business needs to establish a professional online presence — domain, email, website, and hosting at one affordable price.",
+    primaryBtnLabel: "Get Started", primaryBtnHref: "/contact-us",
+    secondaryBtnLabel: "Talk to Us", secondaryBtnHref: "/contact-us",
+    annotationLine1: "All-in-one", annotationLine2: "digital bundle", isActive: true,
   },
   // ── Services ───────────────────────────────────────────────────────────────
   {

@@ -21,7 +21,9 @@
     "seed:all": "npm run seed:content && npm run seed:capabilities && npm run seed:pricing && npm run seed:monthly",
     "seed:admin": "npx tsx prisma/seeds/seed-admin.ts",
     "seed:news": "npx tsx prisma/seeds/seed-news-posts.ts",
-    "seed:gallery": "npx tsx prisma/seeds/seed-gallery-images.ts"
+    "seed:gallery": "npx tsx prisma/seeds/seed-gallery-images.ts",
+    "seed:cpanel-hosting": "npx tsx prisma/seeds/seed-cpanel-hosting.ts",
+    "seed:go-digital": "npx tsx prisma/seeds/seed-go-digital.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

@@ -2,7 +2,7 @@
 import { Hero } from "@/components/about-us/hero";
 import { LyteHero } from "@/components/lyte/hero";
 import { LyteFeatures } from "@/components/lyte/features";
-import { LytePricing } from "@/components/lyte/pricing";
+import { LyteCTA } from "@/components/lyte/cta";
 
 export default function LytePage() {
   return (
@@ -21,7 +21,7 @@ export default function LytePage() {
       />
       <LyteHero />
       <LyteFeatures />
-      <LytePricing />
+      <LyteCTA />
       {/* <ServiceWhyUs
         benefits={benefits}
         ctaTitle="Ready to Find Your Next Home?"

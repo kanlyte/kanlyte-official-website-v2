@@ -1,7 +1,7 @@
 import { Hero } from "@/components/about-us/hero";
 import { SchoolSyncHero } from "@/components/school-sync/hero";
 import { SchoolSyncModules } from "@/components/school-sync/modules";
-import { SchoolSyncPricing } from "@/components/school-sync/pricing";
+import { SchoolSyncCTA } from "@/components/school-sync/cta";
 
 export default function SchoolSyncPage() {
   return (
@@ -20,7 +20,7 @@ export default function SchoolSyncPage() {
       />
       <SchoolSyncHero />
       <SchoolSyncModules />
-      <SchoolSyncPricing />
+      <SchoolSyncCTA />
     </>
   );
 }
