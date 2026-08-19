@@ -1,19 +1,20 @@
-"use client";
-
-import { use } from "react";
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
 import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
-import { useProductBySlug } from "@/content-manager/hooks/useProducts";
+import { productService } from "@/content-manager/services/product.service";
 
-export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const { data: product, isLoading } = useProductBySlug(slug);
+export async function generateStaticParams() {
+  const products = await productService.getActive();
+  return products.map((p) => ({ slug: p.slug }));
+}
 
-  if (!isLoading && !product) notFound();
-  if (!product) return null;
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = await productService.getBySlug(slug);
+
+  if (!product) notFound();
 
   return (
     <>

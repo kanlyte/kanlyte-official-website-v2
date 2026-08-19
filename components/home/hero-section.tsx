@@ -1,16 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Play,
-  Pause,
-  ArrowRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { useHeroSlides } from "@/content-manager/hooks/useHeroSlides";
 
 const FALLBACK_SLIDES = [
@@ -60,9 +55,7 @@ export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Always clamp so we never access an out-of-bounds index
   const safeIndex = Math.min(currentSlide, total - 1);
 
   const nextSlide = useCallback(() => {
@@ -89,27 +82,12 @@ export default function HeroSlider() {
     [isAnimating, safeIndex, total]
   );
 
-  // Preload images
-  useEffect(() => {
-    let isMounted = true;
-    const preloadImages = slides.map((slide: { image: string }) =>
-      new Promise<void>((resolve) => {
-        const img = new Image();
-        img.src = slide.image;
-        img.onload = () => resolve();
-        img.onerror = () => { console.warn(`Failed to load image: ${slide.image}`); resolve(); };
-      })
-    );
-    Promise.all(preloadImages).then(() => { if (isMounted) setIsLoaded(true); });
-    return () => { isMounted = false; };
-  }, []);
-
   // Auto play
   useEffect(() => {
-    if (!isAutoPlaying || !isLoaded || total <= 1) return;
+    if (!isAutoPlaying || total <= 1) return;
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, isLoaded, nextSlide]);
+  }, [isAutoPlaying, nextSlide, total]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -140,106 +118,98 @@ export default function HeroSlider() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Loading Overlay */}
-      {!isLoaded && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white">
-          <div className="text-center">
-            <div className="w-12 h-12 rounded-full border-3 border-gray-300 border-t-[#6EBE45] animate-spin mx-auto mb-4" />
-            <div className="text-gray-600 font-medium">Loading...</div>
-          </div>
-        </div>
-      )}
-
       <AnimatePresence mode="wait" initial={false}>
-        {isLoaded && (
-          <motion.div
-            key={safeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-0"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${slide.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
-              />
-              <div className="absolute inset-0 bg-black/45" />
-            </div>
+        <motion.div
+          key={safeIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute inset-0"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              className="object-cover object-center"
+              priority={safeIndex === 0}
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-black/45" />
+          </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#6EBE45]/30 via-transparent to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-black/10 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#6EBE45]/30 via-transparent to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-black/10 via-transparent to-transparent" />
 
-            {/* Content */}
-            <div className="relative h-full flex items-center">
-              <div className="container mx-auto px-4 md:px-6 lg:px-8">
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="max-w-4xl mx-auto text-center space-y-4 md:space-y-6"
-                >
-                  <div className="overflow-hidden">
-                    <motion.h1
-                      initial={{ y: 50 }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.3 }}
-                      className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
-                    >
-                      {slide.title}
-                    </motion.h1>
-                  </div>
+          {/* Content */}
+          <div className="relative h-full flex items-center">
+            <div className="container mx-auto px-4 md:px-6 lg:px-8">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="max-w-4xl mx-auto text-center space-y-4 md:space-y-6"
+              >
+                <div className="overflow-hidden">
+                  <motion.h1
+                    initial={{ y: 50 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+                  >
+                    {slide.title}
+                  </motion.h1>
+                </div>
 
-                  <div className="overflow-hidden">
-                    <motion.h2
-                      initial={{ y: 50 }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
-                    >
-                      {slide.subtitle}
-                    </motion.h2>
-                  </div>
+                <div className="overflow-hidden">
+                  <motion.h2
+                    initial={{ y: 50 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
+                  >
+                    {slide.subtitle}
+                  </motion.h2>
+                </div>
 
-                  <div className="overflow-hidden pt-2 md:pt-4">
-                    <motion.p
-                      initial={{ y: 30, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.6, delay: 0.5 }}
-                      className="text-xl md:text-2xl lg:text-3xl text-white/95 font-light tracking-wide"
-                    >
-                      {slide.description}
-                    </motion.p>
-                  </div>
-
-                  <motion.div
+                <div className="overflow-hidden pt-2 md:pt-4">
+                  <motion.p
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    className="pt-6 md:pt-8"
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="text-xl md:text-2xl lg:text-3xl text-white/95 font-light tracking-wide"
                   >
-                    <Link href={slide.buttonLink} className="inline-block">
-                      <button
-                        className="px-6 md:px-8 py-3 md:py-4 bg-[#6EBE45] text-white rounded-full font-semibold text-base md:text-lg transition-all duration-300 hover:bg-[#5AB22E] hover:shadow-lg hover:shadow-[#6EBE45]/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
-                        aria-label={`${slide.buttonText} about ${slide.title}`}
-                      >
-                        <span className="flex items-center gap-2">
-                          {slide.buttonText}
-                          <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-                        </span>
-                      </button>
-                    </Link>
-                  </motion.div>
+                    {slide.description}
+                  </motion.p>
+                </div>
+
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="pt-6 md:pt-8"
+                >
+                  <Link href={slide.buttonLink} className="inline-block">
+                    <button
+                      className="px-6 md:px-8 py-3 md:py-4 bg-[#6EBE45] text-white rounded-full font-semibold text-base md:text-lg transition-all duration-300 hover:bg-[#5AB22E] hover:shadow-lg hover:shadow-[#6EBE45]/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
+                      aria-label={`${slide.buttonText} about ${slide.title}`}
+                    >
+                      <span className="flex items-center gap-2">
+                        {slide.buttonText}
+                        <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+                      </span>
+                    </button>
+                  </Link>
                 </motion.div>
-              </div>
+              </motion.div>
             </div>
-          </motion.div>
-        )}
+          </div>
+        </motion.div>
       </AnimatePresence>
 
       {/* Bottom controls — hidden when only 1 slide */}
@@ -250,7 +220,6 @@ export default function HeroSlider() {
               onClick={() => setIsAutoPlaying(!isAutoPlaying)}
               className="p-2.5 md:p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#6EBE45]"
               aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
-              disabled={!isLoaded}
             >
               {isAutoPlaying ? (
                 <Pause className="h-4 w-4 md:h-5 md:w-5 text-white" />
@@ -266,7 +235,7 @@ export default function HeroSlider() {
                   onClick={() => goToSlide(index)}
                   className="relative focus:outline-none"
                   aria-label={`Go to slide ${index + 1}`}
-                  disabled={isAnimating || !isLoaded}
+                  disabled={isAnimating}
                 >
                   <div
                     className={cn(
@@ -290,7 +259,7 @@ export default function HeroSlider() {
             onClick={prevSlide}
             className="hidden md:block absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-[#6EBE45] disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Previous slide"
-            disabled={isAnimating || !isLoaded}
+            disabled={isAnimating}
           >
             <ChevronLeft className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
           </button>
@@ -299,7 +268,7 @@ export default function HeroSlider() {
             onClick={nextSlide}
             className="hidden md:block absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-[#6EBE45] disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Next slide"
-            disabled={isAnimating || !isLoaded}
+            disabled={isAnimating}
           >
             <ChevronRight className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
           </button>
@@ -309,7 +278,7 @@ export default function HeroSlider() {
       {/* Progress bar — hidden when only 1 slide */}
       {total > 1 && (
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 hidden md:block">
-          {isAutoPlaying && isLoaded && (
+          {isAutoPlaying && (
             <motion.div
               key={safeIndex}
               initial={{ width: "0%" }}
@@ -332,8 +301,6 @@ export default function HeroSlider() {
           </div>
         </div>
       )}
-
-
     </section>
   );
 }

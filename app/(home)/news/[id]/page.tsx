@@ -1,39 +1,30 @@
-"use client";
-
-import { use } from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
-import { useNewsPost, useNewsPosts } from "@/content-manager/hooks/useNewsPosts";
+import { newsPostService } from "@/content-manager/services/news-post.service";
 
-export default function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const { data: post, isLoading } = useNewsPost(id);
-  const { data: allPosts = [] } = useNewsPosts(true);
+export async function generateStaticParams() {
+  const posts = await newsPostService.getActive();
+  return posts.map((p) => ({ id: p.id }));
+}
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted-foreground text-sm">Loading...</div>
-      </div>
-    );
-  }
+export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [post, allPosts] = await Promise.all([
+    newsPostService.getById(id).catch(() => null),
+    newsPostService.getActive(),
+  ]);
 
-  if (!post) return notFound();
+  if (!post) notFound();
 
   const wordCount = post.content?.trim().split(/\s+/).filter(Boolean).length ?? 0;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-
-  const related = allPosts
-    .filter((p: { id: string }) => p.id !== post.id)
-    .slice(0, 3);
+  const related = allPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">
-
-      {/* Hero */}
       {post.image && (
         <div className="relative h-[420px] w-full">
           <Image src={post.image} alt={post.title} fill className="object-cover" priority />
@@ -50,8 +41,6 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
       )}
 
       <div className="max-w-3xl mx-auto px-6 py-12">
-
-        {/* No image fallback title */}
         {!post.image && (
           <>
             <Link href="/news" className="inline-flex items-center gap-1.5 text-[#6EBE45] hover:underline text-sm mb-6 transition-colors">
@@ -61,7 +50,6 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
           </>
         )}
 
-        {/* Meta */}
         <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mt-6 mb-8 pb-8 border-b">
           <span className="flex items-center gap-1.5">
             <Calendar className="w-4 h-4 text-[#6EBE45]" />
@@ -73,14 +61,12 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
           </span>
         </div>
 
-        {/* Excerpt */}
         {post.excerpt && (
           <p className="text-lg text-gray-600 leading-relaxed mb-8 font-medium border-l-4 border-[#6EBE45] pl-4">
             {post.excerpt}
           </p>
         )}
 
-        {/* Content */}
         <div
           className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed
             prose-headings:font-bold prose-headings:text-gray-900
@@ -98,7 +84,6 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* Back link */}
         <div className="mt-12 pt-8 border-t">
           <Link href="/news" className="inline-flex items-center gap-2 text-[#6EBE45] font-semibold hover:underline">
             <ArrowLeft className="w-4 h-4" /> Back to all news
@@ -106,13 +91,12 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      {/* Related Posts */}
       {related.length > 0 && (
         <div className="bg-gray-50 border-t py-16">
           <div className="max-w-5xl mx-auto px-6">
             <h2 className="text-xl font-bold text-gray-900 mb-8">More News</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {related.map((p: { id: string; title: string; excerpt: string; image: string; publishedAt: string }) => (
+              {related.map((p) => (
                 <Link key={p.id} href={`/news/${p.id}`} className="group bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                   {p.image && (
                     <div className="relative h-40 w-full">
@@ -130,7 +114,6 @@ export default function NewsDetailPage({ params }: { params: Promise<{ id: strin
           </div>
         </div>
       )}
-
     </main>
   );
 }

@@ -1,6 +1,4 @@
-"use client";
-
-import { use } from "react";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, Layers3 } from "lucide-react";
@@ -8,53 +6,25 @@ import { Hero } from "@/components/about-us/hero";
 import { ProjectCard } from "@/components/home/project-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useProject, useProjects } from "@/content-manager/hooks/useProjects";
+import { projectService } from "@/content-manager/services/project.service";
 
-type Project = {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-};
+export async function generateStaticParams() {
+  const projects = await projectService.getActive();
+  return projects.map((p) => ({ id: p.id }));
+}
 
-export default function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const { data: project, isLoading, isError } = useProject(id) as {
-    data?: Project;
-    isLoading: boolean;
-    isError: boolean;
-  };
-  const { data: projects = [] } = useProjects(true) as { data?: Project[] };
+export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [project, projects] = await Promise.all([
+    projectService.getById(id).catch(() => null),
+    projectService.getActive(),
+  ]);
 
-  if (isLoading) {
-    return (
-      <main className="min-h-screen bg-white">
-        <div className="h-[400px] animate-pulse bg-slate-200" />
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="mb-6 h-10 w-64 animate-pulse rounded bg-slate-200" />
-          <div className="aspect-[16/8] animate-pulse rounded-2xl bg-slate-200" />
-        </div>
-      </main>
-    );
-  }
-
-  if (isError || !project) {
-    return (
-      <main className="flex min-h-[70vh] flex-col items-center justify-center bg-white px-6 text-center">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[#6EBE45]">Projects</p>
-        <h1 className="mb-3 text-4xl font-bold text-slate-900">Project not found</h1>
-        <p className="mb-8 text-slate-500">This project may have been removed or is no longer available.</p>
-        <Button asChild className="bg-[#6EBE45] hover:bg-[#5a9e3a]">
-          <Link href="/projects"><ArrowLeft className="mr-2 h-4 w-4" /> Back to projects</Link>
-        </Button>
-      </main>
-    );
-  }
+  if (!project) notFound();
 
   const titleWords = project.title.trim().split(/\s+/);
   const highlightedTitle = titleWords.length > 1 ? titleWords.at(-1) : project.title;
-  const related = (projects ?? []).filter((item) => item.id !== project.id).slice(0, 3);
+  const related = projects.filter((item) => item.id !== project.id).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">

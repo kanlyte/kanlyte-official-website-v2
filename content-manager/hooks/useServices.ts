@@ -12,9 +12,9 @@ async function fetchJSON(url: string, init?: RequestInit) {
   return res.json();
 }
 
-export function useServices(activeOnly = false) {
+export function useServices(activeOnly = false, options?: { enabled?: boolean }) {
   const url = activeOnly ? `${BASE}?active=true` : BASE;
-  return useQuery({ queryKey: [KEY, { activeOnly }], queryFn: () => fetchJSON(url) });
+  return useQuery({ queryKey: [KEY, { activeOnly }], queryFn: () => fetchJSON(url), ...options });
 }
 
 export function useService(id: string) {

@@ -15,17 +15,18 @@ export function Navbar() {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
   const [isMobileResourcesOpen, setIsMobileResourcesOpen] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
   const productsRef = useRef<HTMLDivElement>(null);
   const resourcesRef = useRef<HTMLDivElement>(null);
 
-  const { data: dbProducts } = useProducts(true);
+  const { data: dbProducts } = useProducts(true, { enabled: hasInteracted });
   const products: { title: string; href: string }[] = (dbProducts ?? []).map((p: { title: string; slug: string }) => ({
     title: p.title,
     href: `/products/${p.slug}`,
   }));
 
-  const { data: dbServices } = useServices(true);
+  const { data: dbServices } = useServices(true, { enabled: hasInteracted });
   const services: { title: string; href: string; children: { title: string; href: string }[] }[] = (dbServices ?? [])
     .filter((service: { kind: string }) => service.kind === "main")
     .map((service: { title: string; slug: string; children?: { title: string; slug: string }[] }) => ({
@@ -94,7 +95,7 @@ export function Navbar() {
 
             {/* Products Dropdown */}
             <div className="relative" ref={productsRef}
-              onMouseEnter={() => { setIsProductsOpen(true); setIsServicesOpen(false); }}
+              onMouseEnter={() => { setHasInteracted(true); setIsProductsOpen(true); setIsServicesOpen(false); }}
               onMouseLeave={() => setIsProductsOpen(false)}
             >
               <button
@@ -118,7 +119,7 @@ export function Navbar() {
 
             {/* Services Dropdown */}
             <div className="relative" ref={servicesRef}
-              onMouseEnter={() => { setIsServicesOpen(true); setIsProductsOpen(false); }}
+              onMouseEnter={() => { setHasInteracted(true); setIsServicesOpen(true); setIsProductsOpen(false); }}
               onMouseLeave={() => setIsServicesOpen(false)}
             >
               <button
@@ -149,7 +150,7 @@ export function Navbar() {
 
             {/* Resources Dropdown */}
             <div className="relative" ref={resourcesRef}
-              onMouseEnter={() => { setIsResourcesOpen(true); setIsProductsOpen(false); setIsServicesOpen(false); }}
+              onMouseEnter={() => { setHasInteracted(true); setIsResourcesOpen(true); setIsProductsOpen(false); setIsServicesOpen(false); }}
               onMouseLeave={() => setIsResourcesOpen(false)}
             >
               <button
@@ -191,7 +192,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden rounded-lg p-2 hover:bg-slate-100 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => { setHasInteracted(true); setIsMobileMenuOpen(!isMobileMenuOpen); }}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (

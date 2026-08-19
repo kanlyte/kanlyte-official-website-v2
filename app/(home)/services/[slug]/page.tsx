@@ -1,20 +1,21 @@
-"use client";
-
-import { use } from "react";
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/about-us/hero";
 import { ServiceHero } from "@/components/services-pages/service-hero";
 import { ServiceCapabilities } from "@/components/services-pages/service-capabilities";
 import { ServiceOfferings } from "@/components/services-pages/service-offerings";
 import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
-import { useServiceBySlug } from "@/content-manager/hooks/useServices";
+import { serviceService } from "@/content-manager/services/service.service";
 
-export default function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const { data: service, isLoading } = useServiceBySlug(slug);
+export async function generateStaticParams() {
+  const services = await serviceService.getActive();
+  return services.map((s) => ({ slug: s.slug }));
+}
 
-  if (!isLoading && !service) notFound();
-  if (!service) return null;
+export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const service = await serviceService.getBySlug(slug);
+
+  if (!service) notFound();
 
   const titleWords = service.title.trim().split(/\s+/);
   const highlightedTitle = titleWords.length > 1 ? titleWords.at(-1) : service.title;
