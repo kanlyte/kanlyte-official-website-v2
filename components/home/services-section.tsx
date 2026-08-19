@@ -1,9 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useServices } from "@/content-manager/hooks/useServices";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 type ServiceSummary = {
@@ -12,12 +9,11 @@ type ServiceSummary = {
   slug?: string | null;
   description: string;
   icon: string;
-  kind: "main" | "offering";
+  kind: string;
   children?: ServiceSummary[];
 };
 
-export function FeaturesGrid() {
-  const { data = [], isLoading } = useServices(true);
+export function FeaturesGrid({ services: data = [] }: { services?: ServiceSummary[] }) {
   const services = data as ServiceSummary[];
   const mainServices = services.filter((service) => service.kind === "main");
 
@@ -32,12 +28,7 @@ export function FeaturesGrid() {
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="grid gap-6 md:grid-cols-2">
-            {[0, 1, 2, 3].map((item) => <div key={item} className="h-72 animate-pulse rounded-xl bg-white" />)}
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
             {mainServices.map((service) => (
               <Card key={service.id} className="group h-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[#6EBE45]/40 hover:shadow-xl">
                 <CardContent className="flex h-full flex-col p-8">
@@ -74,8 +65,7 @@ export function FeaturesGrid() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ProjectCard } from "./project-card";
-import { useProjects } from "@/content-manager/hooks/useProjects";
 
 const FALLBACK_PROJECTS = [
   {
@@ -29,8 +28,15 @@ const FALLBACK_PROJECTS = [
   },
 ];
 
-export function ProjectsSection() {
-  const { data: dbProjects } = useProjects(true);
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+};
+
+export function ProjectsSection({ projects: dbProjects }: { projects?: Project[] }) {
   const projects = dbProjects?.length ? dbProjects : FALLBACK_PROJECTS;
   const total = projects.length;
 

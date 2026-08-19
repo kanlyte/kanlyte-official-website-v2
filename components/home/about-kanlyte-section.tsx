@@ -1,27 +1,26 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import * as LucideIcons from "lucide-react";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import { useStats } from "@/content-manager/hooks/useStats";
-import { useServices } from "@/content-manager/hooks/useServices";
-import { usePageContent } from "@/content-manager/hooks/usePageContent";
 
-const FALLBACK = {
+type Stat = { label: string; value: string };
+type Service = { id: string; title: string; icon: string; featured: boolean; isActive: boolean };
+type PageContent = {
+  badge?: string | null; title?: string | null; highlight?: string | null; description?: string | null;
+  annotationLine1?: string | null; annotationLine2?: string | null; subtitle?: string | null;
+  annotationLines?: string | null; primaryBtnLabel?: string | null; primaryBtnHref?: string | null;
+  secondaryBtnHref?: string | null; secondaryBtnLabel?: string | null;
+};
+
+const FALLBACK: Required<PageContent> = {
   badge: "About Kanlyte Uganda",
   title: "Purposefully Built for",
   highlight: "Africa's Digital Future",
-  description:
-    "Kanlyte Uganda Limited is an ICT company dedicated to driving digital transformation through innovative, reliable, and affordable software solutions. We empower businesses, institutions, and communities with smart digital technologies that enhance efficiency, foster growth, and create lasting impact.",
+  description: "Kanlyte Uganda Limited is an ICT company dedicated to driving digital transformation through innovative, reliable, and affordable software solutions. We empower businesses, institutions, and communities with smart digital technologies that enhance efficiency, foster growth, and create lasting impact.",
   annotationLine1: "Driving digital transformation",
   annotationLine2: "Impacting communities",
   subtitle: "Fostering research and innovation",
-  annotationLines: JSON.stringify([
-    "Driving digital transformation",
-    "Impacting communities",
-    "Fostering research and innovation",
-  ]),
+  annotationLines: JSON.stringify(["Driving digital transformation", "Impacting communities", "Fostering research and innovation"]),
   primaryBtnLabel: "Discover Our Story",
   primaryBtnHref: "/about-us",
   secondaryBtnHref: "/images/about-04.jpg",
@@ -31,27 +30,26 @@ const FALLBACK = {
 const FALLBACK_YEARS = { value: "6+", label: "Years of Impact" };
 
 const FALLBACK_OFFERINGS = [
-  { id: "1", title: "Software & App Development", icon: "Code2" },
-  { id: "2", title: "Web & Cloud Services", icon: "Cloud" },
-  { id: "3", title: "ICT Training & Consultancy", icon: "GraduationCap" },
-  { id: "4", title: "Research & Innovation", icon: "Lightbulb" },
+  { id: "1", title: "Software & App Development", icon: "Code2", featured: true, isActive: true },
+  { id: "2", title: "Web & Cloud Services", icon: "Cloud", featured: true, isActive: true },
+  { id: "3", title: "ICT Training & Consultancy", icon: "GraduationCap", featured: true, isActive: true },
+  { id: "4", title: "Research & Innovation", icon: "Lightbulb", featured: true, isActive: true },
 ];
 
-export function AboutKanlyteSection() {
-  const { data: stats = [] } = useStats();
-  const { data: pageContent } = usePageContent("about-home");
-  const { data: allServices = [] } = useServices(true);
+export function AboutKanlyteSection({
+  stats = [],
+  pageContent,
+  services = [],
+}: {
+  stats?: Stat[];
+  pageContent?: PageContent | null;
+  services?: Service[];
+}) {
+  const content = { ...FALLBACK, ...pageContent };
 
-  const content = pageContent ?? FALLBACK;
+  const yearsStat = stats.find((s) => s.label.toLowerCase().includes("year")) ?? FALLBACK_YEARS;
 
-  const yearsStat =
-    stats.find((s: { label: string; value: string }) =>
-      s.label.toLowerCase().includes("year")
-    ) ?? FALLBACK_YEARS;
-
-  const featuredServices = allServices.filter(
-    (s: { featured: boolean; isActive: boolean }) => s.featured && s.isActive
-  ).slice(0, 4);
+  const featuredServices = services.filter((s) => s.featured && s.isActive).slice(0, 4);
   const offerings = featuredServices.length ? featuredServices : FALLBACK_OFFERINGS;
 
   const highlights = (() => {

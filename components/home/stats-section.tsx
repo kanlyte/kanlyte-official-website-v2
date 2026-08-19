@@ -1,6 +1,3 @@
-"use client";
-
-import { useStats } from "@/content-manager/hooks/useStats";
 import {
   GraduationCap,
   HeartHandshake,
@@ -11,7 +8,9 @@ import {
   PersonStanding,
 } from "lucide-react";
 
-const FALLBACK_STATS = [
+type Stat = { id: string; value: string; label: string };
+
+const FALLBACK_STATS: Stat[] = [
   { id: "1", label: "Happy Customers", value: "10+" },
   { id: "2", label: "Projects Completed", value: "6+" },
   { id: "3", label: "Years of Experience", value: "2+" },
@@ -28,9 +27,7 @@ const SECTORS_SERVED = [
   { id: "7", name: "People", icon: PersonStanding },
 ];
 
-export function StatsSection() {
-  const { data: dbStats } = useStats();
-
+export function StatsSection({ stats: dbStats }: { stats?: Stat[] }) {
   const stats = dbStats?.length ? dbStats : FALLBACK_STATS;
 
   return (

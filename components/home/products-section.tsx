@@ -1,23 +1,18 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { useProducts } from "@/content-manager/hooks/useProducts";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
-const FALLBACK_PRODUCTS = [
+type Product = { id: string; title: string; slug: string; description: string; image?: string | null; icon: string };
+
+const FALLBACK_PRODUCTS: Product[] = [
   { id: "1", title: "Odoo ERP", slug: "odoo", description: "All-in-one business management platform for accounting, inventory, CRM and more.", image: "/images/odoo.png", icon: "Cpu" },
   { id: "2", title: "School Sync", slug: "school-sync", description: "Complete school management system for students, fees, academics and parents.", image: "/images/image3.jpg", icon: "School" },
   { id: "3", title: "Lyte App", slug: "lyte", description: "Find and book verified hostels and rental houses across Uganda.", image: "/images/lyteapp1.jpeg", icon: "Building2" },
 ];
 
-type Product = { id: string; title: string; slug: string; description: string; image?: string | null; icon: string };
-
-export function ProductsSection() {
-  const { data: dbProducts } = useProducts(true);
-  const all: Product[] = dbProducts?.length ? dbProducts : FALLBACK_PRODUCTS;
-  const products = all;
+export function ProductsSection({ products: dbProducts }: { products?: Product[] }) {
+  const products = dbProducts?.length ? dbProducts : FALLBACK_PRODUCTS;
 
   return (
     <section className="py-24 bg-gray-50 overflow-hidden">

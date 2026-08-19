@@ -8,10 +8,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
-import { useFAQs } from "@/content-manager/hooks/useFAQs";
-import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
-import { useContactInfo } from "@/content-manager/hooks/useContactInfo";
-import { useTeamMembers } from "@/content-manager/hooks/useTeamMembers";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
 const FALLBACK_FAQS = [
@@ -28,11 +24,22 @@ const FALLBACK_SOCIAL = [
   { id: "4", platform: "LinkedIn", icon: "Linkedin", url: "https://www.linkedin.com/company/kanlyte/", color: "#0A66C2" },
 ];
 
-export function FAQContactSection() {
-  const { data: dbFAQs } = useFAQs(true);
-  const { data: dbSocial } = useSocialLinks(true);
-  const { data: contactInfo } = useContactInfo();
-  const { data: featuredMembers } = useTeamMembers("featured");
+type FAQ = { id: string; question: string; answer: string };
+type SocialLink = { id: string; platform: string; icon: string; url: string; color: string };
+type ContactInfo = { phone?: string | null; email?: string | null } | null;
+type TeamMember = { image?: string | null; name: string };
+
+export function FAQContactSection({
+  faqs: dbFAQs,
+  socialLinks: dbSocial,
+  contactInfo,
+  featuredMembers = [],
+}: {
+  faqs?: FAQ[];
+  socialLinks?: SocialLink[];
+  contactInfo?: ContactInfo;
+  featuredMembers?: TeamMember[];
+}) {
   const faqs = dbFAQs?.length ? dbFAQs : FALLBACK_FAQS;
   const socialLinks = dbSocial?.length ? dbSocial : FALLBACK_SOCIAL;
   const phone = contactInfo?.phone ?? "(+256) 200 929 550";

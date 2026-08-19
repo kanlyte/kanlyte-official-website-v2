@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { format } from "date-fns";
-import { useNewsPosts } from "@/content-manager/hooks/useNewsPosts";
 
 const FALLBACK_NEWS = [
   {
@@ -30,8 +29,9 @@ const FALLBACK_NEWS = [
   },
 ];
 
-export function NewsSection() {
-  const { data: dbNews } = useNewsPosts(true);
+type NewsPost = { id: string; title: string; excerpt: string; image: string; publishedAt: Date | string };
+
+export function NewsSection({ news: dbNews }: { news?: NewsPost[] }) {
   const news = dbNews?.length ? dbNews : FALLBACK_NEWS;
 
   return (
@@ -56,7 +56,7 @@ export function NewsSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {news.slice(0, 3).map((post: { id: string; title: string; excerpt: string; image: string; publishedAt: string }) => (
+          {news.slice(0, 3).map((post) => (
             <Link
               key={post.id}
               href={`/news/${post.id}`}

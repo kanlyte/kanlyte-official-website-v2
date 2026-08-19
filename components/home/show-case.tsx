@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import { Check } from "lucide-react";
-import { usePageContent } from "@/content-manager/hooks/usePageContent";
-import { useStats } from "@/content-manager/hooks/useStats";
 
 const FALLBACK = {
   badge: "Innovation Showcase",
@@ -19,17 +17,27 @@ const FALLBACK = {
 
 const FALLBACK_BADGE = { value: "2+", label: "Years of experience" };
 
-export function ExperienceShowcase() {
-  const { data: db } = usePageContent("showcase-home");
-  const { data: stats } = useStats();
+type ShowcaseContent = {
+  badge?: string | null; subtitle?: string | null; title?: string | null;
+  highlight?: string | null; description?: string | null; primaryBtnLabel?: string | null;
+  annotationLine1?: string | null; annotationLine2?: string | null;
+  secondaryBtnLabel?: string | null; secondaryBtnHref?: string | null;
+};
 
-  const badge = stats?.find((s: { label: string; value: string }) =>
+type ShowcaseStat = { label: string; value: string };
+
+export function ExperienceShowcase({
+  pageContent: db,
+  stats = [],
+}: { pageContent?: ShowcaseContent | null; stats?: ShowcaseStat[] }) {
+
+  const badge = stats.find((s) =>
     s.label.toLowerCase().includes("year")
   ) ?? FALLBACK_BADGE;
 
   // highlights come from primaryBtnLabel, annotationLine1, annotationLine2
-  const highlights = db
-    ? [db.primaryBtnLabel, db.annotationLine1, db.annotationLine2].filter(Boolean)
+  const highlights: string[] = db
+    ? [db.primaryBtnLabel, db.annotationLine1, db.annotationLine2].filter((item): item is string => Boolean(item))
     : FALLBACK.highlights;
 
   function isValidImage(val?: string | null) {
@@ -42,8 +50,8 @@ export function ExperienceShowcase() {
     title: db?.title ?? FALLBACK.title,
     highlight: db?.highlight ?? FALLBACK.highlight,
     description: db?.description ?? FALLBACK.description,
-    image1: isValidImage(db?.secondaryBtnLabel) ? db!.secondaryBtnLabel : FALLBACK.image1,
-    image2: isValidImage(db?.secondaryBtnHref) ? db!.secondaryBtnHref : FALLBACK.image2,
+    image1: isValidImage(db?.secondaryBtnLabel) ? db!.secondaryBtnLabel! : FALLBACK.image1,
+    image2: isValidImage(db?.secondaryBtnHref) ? db!.secondaryBtnHref! : FALLBACK.image2,
   };
 
   return (

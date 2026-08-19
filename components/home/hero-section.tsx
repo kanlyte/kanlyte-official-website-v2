@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { useHeroSlides } from "@/content-manager/hooks/useHeroSlides";
 
 const FALLBACK_SLIDES = [
   {
@@ -47,8 +46,7 @@ const FALLBACK_SLIDES = [
   },
 ];
 
-export default function HeroSlider() {
-  const { data: dbSlides } = useHeroSlides(true);
+export default function HeroSlider({ slides: dbSlides }: { slides?: typeof FALLBACK_SLIDES }) {
   const slides = dbSlides?.length ? dbSlides : FALLBACK_SLIDES;
   const total = slides.length;
 

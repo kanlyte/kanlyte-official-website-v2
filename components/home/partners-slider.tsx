@@ -4,7 +4,6 @@ import {
   Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Image from "next/image";
-import { usePartners } from "@/content-manager/hooks/usePartners";
 
 const FALLBACK_PARTNERS = [
   { id: "1", name: "Lira University", logo: "/logos/lira-uni.png" },
@@ -14,8 +13,9 @@ const FALLBACK_PARTNERS = [
   { id: "5", name: "Buggade Sacco", logo: "" },
 ];
 
-export function PartnersSlider() {
-  const { data: dbPartners } = usePartners(true);
+type Partner = { id: string; name: string; logo: string };
+
+export function PartnersSlider({ partners: dbPartners }: { partners?: Partner[] }) {
   const partners = dbPartners?.length ? dbPartners : FALLBACK_PARTNERS;
 
   return (
