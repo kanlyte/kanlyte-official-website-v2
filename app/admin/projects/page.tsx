@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
@@ -11,7 +12,7 @@ const RESOURCE = "projects";
 
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
-  { key: "image", label: "Image", render: (v) => v ? <img src={v} alt="" className="h-8 w-14 object-cover rounded" /> : <span className="text-muted-foreground text-xs">—</span> },
+  { key: "image", label: "Image", render: (v) => v ? <Image src={v} alt="" width={56} height={32} className="h-8 w-14 object-cover rounded" /> : <span className="text-muted-foreground text-xs">—</span> },
   { key: "title", label: "Title" },
   { key: "tags", label: "Tags", render: (v: string[]) => (
     <div className="flex flex-wrap gap-1">

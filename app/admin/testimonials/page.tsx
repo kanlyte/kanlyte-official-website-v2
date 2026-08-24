@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
@@ -10,7 +11,7 @@ const RESOURCE = "testimonials";
 
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
-  { key: "image", label: "Photo", render: (v, row) => v ? <img src={v} alt={row.name} className="h-8 w-8 rounded-full object-cover" /> : <span className="text-muted-foreground text-xs">—</span> },
+  { key: "image", label: "Photo", render: (v, row) => v ? <Image src={v} alt={row.name} width={32} height={32} className="h-8 w-8 rounded-full object-cover" /> : <span className="text-muted-foreground text-xs">—</span> },
   { key: "name", label: "Name" },
   { key: "location", label: "Location", render: (v) => <span className="text-muted-foreground text-sm">{v}</span> },
   { key: "text", label: "Testimonial", render: (v) => <span className="line-clamp-1 max-w-xs text-sm text-muted-foreground">{v}</span> },

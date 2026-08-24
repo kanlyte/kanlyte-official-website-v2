@@ -2,6 +2,8 @@ import { Footer } from "@/components/home/footer";
 import { Navbar } from "@/components/home/navigation";
 import type React from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function HomeLayout({
   children,
 }: {

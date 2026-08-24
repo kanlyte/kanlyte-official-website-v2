@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const BASE = "https://kanlyte.com";
 const BUILD_DATE = new Date();
 

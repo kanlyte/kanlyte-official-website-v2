@@ -5,10 +5,7 @@ import { ServiceCapabilities } from "@/components/services-pages/service-capabil
 import { EntityPricingSection } from "@/components/pricing/entity-pricing-section";
 import { productService } from "@/content-manager/services/product.service";
 
-export async function generateStaticParams() {
-  const products = await productService.getActive();
-  return products.map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

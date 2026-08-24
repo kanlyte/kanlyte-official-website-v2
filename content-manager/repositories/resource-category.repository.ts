@@ -10,6 +10,10 @@ export const resourceCategoryRepository = {
         return prisma.serviceCategory.findMany({ orderBy: { name: "asc" } });
       case "pricing-plan":
         return prisma.pricingPlanCategory.findMany({
+          where: {
+            pricingEnabled: true,
+            plans: { some: { isActive: true } },
+          },
           include: {
             service: { select: { id: true, title: true, kind: true, parent: { select: { id: true, title: true } } } },
             product: { select: { id: true, title: true } },

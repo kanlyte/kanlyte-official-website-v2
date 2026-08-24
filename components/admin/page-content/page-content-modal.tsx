@@ -100,7 +100,7 @@ export function PageContentModal() {
       });
       setLines([""]);
     }
-  }, [isEdit, isCreate, record, reset]);
+  }, [isEdit, isCreate, record, reset, setValue]);
 
   function updateLine(index: number, value: string) {
     const updated = lines.map((l, i) => (i === index ? value : l));

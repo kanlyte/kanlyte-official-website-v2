@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { UploadCloud, X, Expand, Loader2 } from "lucide-react";
 import { useUploadImage } from "@/content-manager/hooks/useUploadImage";
 import { cn } from "@/lib/utils";
@@ -40,7 +41,7 @@ export function ImageUpload({ value, onChange, label = "Image", className }: Ima
         <div className="flex items-center gap-2 h-10 w-full rounded-md border border-input bg-background px-2">
           {/* Thumbnail */}
           <div className="shrink-0 w-7 h-7 rounded overflow-hidden border border-border bg-muted">
-            <img src={value} alt={label} className="w-full h-full object-cover" />
+            <Image src={value} alt={label} width={28} height={28} className="w-full h-full object-cover" />
           </div>
 
           {/* Filename */}
@@ -120,7 +121,9 @@ export function ImageUpload({ value, onChange, label = "Image", className }: Ima
             className="relative max-w-2xl max-h-[85vh] rounded-xl overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={value} alt={label} className="max-w-full max-h-[85vh] object-contain" />
+            <div className="relative h-[85vh] w-[min(90vw,768px)]">
+              <Image src={value} alt={label} fill className="object-contain" sizes="90vw" />
+            </div>
             <button
               type="button"
               onClick={() => setLightbox(false)}

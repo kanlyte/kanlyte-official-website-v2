@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Check, Star, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,8 @@ interface FallbackPlan {
   priceUSD?: string;
   priceUGXMonthly?: string;
   priceUSDMonthly?: string;
+  tagline?: string | null;
+  period?: string | null;
   isPopular?: boolean;
   buttonText: string;
   features: string[];
@@ -27,6 +30,7 @@ interface PricingCardsProps {
   billing: string;
   currency: string;
   fallbackPlans: FallbackPlan[];
+  onCapabilities?: (caps: { hasMonthly: boolean; hasUSD: boolean }) => void;
   enterpriseTitle?: string;
   enterpriseDescription?: string;
   enterpriseFeatures?: string[];
@@ -37,6 +41,7 @@ export function PricingCards({
   billing,
   currency,
   fallbackPlans,
+  onCapabilities,
   enterpriseTitle = "Custom Enterprise Solution",
   enterpriseDescription = "Need a tailored solution for your business? Let's create a custom plan together.",
   enterpriseFeatures = [
@@ -51,16 +56,12 @@ export function PricingCards({
   const dbPlans = dbData?.plans;
   const pricingEnabled = dbData?.pricingEnabled;
 
-  if (isLoading) return null;
-
-  // If the category exists in DB but pricing is disabled, hide the section entirely
-  if (dbData?.exists && !pricingEnabled) return null;
-
   const plans: FallbackPlan[] = dbPlans?.length
     ? dbPlans.map((p: {
         tier: string; title: string; description: string;
         priceUGX: string; priceUSD?: string;
         priceUGXMonthly?: string; priceUSDMonthly?: string;
+        tagline?: string | null; period?: string | null;
         isPopular: boolean; buttonText: string;
         features: { text: string; order: number }[];
       }) => ({
@@ -71,11 +72,37 @@ export function PricingCards({
         priceUSD: p.priceUSD,
         priceUGXMonthly: p.priceUGXMonthly,
         priceUSDMonthly: p.priceUSDMonthly,
+        tagline: p.tagline,
+        period: p.period,
         isPopular: p.isPopular,
         buttonText: p.buttonText,
         features: p.features.map((f) => f.text),
       }))
     : fallbackPlans;
+
+  const hasMonthly = plans.some((p) => p.priceUGXMonthly || p.priceUSDMonthly);
+  const hasUSD = plans.some((p) => p.priceUSD || p.priceUSDMonthly);
+  const effectiveBilling = hasMonthly ? billing : "yearly";
+  const effectiveCurrency = hasUSD ? currency : "UGX";
+
+  // Must be before any conditional returns
+  useEffect(() => {
+    if (plans.length) onCapabilities?.({ hasMonthly, hasUSD });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMonthly, hasUSD, plans.length]);
+
+  if (isLoading) return null;
+  if (dbData?.exists && !pricingEnabled) return null;
+
+  function getPrice(plan: FallbackPlan): string {
+    const isMonthly = effectiveBilling === "monthly";
+    if (effectiveCurrency === "USD") {
+      if (isMonthly) return plan.priceUSDMonthly ?? plan.priceUSD ?? plan.priceUGX;
+      return plan.priceUSD ?? plan.priceUGX;
+    }
+    if (isMonthly) return plan.priceUGXMonthly ?? plan.priceUGX;
+    return plan.priceUGX;
+  }
 
   if (!plans.length) return (
     <div className="max-w-2xl mx-auto text-center py-16 px-6">
@@ -101,16 +128,6 @@ export function PricingCards({
     </div>
   );
 
-  function getPrice(plan: FallbackPlan): string {
-    const isMonthly = billing === "monthly";
-    if (currency === "USD") {
-      if (isMonthly) return plan.priceUSDMonthly ?? plan.priceUSD ?? plan.priceUGX;
-      return plan.priceUSD ?? plan.priceUGX;
-    }
-    if (isMonthly) return plan.priceUGXMonthly ?? plan.priceUGX;
-    return plan.priceUGX;
-  }
-
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-7xl mx-auto">
@@ -134,7 +151,11 @@ export function PricingCards({
               </div>
               <div className="mt-4">
                 <span className="text-4xl font-bold text-slate-900">{getPrice(plan)}</span>
+                {plan.period && <span className="ml-1 text-sm text-slate-500">{plan.period}</span>}
               </div>
+              {plan.tagline && (
+                <p className="text-xs font-bold mt-1" style={{ color: primaryColor }}>{plan.tagline}</p>
+              )}
               <CardDescription className="mt-2 text-slate-500">{plan.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">

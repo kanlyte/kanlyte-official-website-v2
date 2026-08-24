@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { Eye, EyeOff, Lock, Mail, ShieldCheck } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
@@ -49,9 +50,11 @@ export default function AdminLoginPage() {
 
         <div className="relative flex items-center gap-3">
           <div className="bg-white rounded-xl p-1.5 shrink-0">
-            <img
+            <Image
               src="/logos/logo-transparent.png"
               alt="Kanlyte"
+              width={40}
+              height={40}
               className="size-10 object-contain"
             />
           </div>
@@ -84,9 +87,11 @@ export default function AdminLoginPage() {
         <div className="w-full max-w-sm space-y-8">
           {/* Mobile logo */}
           <div className="flex items-center justify-center gap-3 lg:hidden">
-            <img
+            <Image
               src="/logos/logo-transparent.png"
               alt="Kanlyte"
+              width={48}
+              height={48}
               className="size-12 object-contain"
             />
             <div className="flex flex-col">

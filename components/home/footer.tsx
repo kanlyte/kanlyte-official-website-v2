@@ -1,8 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { useSocialLinks } from "@/content-manager/hooks/useSocialLinks";
+import { socialLinkService } from "@/content-manager/services/social-link.service";
 import { DynamicIcon } from "@/components/admin/shared/icon-picker";
+
+type SocialLink = { id: string; platform: string; icon: string; url: string; color: string };
 
 const footerLinks = {
   company: [
@@ -25,9 +25,9 @@ const footerLinks = {
   ],
 };
 
-export function Footer() {
-  const { data: dbSocial } = useSocialLinks(true);
-  const socialLinks = dbSocial?.length ? dbSocial : [];
+export async function Footer() {
+  const dbSocial = await socialLinkService.getActive().catch(() => []);
+  const socialLinks: SocialLink[] = dbSocial?.length ? dbSocial : [];
   return (
     <footer className="bg-[#050816] border-t border-blue-900/20 py-16 px-4">
       <div className="max-w-7xl mx-auto">

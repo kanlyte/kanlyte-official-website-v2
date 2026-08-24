@@ -8,10 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { projectService } from "@/content-manager/services/project.service";
 
-export async function generateStaticParams() {
-  const projects = await projectService.getActive();
-  return projects.map((p) => ({ id: p.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

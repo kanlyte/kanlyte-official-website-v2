@@ -1,21 +1,22 @@
 import type { NextConfig } from "next";
-import bundleAnalyzer from "@next/bundle-analyzer";
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
 
 const nextConfig: NextConfig = {
   output: "standalone",
 
+  // Ensures the generated Prisma client (and its query engine binaries) is
+  // copied into .next/standalone — file tracing doesn't follow the engine's
+  // dynamic require() on its own.
   outputFileTracingIncludes: {
-    "/*": ["./node_modules/.prisma/client/**/*", "./public/**/*"],
+    '/*': ['./node_modules/.prisma/client/**/*', './public/**/*'],
   },
 
   images: {
-    minimumCacheTTL: 60,
+    unoptimized: true,
+
     localPatterns: [
-      { pathname: "/**" },
+      {
+        pathname: "/uploads/**",
+      },
     ],
 
     remotePatterns: [
@@ -27,4 +28,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

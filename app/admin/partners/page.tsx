@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ResourceHeader } from "@/components/admin/resources/resource-header";
 import { ResourceTable, ActiveBadge, OrderBadge, type ResourceColumn } from "@/components/admin/resources/resource-table";
 import { DeleteModal } from "@/components/admin/resources/delete-modal";
@@ -11,7 +12,7 @@ const RESOURCE = "partners";
 const COLUMNS: ResourceColumn[] = [
   { key: "order", label: "Order", render: (v) => <OrderBadge value={v} /> },
   { key: "name", label: "Name" },
-  { key: "logo", label: "Logo", render: (v) => v ? <img src={v} alt="logo" className="h-7 w-auto object-contain" /> : <span className="text-muted-foreground text-xs">—</span> },
+  { key: "logo", label: "Logo", render: (v) => v ? <Image src={v} alt="logo" width={56} height={28} className="h-7 w-auto object-contain" /> : <span className="text-muted-foreground text-xs">—</span> },
   { key: "url", label: "Website", render: (v) => v ? <a href={v} target="_blank" rel="noreferrer" className="text-xs text-primary underline underline-offset-2">{v}</a> : <span className="text-muted-foreground">—</span> },
   { key: "isActive", label: "Status", render: (v) => <ActiveBadge value={v} /> },
 ];

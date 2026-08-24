@@ -5,10 +5,7 @@ import { format } from "date-fns";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { newsPostService } from "@/content-manager/services/news-post.service";
 
-export async function generateStaticParams() {
-  const posts = await newsPostService.getActive();
-  return posts.map((p) => ({ id: p.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

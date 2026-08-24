@@ -148,7 +148,7 @@ export function NewsPostEditor({ mode, postId, defaultValues }: NewsPostEditorPr
       reset({ title: "", excerpt: "", content: "", image: "", publishedAt: new Date(), order: 0, isActive: true, ...defaultValues });
       if (editor && defaultValues.content) editor.commands.setContent(defaultValues.content);
     }
-  }, [defaultValues?.title]);
+  }, [defaultValues, editor, reset]);
 
   const openLinkDialog = useCallback(() => {
     const existing = editor?.getAttributes("link").href ?? "";

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -94,7 +95,7 @@ export default function NewsPostsPage() {
                       <TableCell className="text-xs text-muted-foreground">#{post.order}</TableCell>
                       <TableCell>
                         {post.image
-                          ? <img src={post.image} alt="" className="h-9 w-14 object-cover rounded" />
+                          ? <Image src={post.image} alt="" width={56} height={36} className="h-9 w-14 object-cover rounded" />
                           : <div className="h-9 w-14 rounded bg-muted flex items-center justify-center"><Newspaper className="w-4 h-4 text-muted-foreground/40" /></div>
                         }
                       </TableCell>
