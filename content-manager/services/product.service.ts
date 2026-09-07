@@ -1,6 +1,9 @@
 import { CreateProductSchema, UpdateProductSchema } from "../dtos";
 import type { CreateProductInput, UpdateProductInput } from "../dtos";
-import { productRepository } from "../repositories";
+import { productRepository as _productRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const productRepository = withCache("products", _productRepository);
 import { prisma } from "@/lib/prisma";
 
 export const productService = {

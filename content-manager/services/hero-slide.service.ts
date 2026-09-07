@@ -1,6 +1,9 @@
 import { CreateHeroSlideSchema, UpdateHeroSlideSchema } from "../dtos";
 import type { CreateHeroSlideInput, UpdateHeroSlideInput } from "../dtos";
-import { heroSlideRepository } from "../repositories";
+import { heroSlideRepository as _heroSlideRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const heroSlideRepository = withCache("hero-slides", _heroSlideRepository);
 
 export const heroSlideService = {
   async getAll() {

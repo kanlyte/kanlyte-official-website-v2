@@ -8,8 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { projectService } from "@/content-manager/services/project.service";
 
-export const dynamic = "force-dynamic";
-
 export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const [project, projects] = await Promise.all([

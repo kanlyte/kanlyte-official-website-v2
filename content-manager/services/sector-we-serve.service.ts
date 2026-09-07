@@ -1,6 +1,9 @@
 import { CreateSectorWeServeSchema, UpdateSectorWeServeSchema } from "../dtos";
 import type { CreateSectorWeServeInput, UpdateSectorWeServeInput } from "../dtos";
-import { sectorWeServeRepository } from "../repositories";
+import { sectorWeServeRepository as _sectorWeServeRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const sectorWeServeRepository = withCache("sectors-we-serve", _sectorWeServeRepository);
 
 export const sectorWeServeService = {
   async getAll() {

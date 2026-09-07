@@ -1,6 +1,9 @@
 import { CreatePageCapabilitySchema, UpdatePageCapabilitySchema } from "../dtos";
 import type { CreatePageCapabilityInput, UpdatePageCapabilityInput } from "../dtos";
-import { pageCapabilityRepository } from "../repositories";
+import { pageCapabilityRepository as _pageCapabilityRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const pageCapabilityRepository = withCache("page-capabilities", _pageCapabilityRepository);
 
 export const pageCapabilityService = {
   async getAll() {

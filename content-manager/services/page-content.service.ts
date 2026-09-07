@@ -1,6 +1,9 @@
 import { CreatePageContentSchema, UpdatePageContentSchema } from "../dtos";
 import type { CreatePageContentInput, UpdatePageContentInput } from "../dtos";
-import { pageContentRepository } from "../repositories";
+import { pageContentRepository as _pageContentRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const pageContentRepository = withCache("page-content", _pageContentRepository);
 
 export const pageContentService = {
   async getAll() {

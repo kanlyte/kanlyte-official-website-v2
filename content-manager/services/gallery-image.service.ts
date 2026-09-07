@@ -1,6 +1,9 @@
 import { CreateGalleryImageSchema, UpdateGalleryImageSchema } from "../dtos";
 import type { CreateGalleryImageInput, UpdateGalleryImageInput } from "../dtos";
-import { galleryImageRepository } from "../repositories";
+import { galleryImageRepository as _galleryImageRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const galleryImageRepository = withCache("gallery-images", _galleryImageRepository);
 
 export const galleryImageService = {
   async getAll() {

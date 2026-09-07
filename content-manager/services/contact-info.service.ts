@@ -1,6 +1,9 @@
 import { ContactInfoSchema } from "../dtos/contact-info.dto";
 import type { ContactInfoInput } from "../dtos/contact-info.dto";
-import { contactInfoRepository } from "../repositories/contact-info.repository";
+import { contactInfoRepository as _contactInfoRepository } from "../repositories/contact-info.repository";
+import { withCache } from "@/lib/cached";
+
+const contactInfoRepository = withCache("contact-info", _contactInfoRepository);
 
 export const contactInfoService = {
   async get() {

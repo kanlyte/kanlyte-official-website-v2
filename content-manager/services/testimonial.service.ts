@@ -1,6 +1,9 @@
 import { CreateTestimonialSchema, UpdateTestimonialSchema } from "../dtos";
 import type { CreateTestimonialInput, UpdateTestimonialInput } from "../dtos";
-import { testimonialRepository } from "../repositories";
+import { testimonialRepository as _testimonialRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const testimonialRepository = withCache("testimonials", _testimonialRepository);
 
 export const testimonialService = {
   async getAll() {

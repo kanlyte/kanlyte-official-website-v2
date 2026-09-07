@@ -1,6 +1,9 @@
 import { CreatePartnerSchema, UpdatePartnerSchema } from "../dtos";
 import type { CreatePartnerInput, UpdatePartnerInput } from "../dtos";
-import { partnerRepository } from "../repositories";
+import { partnerRepository as _partnerRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const partnerRepository = withCache("partners", _partnerRepository);
 
 export const partnerService = {
   async getAll() {

@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { invalidate } from "./cached";
 
 type Resource =
   | "services"
@@ -23,33 +23,10 @@ type Resource =
   | "social-links"
   | "contact-info";
 
-const RESOURCE_PATHS: Record<Resource, string[]> = {
-  "hero-slides":       ["/"],
-  "stats":             ["/"],
-  "partners":          ["/", "/about-us"],
-  "testimonials":      ["/", "/about-us"],
-  "process-steps":     ["/"],
-  "faqs":              ["/"],
-  "services":          ["/", "/services", "/services/[slug]"],
-  "projects":          ["/", "/projects", "/projects/[id]"],
-  "news-posts":        ["/", "/news", "/news/[id]"],
-  "team-members":      ["/about-us"],
-  "milestones":        ["/about-us"],
-  "gallery-images":    ["/gallery"],
-  "odoo-apps":         ["/odoo"],
-  "pricing-plans":     ["/pricing"],
-  "products":          ["/", "/products/[slug]"],
-  "page-content":      ["/"],
-  "page-capabilities": ["/"],
-  "sectors-we-serve":  ["/"],
-  "careers":           ["/careers"],
-  "social-links":      ["/"],
-  "contact-info":      ["/contact-us"],
-};
-
+// Pages render dynamically on every request (see app/(home)/layout.tsx), so
+// there's no route-level cache to bust here -- this just clears the
+// in-memory data cache (lib/cached.ts) so the next request re-reads the
+// database instead of serving what this resource looked like before the edit.
 export function revalidateResource(resource: Resource) {
-  const paths = RESOURCE_PATHS[resource] ?? [];
-  for (const path of paths) {
-    revalidatePath(path);
-  }
+  invalidate(`${resource}:`);
 }

@@ -1,6 +1,9 @@
 import { CreateMilestoneSchema, UpdateMilestoneSchema } from "../dtos";
 import type { CreateMilestoneInput, UpdateMilestoneInput } from "../dtos";
-import { milestoneRepository } from "../repositories";
+import { milestoneRepository as _milestoneRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const milestoneRepository = withCache("milestones", _milestoneRepository);
 
 export const milestoneService = {
   async getAll() {

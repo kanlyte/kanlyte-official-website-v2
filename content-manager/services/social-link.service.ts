@@ -1,6 +1,9 @@
 import { CreateSocialLinkSchema, UpdateSocialLinkSchema } from "../dtos/social-link.dto";
 import type { CreateSocialLinkInput, UpdateSocialLinkInput } from "../dtos/social-link.dto";
-import { socialLinkRepository } from "../repositories/social-link.repository";
+import { socialLinkRepository as _socialLinkRepository } from "../repositories/social-link.repository";
+import { withCache } from "@/lib/cached";
+
+const socialLinkRepository = withCache("social-links", _socialLinkRepository);
 
 export const socialLinkService = {
   async getAll() {

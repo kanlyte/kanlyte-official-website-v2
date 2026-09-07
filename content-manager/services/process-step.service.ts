@@ -1,6 +1,9 @@
 import { CreateProcessStepSchema, UpdateProcessStepSchema } from "../dtos";
 import type { CreateProcessStepInput, UpdateProcessStepInput } from "../dtos";
-import { processStepRepository } from "../repositories";
+import { processStepRepository as _processStepRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const processStepRepository = withCache("process-steps", _processStepRepository);
 
 export const processStepService = {
   async getAll() {

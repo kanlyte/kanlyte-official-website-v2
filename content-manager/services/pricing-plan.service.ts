@@ -1,7 +1,10 @@
 import type { PricingPlan } from "@prisma/client";
 import { CreatePricingPlanSchema, UpdatePricingPlanSchema } from "../dtos";
 import type { CreatePricingPlanInput, UpdatePricingPlanInput } from "../dtos";
-import { pricingPlanRepository } from "../repositories";
+import { pricingPlanRepository as _pricingPlanRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const pricingPlanRepository = withCache("pricing-plans", _pricingPlanRepository);
 
 export const pricingPlanService = {
   async getAll() {

@@ -1,6 +1,9 @@
 import { CreateStatSchema, UpdateStatSchema } from "../dtos";
 import type { CreateStatInput, UpdateStatInput } from "../dtos";
-import { statRepository } from "../repositories";
+import { statRepository as _statRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const statRepository = withCache("stats", _statRepository);
 
 export const statService = {
   async getAll() {

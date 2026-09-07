@@ -1,6 +1,9 @@
 import { CreateCareerSchema, UpdateCareerSchema } from "../dtos";
 import type { CreateCareerInput, UpdateCareerInput } from "../dtos";
-import { careerRepository } from "../repositories";
+import { careerRepository as _careerRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const careerRepository = withCache("careers", _careerRepository);
 
 export const careerService = {
   async getAll() {

@@ -1,6 +1,9 @@
 import { CreateFAQSchema, UpdateFAQSchema } from "../dtos";
 import type { CreateFAQInput, UpdateFAQInput } from "../dtos";
-import { faqRepository } from "../repositories";
+import { faqRepository as _faqRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const faqRepository = withCache("faqs", _faqRepository);
 
 export const faqService = {
   async getAll() {

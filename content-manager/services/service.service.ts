@@ -1,6 +1,9 @@
 import { CreateServiceSchema, UpdateServiceSchema } from "../dtos";
 import type { CreateServiceInput, UpdateServiceInput } from "../dtos";
-import { serviceRepository } from "../repositories";
+import { serviceRepository as _serviceRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const serviceRepository = withCache("services", _serviceRepository);
 import { prisma } from "@/lib/prisma";
 
 export const serviceService = {

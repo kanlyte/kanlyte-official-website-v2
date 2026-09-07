@@ -1,6 +1,9 @@
 import { CreateTeamMemberSchema, UpdateTeamMemberSchema } from "../dtos";
 import type { CreateTeamMemberInput, UpdateTeamMemberInput } from "../dtos";
-import { teamMemberRepository } from "../repositories";
+import { teamMemberRepository as _teamMemberRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const teamMemberRepository = withCache("team-members", _teamMemberRepository);
 
 export const teamMemberService = {
   async getAll() {

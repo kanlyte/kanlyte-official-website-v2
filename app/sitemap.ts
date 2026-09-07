@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 
+// Same reason as app/(home)/layout.tsx: builds happen locally without DB
+// access, so this can't be prerendered at build time.
 export const dynamic = "force-dynamic";
 
 const BASE = "https://kanlyte.com";

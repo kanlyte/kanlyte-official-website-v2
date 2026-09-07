@@ -1,6 +1,9 @@
 import { CreateNewsPostSchema, UpdateNewsPostSchema } from "../dtos";
 import type { CreateNewsPostInput, UpdateNewsPostInput } from "../dtos";
-import { newsPostRepository } from "../repositories";
+import { newsPostRepository as _newsPostRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const newsPostRepository = withCache("news-posts", _newsPostRepository);
 import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 
