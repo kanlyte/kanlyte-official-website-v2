@@ -1,0 +1,128 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { CircleUser, CreditCard, EllipsisVertical, LogOut, MessageSquareDot } from "lucide-react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { getInitials } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
+
+export function NavUser({
+  user,
+}: {
+  readonly user: {
+    readonly name: string;
+    readonly email: string;
+    readonly avatar: string;
+  };
+}) {
+  const { isMobile } = useSidebar();
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const name = session?.user?.name ?? user.name;
+  const email = session?.user?.email ?? user.email;
+  const avatar = session?.user?.image ?? user.avatar;
+
+  async function handleLogout() {
+    await authClient.signOut();
+    router.push("/admin/login");
+    router.refresh();
+  }
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <Avatar className="h-8 w-8 rounded-lg grayscale">
+                <AvatarImage src={avatar || undefined} alt={name} />
+                <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                {!mounted || isPending ? (
+                  <>
+                    <span className="h-3 w-24 rounded bg-muted animate-pulse" />
+                    <span className="h-2.5 w-32 rounded bg-muted animate-pulse mt-1" />
+                  </>
+                ) : (
+                  <>
+                    <span className="truncate font-medium">{name}</span>
+                    <span className="truncate text-muted-foreground text-xs">{email}</span>
+                  </>
+                )}
+              </div>
+              <EllipsisVertical className="ml-auto size-4" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            side={isMobile ? "bottom" : "right"}
+            align="end"
+            sideOffset={4}
+          >
+            <DropdownMenuLabel className="p-0 font-normal">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src={avatar || undefined} alt={name} />
+                  <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  {!mounted || isPending ? (
+                    <>
+                      <span className="h-3 w-24 rounded bg-muted animate-pulse" />
+                      <span className="h-2.5 w-32 rounded bg-muted animate-pulse mt-1" />
+                    </>
+                  ) : (
+                    <>
+                      <span className="truncate font-medium">{name}</span>
+                      <span className="truncate text-muted-foreground text-xs">{email}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <CircleUser />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCard />
+                Billing
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <MessageSquareDot />
+                Notifications
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive cursor-pointer">
+              <LogOut />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+}

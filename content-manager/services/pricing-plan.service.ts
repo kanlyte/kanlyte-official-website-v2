@@ -1,7 +1,10 @@
 import type { PricingPlan } from "@prisma/client";
 import { CreatePricingPlanSchema, UpdatePricingPlanSchema } from "../dtos";
 import type { CreatePricingPlanInput, UpdatePricingPlanInput } from "../dtos";
-import { pricingPlanRepository } from "../repositories";
+import { pricingPlanRepository as _pricingPlanRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const pricingPlanRepository = withCache("pricing-plans", _pricingPlanRepository);
 
 export const pricingPlanService = {
   async getAll() {
@@ -10,6 +13,10 @@ export const pricingPlanService = {
 
   async getByCategory(category: string) {
     return await pricingPlanRepository.findByCategory(category);
+  },
+
+  async updateCategory(slug: string, pricingEnabled: boolean) {
+    return await pricingPlanRepository.updateCategory(slug, { pricingEnabled });
   },
 
   async getById(id: string) {
@@ -21,7 +28,7 @@ export const pricingPlanService = {
   async create(input: CreatePricingPlanInput) {
     const data = CreatePricingPlanSchema.parse(input);
     const existing = await pricingPlanRepository.findByCategory(data.category);
-    const tierExists = existing.some((p: PricingPlan) => p.tier === data.tier);
+    const tierExists = existing.plans.some((p: PricingPlan) => p.tier === data.tier);
     if (tierExists) throw new Error(`Tier "${data.tier}" already exists in category "${data.category}"`);
     return await pricingPlanRepository.create(data);
   },
@@ -31,7 +38,7 @@ export const pricingPlanService = {
     const data = UpdatePricingPlanSchema.parse(input);
     if (data.tier && data.tier !== current.tier) {
       const existing = await pricingPlanRepository.findByCategory(data.category ?? current.category);
-      const tierExists = existing.some((p: PricingPlan) => p.tier === data.tier && p.id !== id);
+      const tierExists = existing.plans.some((p: PricingPlan) => p.tier === data.tier && p.id !== id);
       if (tierExists) throw new Error(`Tier "${data.tier}" already exists in this category`);
     }
     return await pricingPlanRepository.update(id, data);

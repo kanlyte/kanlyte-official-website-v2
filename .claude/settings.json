@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm -v)",
+      "Bash(pnpm exec *)",
+      "Bash(Select-String . -SimpleMatch)",
+      "Bash(Select-Object -First 0)",
+      "Bash(wc -l /tmp_ts_out.txt)",
+      "Bash(cat /tmp_ts_out.txt)",
+      "PowerShell(Set-Location \"d:\\\\languages\\\\others\\\\kanlyte-official-website-v2\"; pnpm exec tsc --noEmit 2>&1 | Out-String -Width 200 | Set-Content -Encoding utf8 ts_errors.txt; \\(Get-Content ts_errors.txt | Measure-Object -Line\\).Lines)",
+      "PowerShell(Set-Location \"d:\\\\languages\\\\others\\\\kanlyte-official-website-v2\"; Remove-Item .next -Recurse -Force -ErrorAction SilentlyContinue; pnpm exec next build 2>&1 | Out-String -Width 200 | Set-Content -Encoding utf8 build_out6.txt; \"exit:$LASTEXITCODE\")"
+    ]
+  }
+}

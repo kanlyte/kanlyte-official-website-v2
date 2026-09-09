@@ -3,15 +3,19 @@ import {
   Phone,
   MapPin,
   Clock,
-  Facebook,
-  Twitter,
-  Youtube,
-  Linkedin,
   ChevronRight,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
+
+const FALLBACK_SOCIAL = [
+  { id: "1", platform: "Facebook", icon: "Facebook", url: "#", color: "#1877F2" },
+  { id: "2", platform: "Twitter", icon: "X", url: "#", color: "#000000" },
+  { id: "3", platform: "Youtube", icon: "Youtube", url: "#", color: "#FF0000" },
+  { id: "4", platform: "Linkedin", icon: "Linkedin", url: "#", color: "#0A66C2" },
+];
 
 const services = [
   { id: "01", name: "Website Design", active: true },
@@ -131,15 +135,17 @@ export function ServiceSidebar() {
             </p>
           </div>
           <div className="flex gap-2">
-            {[Facebook, Twitter, Youtube, Linkedin].map((Icon, i) => (
+            {FALLBACK_SOCIAL.map((social) => (
               <Button
-                // onClick={}
-                key={i}
+                key={social.id}
                 size="icon"
                 variant="secondary"
-                className="h-8 w-8 rounded-full bg-white text-zinc-900 hover:bg-[#6EBE45] hover:text-white"
+                className="h-8 w-8 rounded-full bg-white hover:bg-[#6EBE45] hover:text-white"
+                asChild
               >
-                <Icon className="h-4 w-4" />
+                <a href={social.url} target="_blank" rel="noopener noreferrer">
+                  <DynamicIcon name={social.icon} className="h-4 w-4" style={{ color: social.color }} />
+                </a>
               </Button>
             ))}
           </div>

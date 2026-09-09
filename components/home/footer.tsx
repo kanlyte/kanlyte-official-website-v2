@@ -1,30 +1,33 @@
-"use client";
-
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { socialLinkService } from "@/content-manager/services/social-link.service";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
+
+type SocialLink = { id: string; platform: string; icon: string; url: string; color: string };
 
 const footerLinks = {
   company: [
+    { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
-    { label: "Our Team", href: "/about-us" },
-    { label: "Careers", href: "#" },
-    { label: "Contact", href: "/contact-us" },
+    { label: "Careers", href: "/careers" },
+    { label: "Contact Us", href: "/contact-us" },
+    { label: "News", href: "/news" },
   ],
   services: [
-    { label: "Web Development", href: "/web-development" },
-    { label: "Mobile Apps", href: "/app-development" },
-    { label: "E-commerce", href: "/projects" },
-    { label: "Custom Solutions", href: "/odoo" },
+    { label: "Research & Innovation", href: "/services/research-innovation" },
+    { label: "Web & Cloud Services", href: "/services/web-cloud" },
+    { label: "Software Development", href: "/services/software-development" },
+    { label: "ICT Training & Consultancy", href: "/services/ict-training" },
   ],
-  learning: [
-    { label: "Coding School", href: "#" },
-    { label: "Free Courses", href: "https://www.youtube.com/@kanlyteug" },
-    { label: "YouTube Channel", href: "https://www.youtube.com/@kanlyteug" },
-    { label: "Blog", href: "#blog" },
+  products: [
+    { label: "School Sync", href: "/products/school-sync" },
+    { label: "Lyte App", href: "/products/lyte" },
+    { label: "Odoo ERP", href: "/products/odoo" },
   ],
 };
 
-export function Footer() {
+export async function Footer() {
+  const dbSocial = await socialLinkService.getActive().catch(() => []);
+  const socialLinks: SocialLink[] = dbSocial?.length ? dbSocial : [];
   return (
     <footer className="bg-[#050816] border-t border-blue-900/20 py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -38,34 +41,21 @@ export function Footer() {
               </span>
             </div>
             <p className="text-gray-400 text-sm mb-6 max-w-sm">
-              Leveraging Technology to transform businesses with innovative web
-              and mobile solutions across Uganda and beyond.
+              Unleashing the power of software through a comprehensive digital
+              transformation.
             </p>
             <div className="flex gap-4">
-              <a
-                href="https://www.facebook.com/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Facebook className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://x.com/KanlyteUganda"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Twitter className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Linkedin className="w-5 h-5 text-white" />
-              </a>
-              <a
-                href="https://www.instagram.com/kanlyte/"
-                className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
-              >
-                <Instagram className="w-5 h-5 text-white" />
-              </a>
+              {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
+                <a
+                  key={social.id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-[#6EBE45] hover:bg-orange-400 flex items-center justify-center transition-colors"
+                >
+                  <DynamicIcon name={social.icon} className="w-5 h-5 text-white" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -103,9 +93,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Learning</h3>
+            <h3 className="text-white font-semibold mb-4">Products</h3>
             <ul className="space-y-3">
-              {footerLinks.learning.map((link) => (
+              {footerLinks.products.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -122,27 +112,21 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-blue-900/20 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
-            © 2025 Kanlyte Uganda. All rights reserved.
+            © {new Date().getFullYear()} Kanlyte Uganda. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm">
-            <Link
-              href="#privacy"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#terms"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="#cookies"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Cookie Policy
-            </Link>
+          <div className="flex gap-4">
+            {socialLinks.map((social: { id: string; platform: string; icon: string; url: string; color: string }) => (
+              <a
+                key={social.id}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit our ${social.platform} page`}
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#6EBE45] flex items-center justify-center transition-colors"
+              >
+                <DynamicIcon name={social.icon} className="w-4 h-4 text-gray-300" />
+              </a>
+            ))}
           </div>
         </div>
       </div>

@@ -1,0 +1,38 @@
+import { z } from "zod";
+
+export const ContactInfoSchema = z.object({
+  phone: z.string().min(1),
+  email: z.string().email(),
+  address: z.string().min(1),
+  schedule: z.string().min(1),
+  heroImage: z.string().optional().nullable(),
+  heroTitle: z.string().optional().nullable(),
+  heroHighlight: z.string().optional().nullable(),
+  heroTagline: z.string().optional().nullable(),
+  introTitle: z.string().optional().nullable(),
+  introHighlight: z.string().optional().nullable(),
+  introDescription: z.string().optional().nullable(),
+  formTitle: z.string().optional().nullable(),
+  formDescription: z.string().optional().nullable(),
+  callTitle: z.string().optional().nullable(),
+  callDescription: z.string().optional().nullable(),
+  emailTitle: z.string().optional().nullable(),
+  emailDescription: z.string().optional().nullable(),
+  emailResponseText: z.string().optional().nullable(),
+  visitTitle: z.string().optional().nullable(),
+  visitDescription: z.string().optional().nullable(),
+  companyName: z.string().optional().nullable(),
+  hoursTitle: z.string().optional().nullable(),
+  locationTitle: z.string().optional().nullable(),
+  locationSubtitle: z.string().optional().nullable(),
+  directionsUrl: z.string().url().optional().nullable().or(z.literal("")),
+  mapEmbedUrl: z.string().url().optional().nullable().or(z.literal("")),
+  urgentTitle: z.string().optional().nullable(),
+  urgentDescription: z.string().optional().nullable(),
+  statsTitle: z.string().optional().nullable(),
+  statsDescription: z.string().optional().nullable(),
+  newsletterText: z.string().optional().nullable(),
+  submitButtonText: z.string().optional().nullable(),
+});
+
+export type ContactInfoInput = z.infer<typeof ContactInfoSchema>;

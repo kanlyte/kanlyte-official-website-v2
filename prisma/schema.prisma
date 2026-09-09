@@ -1,15 +1,22 @@
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  engineType    = "client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 model ContactSubmission {
   id          String    @id @default(cuid())
-  fullName    String
+  fullName    String    @map("fullname")
   email       String
   phone       String
   company     String?
@@ -18,15 +25,16 @@ model ContactSubmission {
   message     String
   subscribe   Boolean   @default(false)
   status      String    @default("pending")
-  ipAddress   String?
-  userAgent   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  contactedAt DateTime?
+  ipAddress   String?   @map("ipaddress")
+  userAgent   String?   @map("useragent")
+  createdAt   DateTime  @default(now()) @map("createdat")
+  updatedAt   DateTime  @updatedAt @map("updatedat")
+  contactedAt DateTime? @map("contactedat")
 
   @@index([email])
   @@index([status])
   @@index([createdAt])
+  @@map("contactsubmission")
 }
 
 // ─── Hero Slider ────────────────────────────────────────────────────────────
@@ -37,11 +45,12 @@ model HeroSlide {
   title       String
   subtitle    String
   description String
-  buttonText  String
-  buttonLink  String
-  isActive    Boolean @default(true)
+  buttonText  String  @map("buttontext")
+  buttonLink  String  @map("buttonlink")
+  isActive    Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@map("heroslide")
 }
 
 // ─── Stats Section ──────────────────────────────────────────────────────────
@@ -50,18 +59,76 @@ model Stat {
   label String
   value String
   order Int
+
+  @@map("stat")
 }
 
 // ─── Services / Features Grid ───────────────────────────────────────────────
 model Service {
-  id          String  @id @default(cuid())
-  title       String
-  description String
-  icon        String  // lucide icon name e.g. "Code"
-  order       Int
-  isActive    Boolean @default(true)
+  id              String               @id @default(cuid())
+  title           String
+  slug            String?              @unique
+  description     String
+  icon            String // lucide icon name e.g. "Code"
+  kind            String               @default("offering") // "main" | "offering"
+  parentId        String?              @map("parentid")
+  parent          Service?             @relation("ServiceHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children        Service[]            @relation("ServiceHierarchy")
+  featured        Boolean              @default(false)
+  category        String?
+  categoryRef     ServiceCategory?     @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  pricingCategory PricingPlanCategory?
+  order           Int
+  isActive        Boolean              @default(true) @map("isactive")
 
   @@index([order])
+  @@index([slug])
+  @@index([kind])
+  @@index([parentId])
+  @@index([category])
+  @@map("service")
+}
+
+model ServiceCategory {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  services  Service[]
+  createdAt DateTime  @default(now()) @map("createdat")
+  updatedAt DateTime  @updatedAt @map("updatedat")
+
+  @@map("servicecategory")
+}
+
+// ─── Products ───────────────────────────────────────────────────────────────
+model Product {
+  id              String               @id @default(cuid())
+  title           String
+  slug            String               @unique
+  description     String
+  image           String? // card image
+  icon            String // lucide icon name e.g. "Cpu"
+  category        String?
+  categoryRef     ProductCategory?     @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  pricingCategory PricingPlanCategory?
+  order           Int
+  isActive        Boolean              @default(true) @map("isactive")
+
+  @@index([order])
+  @@index([slug])
+  @@index([category])
+  @@map("product")
+}
+
+model ProductCategory {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now()) @map("createdat")
+  updatedAt DateTime  @updatedAt @map("updatedat")
+
+  @@map("productcategory")
 }
 
 // ─── Projects Section ───────────────────────────────────────────────────────
@@ -70,12 +137,13 @@ model Project {
   title       String
   description String
   image       String
-  tags        String[] // e.g. ["Next JS", "Typescript"]
+  tags        String   @db.Text // JSON-encoded string[] — MariaDB's JSON type mis-detects as binary via @prisma/adapter-mariadb, so this is stored/parsed manually instead of using Json
   order       Int
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  isActive    Boolean  @default(true) @map("isactive")
+  createdAt   DateTime @default(now()) @map("createdat")
 
   @@index([order])
+  @@map("project")
 }
 
 // ─── Process Steps ──────────────────────────────────────────────────────────
@@ -88,6 +156,7 @@ model ProcessStep {
   order       Int
 
   @@index([order])
+  @@map("processstep")
 }
 
 // ─── FAQ Section ────────────────────────────────────────────────────────────
@@ -96,9 +165,10 @@ model FAQ {
   question String
   answer   String
   order    Int
-  isActive Boolean @default(true)
+  isActive Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@map("faq")
 }
 
 // ─── Partners Slider ────────────────────────────────────────────────────────
@@ -108,23 +178,25 @@ model Partner {
   logo     String
   url      String?
   order    Int
-  isActive Boolean @default(true)
+  isActive Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@map("partner")
 }
 
 // ─── Team ───────────────────────────────────────────────────────────────────
 model TeamMember {
-  id       String           @id @default(cuid())
+  id       String            @id @default(cuid())
   name     String
   role     String
   image    String
-  featured Boolean          @default(false)
+  featured Boolean           @default(false)
   order    Int
-  isActive Boolean          @default(true)
+  isActive Boolean           @default(true) @map("isactive")
   social   TeamMemberSocial?
 
   @@index([order])
+  @@map("teammember")
 }
 
 model TeamMemberSocial {
@@ -135,20 +207,23 @@ model TeamMemberSocial {
   github       String?
   tiktok       String?
   teamMember   TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
-  teamMemberId String     @unique
+  teamMemberId String     @unique @map("teammemberid")
+
+  @@map("teammembersocial")
 }
 
 // ─── Testimonials ───────────────────────────────────────────────────────────
 model Testimonial {
-  id        String  @id @default(cuid())
-  name      String
-  location  String
-  text      String
-  image     String
-  order     Int
-  isActive  Boolean @default(true)
+  id       String  @id @default(cuid())
+  name     String
+  location String
+  text     String
+  image    String
+  order    Int
+  isActive Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@map("testimonial")
 }
 
 // ─── Company Journey / Milestones ───────────────────────────────────────────
@@ -158,51 +233,308 @@ model Milestone {
   title       String
   description String
   image       String
-  imageAlt    String
+  imageAlt    String @map("imagealt")
   order       Int
 
   @@index([order])
+  @@map("milestone")
 }
 
 // ─── Pricing Plans (General + Odoo) ─────────────────────────────────────────
 model PricingPlan {
-  id           String               @id @default(cuid())
-  category     String               // e.g. "web-hosting", "odoo", "email-hosting"
-  tier         String               // e.g. "core", "advanced", "premium"
-  title        String
-  description  String
-  priceUGX     String
-  priceUSD     String?
-  period       String?              // e.g. "/ month", "/ one user"
-  tagline      String?
-  isPopular    Boolean              @default(false)
-  borderColor  String?
-  buttonText   String
-  order        Int
-  isActive     Boolean              @default(true)
-  features     PricingPlanFeature[]
+  id              String               @id @default(cuid())
+  category        String // e.g. "web-hosting", "odoo", "email-hosting"
+  categoryRef     PricingPlanCategory  @relation(fields: [category], references: [slug], onUpdate: Cascade)
+  tier            String // e.g. "core", "advanced", "premium"
+  title           String
+  description     String
+  priceUGX        String               @map("priceugx")
+  priceUSD        String?              @map("priceusd")
+  priceUGXMonthly String?              @map("priceugxmonthly")
+  priceUSDMonthly String?              @map("priceusdmonthly")
+  period          String? // e.g. "/ month", "/ one user"
+  tagline         String?
+  isPopular       Boolean              @default(false) @map("ispopular")
+  borderColor     String?              @map("bordercolor")
+  buttonText      String               @map("buttontext")
+  order           Int
+  isActive        Boolean              @default(true) @map("isactive")
+  features        PricingPlanFeature[]
 
   @@index([category])
   @@index([order])
+  @@map("pricingplan")
+}
+
+model PricingPlanCategory {
+  id             String        @id @default(cuid())
+  name           String
+  slug           String        @unique
+  ownerType      String        @default("standalone") @map("ownertype") // "product" | "service" | "standalone"
+  ownerSlug      String?       @map("ownerslug") // matches Product.slug or Service.slug
+  serviceId      String?       @unique @map("serviceid")
+  service        Service?      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  productId      String?       @unique @map("productid")
+  product        Product?      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  pricingEnabled Boolean       @default(true) @map("pricingenabled")
+  plans          PricingPlan[]
+  createdAt      DateTime      @default(now()) @map("createdat")
+  updatedAt      DateTime      @updatedAt @map("updatedat")
+
+  @@index([ownerType])
+  @@index([ownerSlug])
+  @@map("pricingplancategory")
 }
 
 model PricingPlanFeature {
-  id            String      @id @default(cuid())
-  text          String
-  order         Int
-  plan          PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-  planId        String
+  id     String      @id @default(cuid())
+  text   String
+  order  Int
+  plan   PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId String      @map("planid")
 
   @@index([planId])
+  @@map("pricingplanfeature")
 }
 
 // ─── Odoo App Grid ──────────────────────────────────────────────────────────
 model OdooApp {
   id       String  @id @default(cuid())
   name     String
-  icon     String  // path to svg e.g. "/odoo/icon-acc.svg"
+  icon     String // path to svg e.g. "/odoo/icon-acc.svg"
   order    Int
-  isActive Boolean @default(true)
+  isActive Boolean @default(true) @map("isactive")
 
   @@index([order])
+  @@map("odooapp")
+}
+
+// ─── Contact Info (singleton) ────────────────────────────────────────────────
+model ContactInfo {
+  id                String  @id @default(cuid())
+  phone             String
+  email             String
+  address           String
+  schedule          String
+  heroImage         String? @map("heroimage")
+  heroTitle         String? @map("herotitle")
+  heroHighlight     String? @map("herohighlight")
+  heroTagline       String? @map("herotagline")
+  introTitle        String? @map("introtitle")
+  introHighlight    String? @map("introhighlight")
+  introDescription  String? @map("introdescription") @db.Text
+  formTitle         String? @map("formtitle")
+  formDescription   String? @map("formdescription") @db.Text
+  callTitle         String? @map("calltitle")
+  callDescription   String? @map("calldescription")
+  emailTitle        String? @map("emailtitle")
+  emailDescription  String? @map("emaildescription")
+  emailResponseText String? @map("emailresponsetext")
+  visitTitle        String? @map("visittitle")
+  visitDescription  String? @map("visitdescription")
+  companyName       String? @map("companyname")
+  hoursTitle        String? @map("hourstitle")
+  locationTitle     String? @map("locationtitle")
+  locationSubtitle  String? @map("locationsubtitle")
+  directionsUrl     String? @map("directionsurl") @db.Text
+  mapEmbedUrl       String? @map("mapembedurl") @db.Text
+  urgentTitle       String? @map("urgenttitle")
+  urgentDescription String? @map("urgentdescription")
+  statsTitle        String? @map("statstitle")
+  statsDescription  String? @map("statsdescription") @db.Text
+  newsletterText    String? @map("newslettertext") @db.Text
+  submitButtonText  String? @map("submitbuttontext")
+
+  @@map("contactinfo")
+}
+
+// ─── Page Content (Products & Services hero/copy) ──────────────────────────
+model PageContent {
+  id                String  @id @default(cuid())
+  slug              String  @unique
+  pageType          String  @map("pagetype") // "product" | "service"
+  badge             String
+  title             String
+  highlight         String
+  subtitle          String
+  description       String
+  primaryBtnLabel   String  @map("primarybtnlabel")
+  primaryBtnHref    String  @map("primarybtnhref")
+  secondaryBtnLabel String  @map("secondarybtnlabel")
+  secondaryBtnHref  String  @map("secondarybtnhref")
+  annotationLine1   String  @map("annotationline1")
+  annotationLine2   String  @map("annotationline2")
+  annotationLines   String? @map("annotationlines") @db.Text // JSON-encoded string[]
+  isActive          Boolean @default(true) @map("isactive")
+
+  @@index([slug])
+  @@index([pageType])
+  @@map("pagecontent")
+}
+
+// ─── Page Capabilities (icon grid per product/service page) ──────────────────
+model PageCapability {
+  id       String  @id @default(cuid())
+  slug     String
+  name     String
+  icon     String
+  order    Int
+  isActive Boolean @default(true) @map("isactive")
+
+  @@index([slug])
+  @@index([order])
+  @@map("pagecapability")
+}
+
+// ─── Auth (better-auth) ─────────────────────────────────────────────────────
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @map("emailverified")
+  image         String?
+  createdAt     DateTime  @map("createdat")
+  updatedAt     DateTime  @map("updatedat")
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime @map("expiresat")
+  token     String   @unique
+  createdAt DateTime @map("createdat")
+  updatedAt DateTime @map("updatedat")
+  ipAddress String?  @map("ipaddress")
+  userAgent String?  @map("useragent")
+  userId    String   @map("userid")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String    @map("accountid")
+  providerId            String    @map("providerid")
+  userId                String    @map("userid")
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @map("accesstoken")
+  refreshToken          String?   @map("refreshtoken")
+  idToken               String?   @map("idtoken")
+  accessTokenExpiresAt  DateTime? @map("accesstokenexpiresat")
+  refreshTokenExpiresAt DateTime? @map("refreshtokenexpiresat")
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @map("createdat")
+  updatedAt             DateTime  @map("updatedat")
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime  @map("expiresat")
+  createdAt  DateTime? @map("createdat")
+  updatedAt  DateTime? @map("updatedat")
+
+  @@map("verification")
+}
+
+// ─── News & Updates ─────────────────────────────────────────────────────────
+model NewsPost {
+  id          String   @id @default(cuid())
+  title       String
+  excerpt     String
+  content     String   @db.Text
+  image       String
+  publishedAt DateTime @default(now()) @map("publishedat")
+  order       Int
+  isActive    Boolean  @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("newspost")
+}
+
+// ─── Careers ────────────────────────────────────────────────────────────────
+model Career {
+  id          String  @id @default(cuid())
+  title       String
+  department  String
+  location    String
+  type        String // e.g. "Full-time", "Part-time", "Internship"
+  description String  @db.Text
+  applyEmail  String  @map("applyemail")
+  order       Int
+  isActive    Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("career")
+}
+
+// ─── Gallery ────────────────────────────────────────────────────────────────
+model GalleryImage {
+  id          String           @id @default(cuid())
+  title       String
+  image       String
+  category    String?
+  categoryRef GalleryCategory? @relation(fields: [category], references: [slug], onDelete: SetNull, onUpdate: Cascade)
+  order       Int
+  isActive    Boolean          @default(true) @map("isactive")
+
+  @@index([order])
+  @@index([category])
+  @@map("galleryimage")
+}
+
+model GalleryCategory {
+  id        String         @id @default(cuid())
+  name      String
+  slug      String         @unique
+  images    GalleryImage[]
+  createdAt DateTime       @default(now()) @map("createdat")
+  updatedAt DateTime       @updatedAt @map("updatedat")
+
+  @@map("gallerycategory")
+}
+
+// ─── Newsletter Subscribers ─────────────────────────────────────────────────
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true) @map("isactive")
+  createdAt DateTime @default(now()) @map("createdat")
+
+  @@map("newslettersubscriber")
+}
+
+// ─── Sectors We Serve ───────────────────────────────────────────────────────
+model SectorWeServe {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  icon        String // lucide icon name e.g. "GraduationCap"
+  order       Int
+  isActive    Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("sectorweserve")
+}
+
+// ─── Social Links ────────────────────────────────────────────────────────────
+model SocialLink {
+  id       String  @id @default(cuid())
+  platform String // e.g. "Facebook", "Twitter"
+  icon     String  @default("Globe") // lucide icon name e.g. "Facebook"
+  url      String
+  color    String // e.g. "#1877F2"
+  order    Int
+  isActive Boolean @default(true) @map("isactive")
+
+  @@index([order])
+  @@map("sociallink")
 }

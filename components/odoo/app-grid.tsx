@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
 import { ArrowRight } from "lucide-react";
+import { useOdooApps } from "@/content-manager/hooks/useOdooApps";
 
-const apps = [
+const FALLBACK_APPS = [
   { name: "Accounting", icon: "/odoo/icon-acc.svg" },
   { name: "Knowledge", icon: "/odoo/icon-knowledge.svg" },
   { name: "Sign", icon: "/odoo/icon-esign.svg" },
@@ -32,6 +33,9 @@ const apps = [
 ];
 
 export function AppGrid() {
+  const { data: dbApps } = useOdooApps(true);
+  const apps: { name: string; icon: string }[] = dbApps?.length ? dbApps : FALLBACK_APPS;
+
   return (
     <section className="bg-[#F8F9FA] py-20 px-4">
       <div className="max-w-6xl mx-auto">

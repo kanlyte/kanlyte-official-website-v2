@@ -73,9 +73,9 @@
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
 
-  /* Interactive Elements */
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  /* Interactive Elements - Keep brand green */
+  --primary: #6ebe45;
+  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
 
@@ -90,7 +90,7 @@
   /* Borders & Inputs */
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --ring: oklch(0.708 0 0);
 
   /* Data Visualization */
   --chart-1: oklch(0.488 0.243 264.376);
@@ -99,10 +99,10 @@
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
 
-  /* Sidebar Specific */
+  /* Sidebar Specific - Keep brand green accent */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: #6ebe45;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -113,7 +113,7 @@
 /* Theme Configuration */
 @theme inline {
   /* Typography */
-  --font-sans: "Geist", "Geist Fallback";
+  --font-sans: "Manrope Variable", "Manrope", sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
 
   /* Color Mapping */
@@ -165,6 +165,20 @@
   --color-brand-primary-light: #6ebe4510;
 }
 
+/* Marquee Animation */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Base Styles */
 @layer base {
   * {
@@ -173,5 +187,76 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Sidebar Enhancements */
+@layer components {
+  /* Active nav item highlight */
+  [data-slot="sidebar-menu-button"][data-active="true"] {
+    position: relative;
+  }
+
+  [data-slot="sidebar-menu-button"][data-active="true"]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--primary-foreground);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Enhanced hover states */
+  [data-slot="sidebar-menu-button"]:hover:not([data-active="true"]) {
+    @apply bg-primary/5 translate-x-0.5 transition-all duration-200;
+  }
+
+  [data-slot="sidebar-menu-button"]:active {
+    @apply scale-[0.98] transition-transform duration-100;
+  }
+
+  /* Sub menu active state */
+  [data-slot="sidebar-menu-sub-button"][data-active="true"] {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+
+  /* Sub menu hover */
+  [data-slot="sidebar-menu-sub-button"]:hover:not([data-active="true"]) {
+    @apply bg-primary/5;
+  }
+
+  /* Collapsed sidebar - keep icons visible and centered */
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"] {
+    @apply justify-center px-2;
+  }
+
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"] svg {
+    @apply shrink-0 size-5;
+  }
+
+  /* Collapsed sidebar active state - full green icon background */
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"][data-active="true"] {
+    @apply bg-primary text-primary-foreground rounded-lg;
+  }
+
+  [data-collapsible="icon"] [data-slot="sidebar-menu-button"][data-active="true"]::before {
+    display: none;
+  }
+
+  /* Smooth transitions for chevron */
+  [data-slot="sidebar-menu-button"] svg[class*="lucide-chevron"] {
+    @apply transition-transform duration-300 ease-in-out;
   }
 }

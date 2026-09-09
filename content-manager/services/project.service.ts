@@ -1,6 +1,9 @@
 import { CreateProjectSchema, UpdateProjectSchema } from "../dtos";
 import type { CreateProjectInput, UpdateProjectInput } from "../dtos";
-import { projectRepository } from "../repositories";
+import { projectRepository as _projectRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const projectRepository = withCache("projects", _projectRepository);
 
 export const projectService = {
   async getAll() {

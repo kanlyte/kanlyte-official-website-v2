@@ -7,11 +7,23 @@ export const pricingPlanRepository = {
   },
 
   async findByCategory(category: string) {
-    return await prisma.pricingPlan.findMany({
+    const cat = await prisma.pricingPlanCategory.findUnique({ where: { slug: category } });
+    const plans = await prisma.pricingPlan.findMany({
       where: { category, isActive: true },
       include: { features: { orderBy: { order: "asc" } } },
       orderBy: { order: "asc" },
     });
+    return {
+      exists: Boolean(cat),
+      pricingEnabled: cat?.pricingEnabled ?? false,
+      ownerType: cat?.ownerType ?? null,
+      ownerSlug: cat?.ownerSlug ?? null,
+      plans,
+    };
+  },
+
+  async updateCategory(slug: string, data: { pricingEnabled: boolean }) {
+    return await prisma.pricingPlanCategory.update({ where: { slug }, data });
   },
 
   async findById(id: string) {

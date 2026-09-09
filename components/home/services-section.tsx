@@ -1,95 +1,70 @@
-"use client";
-
-import {
-  Code,
-  Cpu,
-  Cloud,
-  Mail,
-  Smartphone,
-  School,
-  Globe,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { DynamicIcon } from "@/components/admin/shared/icon-picker";
 
-const FEATURES = [
-  {
-    title: "Software Development",
-    description:
-      "Custom software solutions tailored to your business needs, built with modern technologies and best practices.",
-    icon: Code,
-  },
-  {
-    title: "Odoo ERP Customizations",
-    description:
-      "Extend and customize Odoo ERP to perfectly match your business workflows and requirements.",
-    icon: Cpu,
-  },
-  {
-    title: "Web Hosting",
-    description:
-      "Reliable, secure, and high-performance web hosting with 99.9% uptime guarantee and 24/7 support.",
-    icon: Cloud,
-  },
-  {
-    title: "Email Hosting",
-    description:
-      "Professional business email hosting with advanced security, spam filtering, and large storage capacity.",
-    icon: Mail,
-  },
-  {
-    title: "App Development",
-    description:
-      "Native and cross-platform mobile applications for iOS and Android with seamless user experiences.",
-    icon: Smartphone,
-  },
-  {
-    title: "School Management Systems",
-    description:
-      "Comprehensive school management solutions for student records, fees, academics, and administration.",
-    icon: School,
-  },
-  {
-    title: "Website Development",
-    description:
-      "Responsive, modern websites with SEO optimization, fast loading speeds, and excellent user experience.",
-    icon: Globe,
-  },
-];
+type ServiceSummary = {
+  id: string;
+  title: string;
+  slug?: string | null;
+  description: string;
+  icon: string;
+  kind: string;
+  children?: ServiceSummary[];
+};
 
-export function FeaturesGrid() {
+export function FeaturesGrid({ services: data = [] }: { services?: ServiceSummary[] }) {
+  const services = data as ServiceSummary[];
+  const mainServices = services.filter((service) => service.kind === "main");
+
   return (
-    <section className="py-20 bg-[#F9FAFB]">
-      {/* Same margin system for consistency */}
+    <section className="bg-[#F9FAFB] py-20">
       <div className="mx-8 md:mx-14 lg:mx-20 xl:mx-28 2xl:mx-auto 2xl:max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-[2.5rem] font-bold text-[#0F172A] mb-4">
-            Our Software Services
-          </h2>
-          <p className="text-[#6EBE45] font-semibold text-xs md:text-sm max-w-2xl mx-auto uppercase">
-            Comprehensive digital solutions tailored to empower your business
-            growth and efficiency.
+        <div className="mb-12 text-center">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#6EBE45]">What we do</p>
+          <h2 className="mb-4 text-[2.5rem] font-bold text-[#0F172A]">Our Main Services</h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-500 md:text-base">
+            Explore our core service areas and the specialist offerings available within each one.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((feature, index) => (
-            <Card
-              key={index}
-              className="border-none shadow-md hover:shadow-lg transition-shadow duration-300 rounded-md hover:-translate-y-1 hover:border-[#1A569E]/20 border border-transparent"
-            >
-              <CardContent className="p-8">
-                <div className="w-10 h-10 bg-[#6EBE45] rounded flex items-center justify-center mb-6">
-                  <feature.icon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#6EBE45] mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed text-sm md:text-base">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="grid gap-6 md:grid-cols-2">
+            {mainServices.map((service) => (
+              <Card key={service.id} className="group h-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[#6EBE45]/40 hover:shadow-xl">
+                <CardContent className="flex h-full flex-col p-8">
+                  <div className="mb-6 flex items-start justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#6EBE45]">
+                      <DynamicIcon name={service.icon} className="h-6 w-6 text-white" />
+                    </div>
+                    <span className="rounded-full bg-[#6EBE45]/10 px-3 py-1 text-xs font-semibold text-[#5a9e3a]">
+                      {service.children?.length ?? 0} offerings
+                    </span>
+                  </div>
+
+                  <h3 className="mb-3 text-2xl font-bold text-slate-900">{service.title}</h3>
+                  <p className="mb-6 leading-relaxed text-slate-500">{service.description}</p>
+
+                  {!!service.children?.length && (
+                    <div className="mb-7 flex flex-wrap gap-2">
+                      {service.children.slice(0, 4).map((child) => (
+                        <Link
+                          key={child.id}
+                          href={`/services/${child.slug}`}
+                          className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-[#6EBE45] hover:text-[#5a9e3a]"
+                        >
+                          {child.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  <Link href={`/services/${service.slug}`} className="mt-auto inline-flex items-center gap-2 font-semibold text-[#6EBE45]">
+                    Explore {service.title}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
         </div>
       </div>
     </section>

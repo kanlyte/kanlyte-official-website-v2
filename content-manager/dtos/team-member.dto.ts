@@ -1,11 +1,16 @@
 import { z } from "zod";
 
+const optionalUrl = z.preprocess(
+  (v) => (typeof v === "string" && v.trim() ? v.trim() : undefined),
+  z.string().url().optional(),
+);
+
 export const TeamMemberSocialSchema = z.object({
-  instagram: z.string().url().optional(),
-  twitter: z.string().url().optional(),
-  linkedin: z.string().url().optional(),
-  github: z.string().url().optional(),
-  tiktok: z.string().url().optional(),
+  instagram: optionalUrl,
+  twitter: optionalUrl,
+  linkedin: optionalUrl,
+  github: optionalUrl,
+  tiktok: optionalUrl,
 });
 
 export const CreateTeamMemberSchema = z.object({

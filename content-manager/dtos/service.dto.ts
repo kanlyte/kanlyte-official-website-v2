@@ -2,8 +2,13 @@ import { z } from "zod";
 
 export const CreateServiceSchema = z.object({
   title: z.string().min(1),
+  slug: z.string().min(1),
   description: z.string().min(1),
   icon: z.string().min(1),
+  kind: z.enum(["main", "offering"]).default("offering"),
+  parentId: z.string().optional().nullable().transform(v => v || null),
+  featured: z.boolean().default(false),
+  category: z.string().optional().nullable().transform(v => v || null),
   order: z.number().int().nonnegative(),
   isActive: z.boolean().default(true),
 });

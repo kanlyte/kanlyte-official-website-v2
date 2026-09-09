@@ -1,3 +1,10 @@
+declare global {
+  interface Window {
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
+  }
+}
+
 export interface Category {
   id: string;
   name: string;

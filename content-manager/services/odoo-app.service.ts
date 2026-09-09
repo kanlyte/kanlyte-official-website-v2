@@ -1,6 +1,9 @@
 import { CreateOdooAppSchema, UpdateOdooAppSchema } from "../dtos";
 import type { CreateOdooAppInput, UpdateOdooAppInput } from "../dtos";
-import { odooAppRepository } from "../repositories";
+import { odooAppRepository as _odooAppRepository } from "../repositories";
+import { withCache } from "@/lib/cached";
+
+const odooAppRepository = withCache("odoo-apps", _odooAppRepository);
 
 export const odooAppService = {
   async getAll() {

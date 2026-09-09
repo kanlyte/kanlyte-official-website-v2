@@ -1,47 +1,28 @@
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+  Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
 import Image from "next/image";
 
-const PARTNERS = [
-  {
-    name: "Tuchi Online Shop",
-    logo: "/logos/tuchi-shop.png",
-    id: 1,
-  },
-  {
-    name: "Lira University - The Beacon",
-    logo: "/logos/lira-uni.png",
-    id: 2,
-  },
-  {
-    name: "You Screen Uganda",
-    logo: "/logos/youscreen.png",
-    id: 3,
-  },
-  {
-    name: "Thermosnoop Uganda",
-    logo: "/logos/thermosnoop.png",
-    id: 4,
-  },
+const FALLBACK_PARTNERS = [
+  { id: "1", name: "Lira University", logo: "/logos/lira-uni.png" },
+  { id: "2", name: "Thermosnoop", logo: "/logos/thermosnoop.png" },
+  { id: "3", name: "Oyster Productions", logo: "" },
+  { id: "4", name: "Base Volt and Wak Innovations", logo: "" },
+  { id: "5", name: "Buggade Sacco", logo: "" },
 ];
 
-export function PartnersSlider() {
+type Partner = { id: string; name: string; logo: string };
+
+export function PartnersSlider({ partners: dbPartners }: { partners?: Partner[] }) {
+  const partners = dbPartners?.length ? dbPartners : FALLBACK_PARTNERS;
+
   return (
-    <section className="py-16 bg-white text-center">
+    <section className="py-8 bg-white text-center">
       <div className="container px-4">
-        <h2 className="text-[#6EBE45] font-bold text-lg mb-4 tracking-wide">
-          OUR PARTNERS AND BENEFACTORS
+        <h2 className="text-[#6EBE45] font-bold text-lg mb-3 tracking-wide">
+          OUR CLIENT BASE
         </h2>
-        <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed mb-12">
+        <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed mb-8">
           We are proud to collaborate with esteemed partners who share our
           vision for innovation and excellence.
           <br />
@@ -51,38 +32,33 @@ export function PartnersSlider() {
         </p>
 
         <TooltipProvider delayDuration={0}>
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
+          <div
+            className="relative overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
             }}
-            className="w-full"
           >
-            <CarouselContent className="-ml-4 md:-ml-8 items-center">
-              {[...PARTNERS, ...PARTNERS].map((partner, index) => (
-                <CarouselItem
-                  key={`${partner.id}-${index}`}
-                  className="pl-4 md:pl-8 basis-1/2 md:basis-1/3 lg:basis-1/4"
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="relative aspect-square w-full max-w-[240px] mx-auto transition-transform duration-300 hover:scale-105 cursor-pointer">
-                        <Image
-                          src={partner.logo || "/placeholder.svg"}
-                          alt={partner.name}
-                          fill
-                          className="object-contain p-4"
-                        />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-[#666] text-white border-none text-xs rounded-none py-1 px-3">
-                      <p>{partner.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </CarouselItem>
+            <div className="flex w-max animate-marquee gap-6 md:gap-12">
+              {[...partners, ...partners].map((partner: { id: string; name: string; logo: string }, index: number) => (
+                <Tooltip key={`${partner.id}-${index}`}>
+                  <TooltipTrigger asChild>
+                    <div className="relative h-40 w-64 md:h-48 md:w-72 shrink-0 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                      <Image
+                        src={partner.logo || "/placeholder.svg"}
+                        alt={partner.name}
+                        fill
+                        className="object-contain p-1"
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-primary text-white border-none text-xs rounded-none py-1 px-3">
+                    <p>{partner.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
         </TooltipProvider>
       </div>
     </section>
