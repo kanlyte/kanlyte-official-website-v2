@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Home,
   ArrowLeft,
@@ -11,13 +11,27 @@ import {
 } from "lucide-react";
 
 // Custom Error Page Component
-export default function ErrorPage() {
+export default function ErrorPage({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Next redacts the real message from the client bundle in production, but
+  // still logs this on the server -- check server/process-manager logs for
+  // the matching digest to see the actual thrown error.
+  useEffect(() => {
+    console.error("[app/error.tsx]", error);
+  }, [error]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
+    reset();
     setTimeout(() => {
-      window.location.reload();
+      setIsRefreshing(false);
     }, 1000);
   };
 
@@ -70,8 +84,7 @@ export default function ErrorPage() {
           </p>
           <div className="bg-slate-50 rounded-lg p-3">
             <code className="text-sm text-slate-700 font-mono">
-              Error ID: ERR_
-              {Math.random().toString(36).substr(2, 9).toUpperCase()}
+              Error ID: {error.digest ?? "unavailable"}
             </code>
           </div>
         </div>
